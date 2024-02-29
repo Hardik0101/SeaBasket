@@ -9,96 +9,108 @@ import {Colors} from './constant/styles';
 import AccountScreen from './screens/Account';
 import ProductScreen from './screens/ProductScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen';
-import SignupScreen from './screens/SignupScreen';
+import LoginScreen from './screens/AuthScreens/LoginScreen';
+import SignupScreen from './screens/AuthScreens/SignupScreen';
+import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
   return (
-    <Stack.Navigator>
-      {/* <Stack.Screen
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleAlign: 'center',
+        headerShown: false,
+      }}>
+      <Stack.Screen
         name="OnBoardingScreen"
-        component={OnboardingScreen1}
+        component={OnboardingScreen}
         options={{
           title: 'Steps ',
         }}
-      /> */}
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{title: 'Login', headerShown: true}}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{title: 'SignUp', headerShown: true}}
+      />
     </Stack.Navigator>
   );
 }
 
 function AppData() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerStyle: {backgroundColor: 'lightgreen'},
-          tabBarActiveTintColor: Colors.primary,
-          tabBarStyle: {
-            paddingHorizontal: 10,
-          },
-          tabBarItemStyle: {
-            marginBottom: 10,
-          },
-          // header,
+    <Tab.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        tabBarActiveTintColor: Colors.primary,
+        tabBarStyle: {
+          paddingHorizontal: 10,
+        },
+        tabBarItemStyle: {
+          marginBottom: 10,
+        },
+      }}
+      sceneContainerStyle={{backgroundColor: '#e3dfed'}}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Home width={28} fill={focused ? Colors.primary : 'black'} />
+          ),
+          // tabBarLabel: () => null,
         }}
-        sceneContainerStyle={{backgroundColor: '#e3dfed'}}>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <Home width={28} fill={focused ? Colors.primary : 'black'} />
-            ),
-            // tabBarLabel: () => null,
-          }}
-        />
+      />
 
-        <Tab.Screen
-          name="Product"
-          component={ProductScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <Product
-                width={26}
-                height={26}
-                fill={focused ? Colors.primary : 'black'}
-              />
-            ),
-            // tabBarLabel: () => null,
-          }}
-        />
-        <Tab.Screen
-          name="Cart"
-          component={CartScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <Cart
-                width={24}
-                height={24}
-                fill={focused ? Colors.primary : 'black'}
-              />
-            ),
-            // tabBarLabel: () => null,
-          }}
-        />
+      <Tab.Screen
+        name="Product"
+        component={ProductScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Product
+              width={26}
+              height={26}
+              fill={focused ? Colors.primary : 'black'}
+            />
+          ),
+          // tabBarLabel: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Cart
+              width={24}
+              height={24}
+              fill={focused ? Colors.primary : 'black'}
+            />
+          ),
+          // tabBarLabel: () => null,
+        }}
+      />
 
-        <Tab.Screen
-          name="Account"
-          component={AccountScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <Account width={28} fill={focused ? Colors.primary : 'black'} />
-            ),
-            // tabBarLabel: () => null,
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+      <Tab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Account width={28} fill={focused ? Colors.primary : 'black'} />
+          ),
+          // tabBarLabel: () => null,
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
