@@ -106,7 +106,8 @@ function Navigation() {
   return (
     <NavigationContainer>
       <AuthStack />
-      {/* <AppData />   */} {/* After Login is done add Logic and Use */}
+      {/* <AppData />   */}
+      {/* After Login is done add Logic and Use */}
     </NavigationContainer>
   );
 }
