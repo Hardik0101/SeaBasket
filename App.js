@@ -12,6 +12,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/AuthScreens/LoginScreen';
 import SignupScreen from './screens/AuthScreens/SignupScreen';
 import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,7 +61,7 @@ function AppData() {
           marginBottom: 10,
         },
       }}
-      sceneContainerStyle={{backgroundColor: '#e3dfed'}}>
+      sceneContainerStyle={{backgroundColor: Colors.bgcolor}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -142,8 +144,10 @@ function Navigation() {
 function App() {
   return (
     <>
-      <StatusBar style="light" />
-      <Navigation />
+      <Provider store={store}>
+        <StatusBar style="light" />
+        <Navigation />
+      </Provider>
     </>
   );
 }

@@ -1,27 +1,14 @@
 import React from 'react';
-import {Text, StyleSheet, View, Image} from 'react-native';
-import {getProduct} from '../apiCall/dataApi';
+import {StyleSheet, Text, View} from 'react-native';
+import HorizontalCard from '../components/DataShow/HorizontalCard';
+import {Colors} from '../constant/styles';
+import {getCategory} from '../apiCall/dataApi';
 
 function HomeScreen() {
-  async function products() {
-    try {
-      const data1 = await getProduct();
-      console.log('The data is ', data1);
-      return data1;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <View>
-      <Text> Home Screen </Text>
-      <Image
-        source={require('../assets/images/Logo.png')}
-        style={styles.image}
-      />
       <View style={styles.container}>
-        <Text onPress={products}>The Data is </Text>
+        <HorizontalCard />
       </View>
     </View>
   );
@@ -30,8 +17,12 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  image: {
-    width: 100,
-    height: 100,
+  container: {
+    marginHorizontal: 4,
+    height: 300,
+    borderRadius: 2,
+    borderWidth: 2,
+    borderColor: Colors.primary300,
+    backgroundColor: Colors.primary100,
   },
 });
