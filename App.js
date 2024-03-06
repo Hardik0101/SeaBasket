@@ -114,12 +114,27 @@ function AppData() {
   );
 }
 
+function CombineStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Auth"
+        component={AuthStack}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="New"
+        component={AppData}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function Navigation() {
   return (
     <NavigationContainer>
-      <AuthStack />
-      {/* <AppData />   */}
-      {/* After Login is done add Logic and Use */}
+      <CombineStack />
     </NavigationContainer>
   );
 }

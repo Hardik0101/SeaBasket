@@ -2,14 +2,16 @@ import {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import Button from '../UI/Button';
 import Input from './Input';
-import {Cart, Login, Signup} from '../../assets/icons';
+import {Login, Signup} from '../../assets/icons';
 
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
+  const [enteredUsername, setEnteredUsername] = useState('');
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
 
   const {
+    username: usernameIsInvalid,
     email: emailIsInvalid,
     password: passwordIsInvalid,
     confirmPassword: passwordsDontMatch,
@@ -17,6 +19,9 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
 
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
+      case 'username':
+        setEnteredUsername(enteredValue);
+        return;
       case 'email':
         setEnteredEmail(enteredValue);
         break;
@@ -31,6 +36,7 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
 
   function submitHandler() {
     onSubmit({
+      username: enteredUsername,
       email: enteredEmail,
       password: enteredPassword,
       confirmPassword: enteredConfirmPassword,
@@ -42,12 +48,25 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
       <View style={styles.form}>
         <View>
           <Input
-            placeholder="Email / UserName"
-            onUpdateValue={updateInputValueHandler.bind(this, 'email')}
-            value={enteredEmail}
+            placeholder="UserName"
+            onUpdateValue={updateInputValueHandler.bind(this, 'username')}
+            secure
             keyboardType="email-address"
-            isInvalid={emailIsInvalid}
+            value={enteredUsername}
+            isInvalid={usernameIsInvalid}
           />
+          {!isLogin && (
+            <>
+              <Input
+                placeholder="Email"
+                onUpdateValue={updateInputValueHandler.bind(this, 'email')}
+                secure
+                keyboardType="email-address"
+                value={enteredEmail}
+                isInvalid={emailIsInvalid}
+              />
+            </>
+          )}
           <Input
             placeholder="Password"
             onUpdateValue={updateInputValueHandler.bind(this, 'password')}
@@ -55,18 +74,22 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
             value={enteredPassword}
             isInvalid={passwordIsInvalid}
           />
+
           {!isLogin && (
-            <Input
-              placeholder="Confirm Password"
-              onUpdateValue={updateInputValueHandler.bind(
-                this,
-                'confirmPassword',
-              )}
-              secure
-              value={enteredConfirmPassword}
-              isInvalid={passwordsDontMatch}
-            />
+            <>
+              <Input
+                placeholder="Confirm Password"
+                onUpdateValue={updateInputValueHandler.bind(
+                  this,
+                  'confirmPassword',
+                )}
+                secure
+                value={enteredConfirmPassword}
+                isInvalid={passwordsDontMatch}
+              />
+            </>
           )}
+
           <View style={styles.buttons}>
             <Button onPress={submitHandler}>
               {isLogin ? (

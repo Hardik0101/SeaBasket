@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Button from '../../components/UI/Button';
 import {Colors} from '../../constant/styles';
-import {Logo} from '../../assets/icons';
 
 const {width} = Dimensions.get('window');
 
@@ -23,7 +22,7 @@ function OnboardingScreen({navigation}) {
   };
 
   const handleLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate('New');
   };
 
   const pages = [

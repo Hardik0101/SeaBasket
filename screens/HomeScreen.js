@@ -1,9 +1,18 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
-import {Svg} from 'react-native-svg';
-import {Cart} from '../assets/icons';
+import {getProduct} from '../apiCall/dataApi';
 
 function HomeScreen() {
+  async function products() {
+    try {
+      const data1 = await getProduct();
+      console.log('The data is ', data1);
+      return data1;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <View>
       <Text> Home Screen </Text>
@@ -11,6 +20,9 @@ function HomeScreen() {
         source={require('../assets/images/Logo.png')}
         style={styles.image}
       />
+      <View style={styles.container}>
+        <Text onPress={products}>The Data is </Text>
+      </View>
     </View>
   );
 }

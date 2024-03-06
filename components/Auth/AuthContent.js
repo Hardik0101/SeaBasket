@@ -8,6 +8,7 @@ import FlatButton from '../UI/FlatButton';
 function AuthContent({isLogin, onAuthenticate}) {
   const navigation = useNavigation();
   const [credentialsInvalid, setCredentialsInvalid] = useState({
+    username: false,
     email: false,
     password: false,
     confirmEmail: false,
@@ -23,24 +24,26 @@ function AuthContent({isLogin, onAuthenticate}) {
   }
 
   function submitHandler(credentials) {
-    let {email, password, confirmPassword} = credentials;
+    let {username, email, password, confirmPassword} = credentials;
 
+    username = username.trim();
     email = email.trim();
     password = password.trim();
 
     const emailIsValid = email.includes('@');
+    const usernameIsValid = username.length > 0;
     const passwordIsValid =
-      /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
+      /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
         password,
       );
 
     const emailsAreEqual = email;
+    const usernameEqual = username;
     const passwordsAreEqual = password === confirmPassword;
-
-    if (!emailIsValid || (!isLogin && !emailsAreEqual)) {
-      Alert.alert('Invalid input', 'Please check your entered Email.');
+    if (!usernameIsValid || (!isLogin && !usernameEqual)) {
+      Alert.alert('Invalid input', 'Please check your entered Username.');
       setCredentialsInvalid({
-        email: !emailIsValid,
+        username: !usernameIsValid,
       });
       return;
     } else if (!passwordIsValid || (!isLogin && !passwordsAreEqual)) {
@@ -53,8 +56,14 @@ function AuthContent({isLogin, onAuthenticate}) {
         confirmPassword: !passwordIsValid || !passwordsAreEqual,
       });
       return;
+    } else if (!isLogin && !emailsAreEqual && !passwordIsValid) {
+      Alert.alert('Invalid input', 'Please check your entered Email.');
+      setCredentialsInvalid({
+        email: !emailIsValid,
+      });
+      return;
     }
-    onAuthenticate({email, password});
+    onAuthenticate({username, email, password});
   }
 
   return (
@@ -81,7 +90,6 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   authContent: {
-    marginTop: 40,
     marginHorizontal: 32,
     padding: 16,
     borderRadius: 8,
