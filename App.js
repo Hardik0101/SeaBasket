@@ -14,6 +14,7 @@ import SignupScreen from './screens/AuthScreens/SignupScreen';
 import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
 import {Provider} from 'react-redux';
 import {store} from './store/store';
+import DetailScreen from './screens/DetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,7 +68,11 @@ function AppData() {
         component={HomeScreen}
         options={{
           tabBarIcon: ({focused}) => (
-            <Home width={28} fill={focused ? Colors.primary : 'black'} />
+            <Home
+              width={28}
+              height={28}
+              fill={focused ? Colors.primary : 'black'}
+            />
           ),
           // tabBarLabel: () => null,
         }}
@@ -107,7 +112,11 @@ function AppData() {
         component={AccountScreen}
         options={{
           tabBarIcon: ({focused}) => (
-            <Account width={28} fill={focused ? Colors.primary : 'black'} />
+            <Account
+              width={28}
+              height={28}
+              fill={focused ? Colors.primary : 'black'}
+            />
           ),
           // tabBarLabel: () => null,
         }}
@@ -118,7 +127,12 @@ function AppData() {
 
 function CombineStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleAlign: 'center',
+      }}>
       <Stack.Screen
         name="Auth"
         component={AuthStack}
@@ -129,6 +143,7 @@ function CombineStack() {
         component={AppData}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Details" component={DetailScreen} />
     </Stack.Navigator>
   );
 }

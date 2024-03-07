@@ -19,12 +19,14 @@ import {
 } from '../store/dataSlice';
 import Button from '../components/UI/Button';
 import {Cart} from '../assets/icons';
+import {useNavigation} from '@react-navigation/native';
 
 function ProductScreen() {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const product = useSelector(state => state);
   const [pressed, setPressed] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,12 +65,18 @@ function ProductScreen() {
     setPressed(productData);
   };
 
+  function detailsHandler() {
+    navigation.navigate('Details', {
+      id: pressed[0].id,
+    });
+  }
+
   return (
     <>
       <View style={styles.container}>
-        {data.map(item => (
+        {data.map((item, index) => (
           <>
-            <TouchableOpacity onPress={() => getProductData(item)}>
+            <TouchableOpacity key={index} onPress={() => getProductData(item)}>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{item}</Text>
               </View>
@@ -86,9 +94,7 @@ function ProductScreen() {
               <TouchableOpacity
                 key={index}
                 style={styles.card}
-                onPress={() => {
-                  console.log('Details', product.id);
-                }}>
+                onPress={detailsHandler}>
                 <View style={styles.imageContainer}>
                   <Image source={{uri: product.image}} style={styles.image} />
                 </View>
@@ -164,7 +170,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 120,
-    height: 100,
+    height: 134,
   },
   itemTitleView: {
     width: 200,

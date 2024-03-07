@@ -23,7 +23,6 @@ const HorizontalCard = () => {
       dispatch(clearState());
     };
   }, [dispatch]);
-  // console.log('This is data', data.data.productData);
   return (
     <ScrollView horizontal style={styles.container}>
       {data?.data?.productData.map((product, index) => (
@@ -45,17 +44,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 6,
-    paddingHorizontal: 4,
   },
   card: {
     marginRight: 10,
     width: 250,
-    // height: 200,
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 8,
+    borderRadius: 6,
     borderWidth: 2,
     borderColor: Colors.primary300,
     backgroundColor: Colors.primary100,
