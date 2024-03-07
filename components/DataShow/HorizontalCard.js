@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   ScrollView,
   Image,
   StyleSheet,
@@ -18,7 +17,6 @@ const HorizontalCard = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-
     return () => {
       dispatch(clearState());
     };

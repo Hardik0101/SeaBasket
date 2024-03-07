@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
+  getAllProducts,
   getElectronics,
   getJeweleryItems,
   getMenCloths,
@@ -11,6 +12,7 @@ import {
 const dataSlice = createSlice({
   name: 'data',
   initialState: {
+    allproducts: [],
     productData: [],
     jewelery: [],
     menClothing: [],
@@ -18,6 +20,9 @@ const dataSlice = createSlice({
     electronics: [],
   },
   reducers: {
+    setAllProducts: (state, action) => {
+      state.allproducts = action.payload;
+    },
     setProducts: (state, action) => {
       state.productData = action.payload;
     },
@@ -36,10 +41,23 @@ const dataSlice = createSlice({
     clearState: state => {
       (state.jewelery = []),
         (state.menClothing = []),
-        (state.womenclothing = []);
+        (state.womenclothing = []),
+        (state.electronics = []);
     },
   },
 });
+
+export const fetchAllProducts = createAsyncThunk(
+  'data/fetchAllProducts',
+  async (id, {dispatch}) => {
+    try {
+      const products = await getAllProducts();
+      dispatch(setAllProducts(products));
+    } catch (error) {
+      console.error('Error', error);
+    }
+  },
+);
 
 export const fetchProducts = createAsyncThunk(
   'data/fetchProducts',
@@ -102,6 +120,7 @@ export const fetchElectronics = createAsyncThunk(
 );
 
 export const {
+  setAllProducts,
   setJewelery,
   setMenClothing,
   setWomenClothing,

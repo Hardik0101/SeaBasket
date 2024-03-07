@@ -94,7 +94,7 @@ function ProductScreen() {
               <TouchableOpacity
                 key={index}
                 style={styles.card}
-                onPress={detailsHandler}>
+                onPress={() => detailsHandler(product.id)}>
                 <View style={styles.imageContainer}>
                   <Image source={{uri: product.image}} style={styles.image} />
                 </View>
