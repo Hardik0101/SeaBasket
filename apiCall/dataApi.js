@@ -89,7 +89,7 @@ export async function getElectronics() {
 export async function getProductsDetails(id) {
   try {
     const response = await axios.get(API_DETAILS.replace(':id', id));
-    console.log('The details are: ', response.data);
+    // console.log('The details are: ', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching product details:', error);

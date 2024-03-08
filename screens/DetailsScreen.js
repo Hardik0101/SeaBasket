@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
@@ -10,6 +10,7 @@ function DetailScreen() {
   const dispatch = useDispatch();
   const data = useSelector(state => state);
   const route = useRoute();
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     function fetchData() {
@@ -26,6 +27,15 @@ function DetailScreen() {
     };
   }, [dispatch, route.params.id]);
 
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const description =
+    data.details.details && typeof data.details.details.description === 'string'
+      ? data.details.details.description
+      : '';
+
   return (
     <ScrollView>
       {data && (
@@ -37,14 +47,21 @@ function DetailScreen() {
                 style={styles.itemImage}
               />
             </View>
-            <View>
+            <View style={styles.itemConatiner}>
               <Text style={styles.itemPrice}>
                 ${data.details.details.price}
               </Text>
               <Text style={styles.itemTitle}>{data.details.details.title}</Text>
               <Text style={styles.itemDescription}>
-                {data.details.details.description}
+                {showFullDescription
+                  ? description
+                  : `${description.slice(0, 135)}`}
               </Text>
+              {description.length > 135 && (
+                <Text onPress={toggleDescription} style={styles.readMore}>
+                  {showFullDescription ? 'Read less' : 'Read more'}
+                </Text>
+              )}
             </View>
           </View>
           <View style={styles.buttons}>
@@ -73,6 +90,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
   },
+  itemConatiner: {
+    width: '100%',
+  },
   itemImage: {
     width: 200,
     height: 200,
@@ -93,6 +113,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.primary300,
     textAlign: 'justify',
+  },
+  readMore: {
+    color: Colors.primary,
   },
   buttons: {
     flexDirection: 'row',
