@@ -7,11 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {getCategory} from '../apiCall/dataApi';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   clearState,
+  fetchAllProducts,
+  fetchCategory,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
@@ -22,23 +23,18 @@ import {Cart} from '../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 
 function ProductScreen() {
-  const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const product = useSelector(state => state);
   const [pressed, setPressed] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const products = await getCategory();
-      setData(products);
-    };
+    dispatch(fetchCategory());
+    dispatch(fetchAllProducts());
     dispatch(fetchElectronics());
     dispatch(fetchJeweleryItems());
     dispatch(fetchMenClothing());
     dispatch(fetchWomenClothing());
-    fetchData();
-
     return () => {
       dispatch(clearState());
     };
@@ -60,81 +56,101 @@ function ProductScreen() {
         productData = product.data.electronics;
         break;
       default:
-        console.log('Function not implemented for this title');
+        productData = product.data.allproducts;
+        break;
     }
     setPressed(productData);
   };
 
-  function detailsHandler() {
-    navigation.navigate('Details', {
-      id: pressed[0].id,
-    });
+  function detailsHandler(id) {
+    // console.log(id);
+    navigation.navigate('Details', {id});
   }
 
   return (
     <>
-      <View style={styles.container}>
-        {data.map((item, index) => (
-          <>
-            <TouchableOpacity key={index} onPress={() => getProductData(item)}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{item}</Text>
-              </View>
-            </TouchableOpacity>
-          </>
-        ))}
-      </View>
+      <View style={styles.mainView}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => getProductData()}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>For You</Text>
+            </View>
+          </TouchableOpacity>
 
-      {pressed && (
+          {product.data.category.map((item, index) => (
+            <>
+              <TouchableOpacity
+                key={index}
+                onPress={() => getProductData(item)}>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>{item}</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          ))}
+        </View>
+
         <ScrollView
           style={styles.scrollContainer}
           contentContainerStyle={styles.contentContainer}>
           <>
             {pressed.map((product, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.card}
-                onPress={() => detailsHandler(product.id)}>
-                <View style={styles.imageContainer}>
-                  <Image source={{uri: product.image}} style={styles.image} />
-                </View>
-                <View style={styles.itemTitleView}>
-                  <Text style={styles.itemPrice}>${product.price}</Text>
-                  <Text style={styles.itemTitle}>
-                    {product.title.length > 10
-                      ? `${product.title.substring(0, 20)}...`
-                      : product.title}
-                  </Text>
-                  <View style={styles.itemButtons}>
-                    <Button>
-                      <Cart width={20} height={20} fill="black" />
-                    </Button>
-                    <Button>Buy</Button>
+              <>
+                <Text style={styles.title}>{product.category}</Text>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.card}
+                  onPress={() => detailsHandler(product.id)}>
+                  <View style={styles.imageContainer}>
+                    <Image source={{uri: product.image}} style={styles.image} />
                   </View>
-                </View>
-              </TouchableOpacity>
+                  <View style={styles.itemTitleView}>
+                    <Text style={styles.itemPrice}>${product.price}</Text>
+                    <Text style={styles.itemTitle}>
+                      {product.title.length > 10
+                        ? `${product.title.substring(0, 12)}...`
+                        : product.title}
+                    </Text>
+                    <View style={styles.itemButtons}>
+                      <Button>
+                        <Cart width={16} height={16} fill="black" />
+                      </Button>
+                      <Button>Buy</Button>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </>
             ))}
           </>
         </ScrollView>
-      )}
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  mainView: {
+    flexDirection: 'row',
+    height: '100%',
+  },
+
   scrollContainer: {
     padding: 6,
     paddingHorizontal: 6,
+    height: '100%',
   },
   container: {
     padding: 6,
     paddingHorizontal: 6,
+    width: 100,
+    backgroundColor: Colors.primary100,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     color: Colors.primary300,
+    textTransform: 'capitalize',
   },
   titleContainer: {
     marginTop: 10,
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    height: 150,
+    height: 100,
     marginTop: 6,
     borderRadius: 8,
     borderWidth: 2,
@@ -169,29 +185,29 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary300,
   },
   imageContainer: {
-    width: 120,
-    height: 134,
+    width: 90,
+    height: 90,
   },
   itemTitleView: {
-    width: 200,
+    width: 160,
     alignItems: 'center',
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
     color: Colors.primary300,
   },
   itemPrice: {
-    marginBottom: 4,
-    fontSize: 24,
+    marginBottom: 2,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     color: Colors.primary300,
   },
   itemButtons: {
     marginTop: 10,
-    width: 130,
+    width: 120,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
