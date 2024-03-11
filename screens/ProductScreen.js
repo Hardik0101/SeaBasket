@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,15 +19,17 @@ import {
   fetchMenClothing,
   fetchWomenClothing,
 } from '../store/dataSlice';
-import Button from '../components/UI/Button';
-import {Cart} from '../assets/icons';
 import {useNavigation} from '@react-navigation/native';
+import Button from '../components/UI/Button';
+import {Filter, Short} from '../assets/icons';
 
 function ProductScreen() {
   const dispatch = useDispatch();
   const product = useSelector(state => state);
   const [pressed, setPressed] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [items, setItems] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -64,16 +67,24 @@ function ProductScreen() {
 
     setPressed(productData);
     setActiveItem(item);
+    setItems(true);
   };
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
   }
 
+  function filterHandler() {
+    console.log('Filter Press1');
+  }
+
   return (
     <>
       <View style={styles.mainView}>
-        <ScrollView horizontal style={styles.container}>
+        <ScrollView
+          horizontal
+          style={styles.container}
+          contentContainerStyle={styles.contentContainerHorizontal}>
           <TouchableOpacity
             onPress={() => getProductData()}
             style={styles.scrollItems}>
@@ -114,43 +125,90 @@ function ProductScreen() {
           ))}
         </ScrollView>
 
-        <ScrollView
-          style={styles.scrollContainer}
-          contentContainerStyle={styles.contentContainer}>
-          <>
-            <View style={styles.twoItems}>
-              {pressed.map((product, index) => (
-                <>
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.card}
-                    onPress={() => detailsHandler(product.id)}>
-                    <View style={styles.imageContainer}>
-                      <Image
-                        source={{uri: product.image}}
-                        style={styles.image}
-                      />
-                    </View>
-                    <View style={styles.itemTitleView}>
-                      <Text style={styles.itemPrice}>${product.price}</Text>
-                      <Text style={styles.itemTitle}>
-                        {product.title.length > 10
-                          ? `${product.title.substring(0, 20)}...`
-                          : product.title}
-                      </Text>
-                      {/* <View style={styles.itemButtons}>
-                        <Button>
-                          <Cart width={16} height={16} fill="black" />
-                        </Button>
-                        <Button>Buy</Button>
-                      </View> */}
-                    </View>
-                  </TouchableOpacity>
-                </>
-              ))}
+        {/* ******************* Filter Section *******************/}
+
+        <View style={styles.filterContainer}>
+          <Button onPress={filterHandler}>
+            <View style={{flexDirection: 'row'}}>
+              <Filter width={24} height={24} />
+              <Text style={styles.buttonText}> Filter</Text>
             </View>
-          </>
-        </ScrollView>
+          </Button>
+          <Button>
+            <View style={{flexDirection: 'row'}}>
+              <Short width={24} height={24} fill={Colors.secondary} />
+              <Text style={styles.buttonText}> Short</Text>
+            </View>
+          </Button>
+        </View>
+
+        {items && (
+          <ScrollView
+            style={styles.scrollContainer}
+            contentContainerStyle={styles.contentContainer}>
+            <>
+              <View style={styles.twoItems}>
+                {pressed.map((product, index) => (
+                  <>
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.card}
+                      onPress={() => detailsHandler(product.id)}>
+                      <View style={styles.imageContainer}>
+                        <Image
+                          source={{uri: product.image}}
+                          style={styles.image}
+                        />
+                      </View>
+                      <View style={styles.itemTitleView}>
+                        <Text style={styles.itemPrice}>${product.price}</Text>
+                        <Text style={styles.itemTitle}>
+                          {product.title.length > 10
+                            ? `${product.title.substring(0, 20)}...`
+                            : product.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                ))}
+              </View>
+            </>
+          </ScrollView>
+        )}
+
+        {!items && (
+          <ScrollView
+            style={styles.scrollContainer}
+            contentContainerStyle={styles.contentContainer}>
+            <>
+              <View style={styles.twoItems}>
+                {product.data.allproducts.map((product, index) => (
+                  <>
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.card}
+                      onPress={() => detailsHandler(product.id)}>
+                      <View style={styles.imageContainer}>
+                        <Image
+                          source={{uri: product.image}}
+                          style={styles.image}
+                        />
+                      </View>
+                      <View style={styles.itemTitleView}>
+                        <Text style={styles.itemPrice}>${product.price}</Text>
+                        <Text style={styles.itemTitle}>
+                          {product.title.length > 10
+                            ? `${product.title.substring(0, 20)}...`
+                            : product.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                ))}
+              </View>
+            </>
+          </ScrollView>
+        )}
       </View>
     </>
   );
@@ -158,11 +216,10 @@ function ProductScreen() {
 
 const styles = StyleSheet.create({
   mainView: {
-    // flexDirection: 'row',
     height: '100%',
   },
   scrollItems: {
-    marginRight: 10,
+    marginRight: 6,
   },
   twoItems: {
     flexDirection: 'row',
@@ -172,31 +229,26 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
-    padding: 6,
     paddingHorizontal: 6,
     height: '100%',
-    flexDirection: 'column',
   },
   container: {
     padding: 6,
-    paddingHorizontal: 6,
-    backgroundColor: Colors.primary100,
     flexDirection: 'row',
     width: '100%',
-    height: 60,
+    height: 56,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
     color: Colors.primary300,
     textTransform: 'capitalize',
   },
   titleContainer: {
-    padding: 6,
-    alignItems: 'center',
+    padding: 4,
     backgroundColor: Colors.primary100,
-    borderRadius: 6,
+    borderRadius: 12,
     borderWidth: 2,
     borderColor: Colors.primary300,
     width: '100%',
@@ -204,7 +256,8 @@ const styles = StyleSheet.create({
   card: {
     width: '49%',
     height: 230,
-    marginTop: 6,
+    padding: 6,
+    marginTop: 2,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: Colors.primary300,
@@ -212,7 +265,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 6,
   },
   image: {
     width: '100%',
@@ -250,11 +302,28 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 10,
   },
+  contentContainerHorizontal: {
+    paddingEnd: 6,
+  },
   activeTitleContainer: {
     backgroundColor: '#2e8b57',
   },
   activeTitle: {
     color: Colors.secondary,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: Colors.secondary,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

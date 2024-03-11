@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {getProduct} from '../../apiCall/dataApi';
 import {Colors} from '../../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearState, fetchProducts, setProducts} from '../../store/dataSlice';
