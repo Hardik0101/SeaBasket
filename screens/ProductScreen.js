@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
@@ -21,6 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import Button from '../components/UI/Button';
 import {Filter, Short} from '../assets/icons';
 import ItemScrollView from '../components/AppData/itemScrollCard';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function ProductScreen() {
   const dispatch = useDispatch();
@@ -28,15 +30,22 @@ function ProductScreen() {
   const [pressed, setPressed] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const [items, setItems] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchAllProducts());
-    dispatch(fetchElectronics());
-    dispatch(fetchJeweleryItems());
-    dispatch(fetchMenClothing());
-    dispatch(fetchWomenClothing());
+    async function fetchData() {
+      await dispatch(fetchCategory()),
+        await dispatch(fetchAllProducts()),
+        await dispatch(fetchElectronics()),
+        await dispatch(fetchJeweleryItems()),
+        await dispatch(fetchMenClothing()),
+        await dispatch(fetchWomenClothing()),
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+    }
+    fetchData();
     return () => {
       dispatch(clearState());
     };
@@ -76,84 +85,87 @@ function ProductScreen() {
     console.log('Filter Press1');
   }
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <LoadingOverlay children="Loading..." />
+      </View>
+    );
+  }
+
   return (
-    <>
-      <View style={styles.mainView}>
-        {/* ******************* Catagory selction ******************* */}
-        <ScrollView
-          horizontal
-          style={styles.container}
-          contentContainerStyle={styles.contentContainerHorizontal}>
+    <View style={styles.mainView}>
+      {/* ******************* Catagory selction ******************* */}
+      <ScrollView
+        horizontal
+        style={styles.container}
+        contentContainerStyle={styles.contentContainerHorizontal}>
+        <TouchableOpacity
+          onPress={() => getProductData()}
+          style={styles.scrollItems}>
+          <View
+            style={[
+              styles.titleContainer,
+              activeItem === null && styles.activeTitleContainer,
+            ]}>
+            <Text
+              style={[styles.title, activeItem === null && styles.activeTitle]}>
+              For You
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {product.data.category.map((item, index) => (
           <TouchableOpacity
-            onPress={() => getProductData()}
+            key={index}
+            onPress={() => getProductData(item)}
             style={styles.scrollItems}>
             <View
               style={[
                 styles.titleContainer,
-                activeItem === null && styles.activeTitleContainer,
+                activeItem === item && styles.activeTitleContainer,
               ]}>
               <Text
                 style={[
                   styles.title,
-                  activeItem === null && styles.activeTitle,
+                  activeItem === item && styles.activeTitle,
                 ]}>
-                For You
+                {item}
               </Text>
             </View>
           </TouchableOpacity>
+        ))}
+      </ScrollView>
 
-          {product.data.category.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => getProductData(item)}
-              style={styles.scrollItems}>
-              <View
-                style={[
-                  styles.titleContainer,
-                  activeItem === item && styles.activeTitleContainer,
-                ]}>
-                <Text
-                  style={[
-                    styles.title,
-                    activeItem === item && styles.activeTitle,
-                  ]}>
-                  {item}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+      {/* ******************* Filter Section *******************/}
 
-        {/* ******************* Filter Section *******************/}
-
-        <View style={styles.filterContainer}>
-          <Button onPress={filterHandler}>
-            <View style={{flexDirection: 'row'}}>
-              <Filter width={24} height={24} />
-              <Text style={styles.buttonText}> Filter</Text>
-            </View>
-          </Button>
-          <Button>
-            <View style={{flexDirection: 'row'}}>
-              <Short width={24} height={24} fill={Colors.secondary} />
-              <Text style={styles.buttonText}> Short</Text>
-            </View>
-          </Button>
-        </View>
-
-        {/* ******************* Item Section *******************/}
-
-        {items && (
-          <ItemScrollView items={pressed} detailsHandler={detailsHandler} />
-        )}
-        {!items && (
-          <ItemScrollView
-            items={product.data.allproducts}
-            detailsHandler={detailsHandler}
-          />
-        )}
+      <View style={styles.filterContainer}>
+        <Button onPress={filterHandler}>
+          <View style={{flexDirection: 'row'}}>
+            <Filter width={24} height={24} />
+            <Text style={styles.buttonText}> Filter</Text>
+          </View>
+        </Button>
+        <Button>
+          <View style={{flexDirection: 'row'}}>
+            <Short width={24} height={24} fill={Colors.secondary} />
+            <Text style={styles.buttonText}> Short</Text>
+          </View>
+        </Button>
       </View>
-    </>
+
+      {/* ******************* Item Section *******************/}
+
+      {items && (
+        <ItemScrollView items={pressed} detailsHandler={detailsHandler} />
+      )}
+      {!items && (
+        <ItemScrollView
+          items={product.data.allproducts}
+          detailsHandler={detailsHandler}
+        />
+      )}
+    </View>
   );
 }
 
@@ -208,6 +220,11 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -5,19 +5,26 @@ import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useRoute} from '@react-navigation/native';
 import {clearState, fetchDetails} from '../store/detailsSlice';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function DetailScreen() {
   const dispatch = useDispatch();
   const data = useSelector(state => state);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    function fetchData() {
+    async function fetchData() {
       try {
         dispatch(fetchDetails(route.params.id));
+        await setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       } catch (error) {
-        console.error(error);
+        setError(true);
+        setLoading(false);
       }
     }
     fetchData();
@@ -35,6 +42,22 @@ function DetailScreen() {
     data.details.details && typeof data.details.details.description === 'string'
       ? data.details.details.description
       : '';
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <LoadingOverlay children="Loading..." />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text>Error occurred while loading data.</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
@@ -123,5 +146,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 20,
     marginBottom: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
