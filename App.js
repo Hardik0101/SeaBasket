@@ -4,7 +4,7 @@ import React from 'react';
 import {Image, StatusBar, StyleSheet, Text, View} from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
-import {Account, Cart, Home, Product} from './assets/icons';
+import {Account, Cart, Home, Logo, Product} from './assets/icons';
 import {Colors} from './constant/styles';
 import AccountScreen from './screens/Account';
 import ProductScreen from './screens/ProductScreen';
@@ -67,12 +67,18 @@ function AppData() {
         name="Home"
         component={HomeScreen}
         options={{
+          title: 'SeaBasket',
           tabBarIcon: ({focused}) => (
             <Home
               width={28}
               height={28}
-              fill={focused ? Colors.primary : 'black'}
+              fill={focused ? Colors.primary : 'gray'}
             />
+          ),
+          headerLeft: () => (
+            <View style={{marginLeft: 10, marginRight: -14}}>
+              <Logo width={28} height={28} />
+            </View>
           ),
           // tabBarLabel: () => null,
         }}
@@ -86,7 +92,7 @@ function AppData() {
             <Product
               width={26}
               height={26}
-              fill={focused ? Colors.primary : 'black'}
+              fill={focused ? Colors.primary : 'gray'}
             />
           ),
           // tabBarLabel: () => null,
@@ -100,7 +106,7 @@ function AppData() {
             <Cart
               width={24}
               height={24}
-              fill={focused ? Colors.primary : 'black'}
+              fill={focused ? Colors.primary : 'gray'}
             />
           ),
           // tabBarLabel: () => null,
@@ -115,7 +121,7 @@ function AppData() {
             <Account
               width={28}
               height={28}
-              fill={focused ? Colors.primary : 'black'}
+              fill={focused ? Colors.primary : 'gray'}
             />
           ),
           // tabBarLabel: () => null,

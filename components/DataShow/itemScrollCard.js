@@ -9,14 +9,13 @@ import {
 } from 'react-native';
 import {Colors} from '../../constant/styles';
 
-const HorizontalCard = ({items, detailsHandler, children}) => {
+const ItemScrollView = ({items, detailsHandler}) => {
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.title}>{children}</Text>
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.scrollContainer}
+        contentContainerStyle={styles.contentContainer}>
+        <View style={styles.twoItems}>
           {items.map((product, index) => (
             <TouchableOpacity
               key={index}
@@ -29,32 +28,32 @@ const HorizontalCard = ({items, detailsHandler, children}) => {
                 <Text style={styles.itemPrice}>${product.price}</Text>
                 <Text style={styles.itemTitle}>
                   {product.title.length > 10
-                    ? `${product.title.substring(0, 15)}...`
+                    ? `${product.title.substring(0, 20)}...`
                     : product.title}
                 </Text>
               </View>
             </TouchableOpacity>
           ))}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 8,
-    paddingHorizontal: 6,
+  twoItems: {
+    flexDirection: 'row',
+    width: '100%',
+    gap: 6,
+    flexWrap: 'wrap',
   },
-  title: {
-    color: Colors.primary,
-    fontSize: 20,
-    fontWeight: 'bold',
+  scrollContainer: {
+    paddingHorizontal: 6,
+    height: '100%',
   },
   card: {
-    width: 170,
+    width: '49%',
     height: 230,
-    marginRight: 6,
     padding: 6,
     marginTop: 2,
     borderRadius: 8,
@@ -76,8 +75,13 @@ const styles = StyleSheet.create({
     width: 130,
     height: 150,
   },
-
+  title: {
+    color: Colors.primary,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   itemTitleView: {
+    width: 160,
     marginLeft: 10,
   },
   itemTitle: {
@@ -91,6 +95,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.primary300,
   },
+  contentContainer: {
+    paddingBottom: 6,
+  },
 });
 
-export default HorizontalCard;
+export default ItemScrollView;

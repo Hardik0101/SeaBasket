@@ -3,10 +3,8 @@ import {
   View,
   Text,
   ScrollView,
-  Image,
   StyleSheet,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,13 +20,13 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/UI/Button';
 import {Filter, Short} from '../assets/icons';
+import ItemScrollView from '../components/DataShow/itemScrollCard';
 
 function ProductScreen() {
   const dispatch = useDispatch();
   const product = useSelector(state => state);
   const [pressed, setPressed] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState(false);
   const navigation = useNavigation();
 
@@ -81,6 +79,7 @@ function ProductScreen() {
   return (
     <>
       <View style={styles.mainView}>
+        {/* ******************* Catagory selction ******************* */}
         <ScrollView
           horizontal
           style={styles.container}
@@ -142,72 +141,16 @@ function ProductScreen() {
           </Button>
         </View>
 
-        {items && (
-          <ScrollView
-            style={styles.scrollContainer}
-            contentContainerStyle={styles.contentContainer}>
-            <>
-              <View style={styles.twoItems}>
-                {pressed.map((product, index) => (
-                  <>
-                    <TouchableOpacity
-                      key={index}
-                      style={styles.card}
-                      onPress={() => detailsHandler(product.id)}>
-                      <View style={styles.imageContainer}>
-                        <Image
-                          source={{uri: product.image}}
-                          style={styles.image}
-                        />
-                      </View>
-                      <View style={styles.itemTitleView}>
-                        <Text style={styles.itemPrice}>${product.price}</Text>
-                        <Text style={styles.itemTitle}>
-                          {product.title.length > 10
-                            ? `${product.title.substring(0, 20)}...`
-                            : product.title}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </>
-                ))}
-              </View>
-            </>
-          </ScrollView>
-        )}
+        {/* ******************* Item Section *******************/}
 
+        {items && (
+          <ItemScrollView items={pressed} detailsHandler={detailsHandler} />
+        )}
         {!items && (
-          <ScrollView
-            style={styles.scrollContainer}
-            contentContainerStyle={styles.contentContainer}>
-            <>
-              <View style={styles.twoItems}>
-                {product.data.allproducts.map((product, index) => (
-                  <>
-                    <TouchableOpacity
-                      key={index}
-                      style={styles.card}
-                      onPress={() => detailsHandler(product.id)}>
-                      <View style={styles.imageContainer}>
-                        <Image
-                          source={{uri: product.image}}
-                          style={styles.image}
-                        />
-                      </View>
-                      <View style={styles.itemTitleView}>
-                        <Text style={styles.itemPrice}>${product.price}</Text>
-                        <Text style={styles.itemTitle}>
-                          {product.title.length > 10
-                            ? `${product.title.substring(0, 20)}...`
-                            : product.title}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </>
-                ))}
-              </View>
-            </>
-          </ScrollView>
+          <ItemScrollView
+            items={product.data.allproducts}
+            detailsHandler={detailsHandler}
+          />
         )}
       </View>
     </>
@@ -220,17 +163,6 @@ const styles = StyleSheet.create({
   },
   scrollItems: {
     marginRight: 6,
-  },
-  twoItems: {
-    flexDirection: 'row',
-    width: '100%',
-    gap: 6,
-    flexWrap: 'wrap',
-  },
-
-  scrollContainer: {
-    paddingHorizontal: 6,
-    height: '100%',
   },
   container: {
     padding: 6,
@@ -253,55 +185,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary300,
     width: '100%',
   },
-  card: {
-    width: '49%',
-    height: 230,
-    padding: 6,
-    marginTop: 2,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    backgroundColor: Colors.primary100,
-    overflow: 'hidden',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.primary300,
-  },
-  imageContainer: {
-    width: 130,
-    height: 150,
-  },
-  itemTitleView: {
-    width: 160,
-    marginLeft: 10,
-  },
-  itemTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: Colors.primary300,
-  },
-  itemPrice: {
-    marginBottom: 2,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.primary300,
-  },
-  itemButtons: {
-    marginTop: 10,
-    width: 120,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  contentContainer: {
-    paddingBottom: 10,
-  },
   contentContainerHorizontal: {
     paddingEnd: 6,
   },
@@ -313,11 +196,12 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 20,
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 10,
     paddingVertical: 6,
+    justifyContent: 'center',
   },
   buttonText: {
     textAlign: 'center',
