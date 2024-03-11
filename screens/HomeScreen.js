@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {Colors} from '../constant/styles';
-import AddCard from '../components/DataShow/addCard';
-import HorizontalCard from '../components/DataShow/HorizontalCard';
+import AddCard from '../components/AppData/addCard';
+import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   clearState,
@@ -12,6 +12,7 @@ import {
   fetchWomenClothing,
 } from '../store/dataSlice';
 import {useNavigation} from '@react-navigation/native';
+import SearchCard from '../components/AppData/SearchCard';
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function HomeScreen() {
 
   return (
     <>
+      <SearchCard />
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}

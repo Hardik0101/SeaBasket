@@ -20,7 +20,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/UI/Button';
 import {Filter, Short} from '../assets/icons';
-import ItemScrollView from '../components/DataShow/itemScrollCard';
+import ItemScrollView from '../components/AppData/itemScrollCard';
 
 function ProductScreen() {
   const dispatch = useDispatch();

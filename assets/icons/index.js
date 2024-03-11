@@ -7,4 +7,16 @@ import Signup from './signup.svg';
 import Logo from './logo.svg';
 import Filter from './filter.svg';
 import Short from './short.svg';
-export {Cart, Home, Account, Product, Login, Signup, Logo, Filter, Short};
+import Search from './search.svg';
+export {
+  Cart,
+  Home,
+  Account,
+  Product,
+  Login,
+  Signup,
+  Logo,
+  Filter,
+  Short,
+  Search,
+};
