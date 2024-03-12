@@ -1,37 +1,112 @@
-import React from 'react';
-import {Text, StyleSheet, View, Image} from 'react-native';
-import {getProduct} from '../apiCall/dataApi';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {Colors} from '../constant/styles';
+import AddCard from '../components/AppData/addCard';
+import HorizontalCard from '../components/AppData/HorizontalCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  clearState,
+  fetchElectronics,
+  fetchJeweleryItems,
+  fetchMenClothing,
+  fetchWomenClothing,
+} from '../store/dataSlice';
+import {useNavigation} from '@react-navigation/native';
+import SearchCard from '../components/AppData/SearchCard';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function HomeScreen() {
-  async function products() {
-    try {
-      const data1 = await getProduct();
-      console.log('The data is ', data1);
-      return data1;
-    } catch (error) {
-      console.log(error);
-    }
+  const dispatch = useDispatch();
+  const data = useSelector(state => state);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const loadData = async () => {
+      await dispatch(fetchElectronics());
+      await dispatch(fetchJeweleryItems());
+      await dispatch(fetchMenClothing());
+      await dispatch(fetchWomenClothing());
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    };
+    loadData();
+
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  function detailsHandler(id) {
+    navigation.navigate('Details', {id});
   }
 
   return (
-    <View>
-      <Text> Home Screen </Text>
-      <Image
-        source={require('../assets/images/Logo.png')}
-        style={styles.image}
-      />
-      <View style={styles.container}>
-        <Text onPress={products}>The Data is </Text>
+    <>
+      <View style={styles.searchBar}>
+        <SearchCard />
       </View>
-    </View>
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <LoadingOverlay children="Loading..." />
+        </View>
+      ) : (
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.dataContainer}>
+            <AddCard />
+          </View>
+          <View>
+            <HorizontalCard
+              children="New Electronic"
+              detailsHandler={detailsHandler}
+              items={data.data.electronics}
+            />
+          </View>
+          <View>
+            <HorizontalCard
+              children="New Jewelery"
+              detailsHandler={detailsHandler}
+              items={data.data.jewelery}
+            />
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 }
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  image: {
-    width: 100,
-    height: 100,
+  searchBar: {
+    position: 'absolute',
+    zIndex: 999,
+    width: '100%',
+    top: 0,
+    left: 0,
+  },
+  container: {
+    marginTop: 50,
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dataContainer: {
+    marginHorizontal: 6,
+    borderRadius: 12,
+    height: 210,
+    borderWidth: 2,
+    borderColor: Colors.primary300,
+    overflow: 'hidden',
+  },
+  contentContainer: {
+    paddingBottom: 6,
   },
 });
