@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,10 +18,9 @@ import {
   fetchWomenClothing,
 } from '../store/dataSlice';
 import {useNavigation} from '@react-navigation/native';
-import Button from '../components/UI/Button';
-import {Filter, Short} from '../assets/icons';
 import ItemScrollView from '../components/AppData/itemScrollCard';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import FilterData from '../components/AppData/FilterData';
 
 function ProductScreen() {
   const dispatch = useDispatch();
@@ -81,10 +79,6 @@ function ProductScreen() {
     navigation.navigate('Details', {id});
   }
 
-  function filterHandler() {
-    console.log('Filter Press1');
-  }
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -138,22 +132,7 @@ function ProductScreen() {
       </ScrollView>
 
       {/* ******************* Filter Section *******************/}
-
-      <View style={styles.filterContainer}>
-        <Button onPress={filterHandler}>
-          <View style={{flexDirection: 'row'}}>
-            <Filter width={24} height={24} />
-            <Text style={styles.buttonText}> Filter</Text>
-          </View>
-        </Button>
-        <Button>
-          <View style={{flexDirection: 'row'}}>
-            <Short width={24} height={24} fill={Colors.secondary} />
-            <Text style={styles.buttonText}> Short</Text>
-          </View>
-        </Button>
-      </View>
-
+      <FilterData items={activeItem} />
       {/* ******************* Item Section *******************/}
 
       {items && (
@@ -205,21 +184,6 @@ const styles = StyleSheet.create({
   },
   activeTitle: {
     color: Colors.secondary,
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    gap: 20,
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: Colors.secondary,
-    fontWeight: 'bold',
-    fontSize: 16,
   },
   loadingContainer: {
     flex: 1,

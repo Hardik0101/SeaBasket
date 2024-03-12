@@ -120,6 +120,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 10,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
   },
   itemPrice: {
     fontWeight: 'bold',

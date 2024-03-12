@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginRight: 10,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
   },
   textContainer: {
     width: '70%',

@@ -1,0 +1,10 @@
+{
+  "filter": [
+    {"name": "Price Under 200"},
+    {"name": "Price 200-500"},
+    {"name": "Price Above 500"},
+    {"name": "Rating"},
+    {"name": "Discount"}
+  ],
+  "short": [{"name": "Price Low to high"}, {"name": "Price high to low"}]
+}
