@@ -44,7 +44,9 @@ function HomeScreen() {
 
   return (
     <>
-      <SearchCard />
+      <View style={styles.searchBar}>
+        <SearchCard />
+      </View>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <LoadingOverlay children="Loading..." />
@@ -80,8 +82,15 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  searchBar: {
+    position: 'absolute',
+    zIndex: 999,
+    width: '100%',
+    top: 0,
+    left: 0,
+  },
   container: {
-    marginTop: 2,
+    marginTop: 50,
     flex: 1,
   },
   loadingContainer: {

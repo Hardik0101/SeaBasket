@@ -1,24 +1,117 @@
-import {StyleSheet, TextInput, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {Colors} from '../../constant/styles';
 import {Search} from '../../assets/icons';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAllProducts} from '../../store/dataSlice';
 
 function SearchCard() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const data = useSelector(state => state);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      await dispatch(fetchAllProducts());
+      const result = data.data.allproducts;
+      setProducts(result);
+    }
+    fetchProducts();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = products.filter(product =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
+    }
+  }, [searchQuery, products]);
+
+  function detailsHandler(id) {
+    navigation.navigate('Details', {id});
+  }
+
+  function renderItem({item}) {
+    return (
+      <TouchableOpacity onPress={() => detailsHandler(item.id)}>
+        <View style={styles.itemContainer}>
+          <Image source={{uri: item.image}} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.price}>${item.price}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Search..."
-        returnKeyType="search"
-      />
-      <Search width={28} height={28} />
-    </View>
+    <>
+      <View style={styles.container}>
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Search..."
+            returnKeyType="search"
+            onChangeText={text => setSearchQuery(text)}
+            value={searchQuery}
+          />
+          <Search width={28} height={28} />
+        </View>
+        {searchQuery && (
+          <>
+            <View style={styles.list}>
+              {filteredProducts.length === 0 && (
+                <Text style={styles.text}>Item is not found...</Text>
+              )}
+              <FlatList
+                data={filteredProducts}
+                renderItem={renderItem}
+                keyExtractor={item => item.id.toString()}
+              />
+            </View>
+          </>
+        )}
+      </View>
+    </>
   );
 }
 
 export default SearchCard;
 
 const styles = StyleSheet.create({
-  container: {
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    padding: 6,
+    marginHorizontal: 6,
+    color: Colors.primary300,
+  },
+  list: {
+    borderColor: Colors.primary,
+    borderWidth: 2,
+    marginHorizontal: 6,
+    borderRadius: 10,
+    backgroundColor: Colors.bgcolor,
+    height: '60%',
+    overflow: 'hidden',
+  },
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.primary100,
@@ -32,5 +125,33 @@ const styles = StyleSheet.create({
     height: 40,
     color: Colors.primary300,
     fontWeight: 'bold',
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.primary300,
+    backgroundColor: Colors.primary100,
+    marginTop: 4,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    marginRight: 10,
+  },
+  textContainer: {
+    width: '70%',
+  },
+  title: {
+    fontSize: 14,
+    color: Colors.primary300,
+    fontWeight: 'bold',
+    textAlign: 'justify',
+    marginHorizontal: 2,
+  },
+  price: {
+    fontSize: 18,
+    color: Colors.primary300,
   },
 });

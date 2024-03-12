@@ -67,6 +67,7 @@ function AppData() {
         name="Home"
         component={HomeScreen}
         options={{
+          tabBarHideOnKeyboard: true,
           title: 'SeaBasket',
           tabBarIcon: ({focused}) => (
             <Home
