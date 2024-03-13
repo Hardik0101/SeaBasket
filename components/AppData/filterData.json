@@ -1,10 +1,11 @@
 {
   "filter": [
-    {"name": "Price Under 200"},
-    {"name": "Price 200-500"},
-    {"name": "Price Above 500"},
-    {"name": "Rating"},
-    {"name": "Discount"}
+    {"name": "Price Under $100"},
+    {"name": "Price:$100-$500"},
+    {"name": "Price Over $500"},
+    {"name": "Rating 2 & Up"},
+    {"name": "Rating 3 & Up"},
+    {"name": "Rating 4 & Up"}
   ],
-  "short": [{"name": "Price Low to high"}, {"name": "Price high to low"}]
+  "short": [{"name": "Price:Low to High"}, {"name": "Price:High to Low"}]
 }

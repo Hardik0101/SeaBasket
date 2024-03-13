@@ -18,9 +18,9 @@ import {
   fetchWomenClothing,
 } from '../store/dataSlice';
 import {useNavigation} from '@react-navigation/native';
-import ItemScrollView from '../components/AppData/itemScrollCard';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
+import ItemScrollCard from '../components/AppData/itemScrollCard';
 
 function ProductScreen() {
   const dispatch = useDispatch();
@@ -136,10 +136,10 @@ function ProductScreen() {
       {/* ******************* Item Section *******************/}
 
       {items && (
-        <ItemScrollView items={pressed} detailsHandler={detailsHandler} />
+        <ItemScrollCard items={pressed} detailsHandler={detailsHandler} />
       )}
       {!items && (
-        <ItemScrollView
+        <ItemScrollCard
           items={product.data.allproducts}
           detailsHandler={detailsHandler}
         />

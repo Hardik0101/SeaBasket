@@ -75,16 +75,20 @@ function SearchCard() {
         </View>
         {searchQuery && (
           <>
-            <View style={styles.list}>
-              {filteredProducts.length === 0 && (
+            {filteredProducts.length > 0 && (
+              <View style={styles.list}>
+                <FlatList
+                  data={filteredProducts}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id.toString()}
+                />
+              </View>
+            )}
+            {filteredProducts.length === 0 && (
+              <View style={styles.list}>
                 <Text style={styles.text}>Item is not found...</Text>
-              )}
-              <FlatList
-                data={filteredProducts}
-                renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
-              />
-            </View>
+              </View>
+            )}
           </>
         )}
       </View>
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     borderRadius: 10,
     backgroundColor: Colors.bgcolor,
-    height: '60%',
+    height: 500,
     overflow: 'hidden',
   },
   searchContainer: {

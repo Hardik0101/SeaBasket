@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Colors} from '../../constant/styles';
 
-const ItemScrollView = ({items, detailsHandler}) => {
+const ItemScrollCard = ({items, detailsHandler}) => {
   return (
     <>
       <ScrollView
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemScrollView;
+export default ItemScrollCard;
