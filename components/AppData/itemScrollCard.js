@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Colors} from '../../constant/styles';
 
-const ItemScrollView = ({items, detailsHandler}) => {
+const ItemScrollCard = ({items, detailsHandler}) => {
   return (
     <>
       <ScrollView
@@ -70,6 +70,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: Colors.primary300,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
   },
   imageContainer: {
     width: 130,
@@ -100,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemScrollView;
+export default ItemScrollCard;
