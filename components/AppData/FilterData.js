@@ -16,7 +16,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';
 import ItemScrollCard from './itemScrollCard';
-import ModalComponent from './ModalComponent';
+import FilterModalComponent from './FilterModalComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,13 +31,13 @@ function FilterData({items}) {
 
   //Fetch The all Data from redux
   useEffect(() => {
-    async function fetchData() {
-      await dispatch(fetchCategory());
-      await dispatch(fetchAllProducts());
-      await dispatch(fetchElectronics());
-      await dispatch(fetchJeweleryItems());
-      await dispatch(fetchMenClothing());
-      await dispatch(fetchWomenClothing());
+    function fetchData() {
+      dispatch(fetchCategory());
+      dispatch(fetchAllProducts());
+      dispatch(fetchElectronics());
+      dispatch(fetchJeweleryItems());
+      dispatch(fetchMenClothing());
+      dispatch(fetchWomenClothing());
     }
     fetchData();
     return () => {
@@ -164,7 +164,7 @@ function FilterData({items}) {
 
       {/* Open Modal Base on typeItems Filter and Sort */}
       {typeItems === 'filter' && (
-        <ModalComponent
+        <FilterModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
@@ -173,7 +173,7 @@ function FilterData({items}) {
       )}
 
       {typeItems === 'sort' && (
-        <ModalComponent
+        <FilterModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}

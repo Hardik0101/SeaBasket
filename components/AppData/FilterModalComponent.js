@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Cancel} from '../../assets/icons';
 import {Colors} from '../../constant/styles';
-function ModalComponent({
+function FilterModalComponent({
   modalVisible,
   setModalVisible,
   filterHandler,
@@ -26,6 +26,7 @@ function ModalComponent({
         setModalVisible(!modalVisible);
       }}>
       <View style={styles.centeredView}>
+        <View style={styles.bgTrans}></View>
         <View style={styles.modalView}>
           <View style={styles.closeButton}>
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
@@ -49,20 +50,25 @@ function ModalComponent({
   );
 }
 
-export default ModalComponent;
+export default FilterModalComponent;
 
 const styles = StyleSheet.create({
+  bgTrans: {
+    backgroundColor: Colors.bgcolor,
+    opacity: 0.5,
+    width: '100%',
+    height: '100%',
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 10,
   },
   modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
+    backgroundColor: Colors.primary200,
+    borderRadius: 10,
     paddingVertical: 10,
-    width: 300,
+    width: '100%',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
