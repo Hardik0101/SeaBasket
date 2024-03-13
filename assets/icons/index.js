@@ -9,6 +9,7 @@ import Filter from './filter.svg';
 import Short from './short.svg';
 import Search from './search.svg';
 import Cancel from './cancel.svg';
+import Star from './star.svg';
 export {
   Cart,
   Home,
@@ -21,4 +22,5 @@ export {
   Short,
   Search,
   Cancel,
+  Star,
 };

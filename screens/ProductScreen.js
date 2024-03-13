@@ -160,6 +160,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 56,
+    borderBottomWidth: 1,
+    borderColor: Colors.primary300,
   },
   title: {
     fontSize: 18,
@@ -170,7 +172,6 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     padding: 4,
-    backgroundColor: Colors.primary100,
     borderRadius: 12,
     borderWidth: 2,
     borderColor: Colors.primary300,
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     paddingEnd: 6,
   },
   activeTitleContainer: {
-    backgroundColor: '#2e8b57',
+    backgroundColor: Colors.primary200,
   },
   activeTitle: {
     color: Colors.secondary,

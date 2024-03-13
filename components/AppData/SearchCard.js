@@ -52,7 +52,11 @@ function SearchCard() {
         <View style={styles.itemContainer}>
           <Image source={{uri: item.image}} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>
+              {item.title.length > 10
+                ? `${item.title.substring(0, 25)}...`
+                : item.title}
+            </Text>
             <Text style={styles.price}>${item.price}</Text>
           </View>
         </View>
@@ -84,6 +88,7 @@ function SearchCard() {
                 />
               </View>
             )}
+
             {filteredProducts.length === 0 && (
               <View style={styles.list}>
                 <Text style={styles.text}>Item is not found...</Text>
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.primary100,
+    backgroundColor: Colors.primary200,
     borderRadius: 10,
     paddingHorizontal: 10,
     marginVertical: 4,
@@ -127,17 +132,16 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 40,
-    color: Colors.primary300,
+    color: Colors.secondary,
     fontWeight: 'bold',
   },
   itemContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     padding: 6,
     borderBottomWidth: 1,
     borderBottomColor: Colors.primary300,
     backgroundColor: Colors.primary100,
-    marginTop: 4,
+    marginBottom: 4,
   },
   image: {
     width: 60,
@@ -150,14 +154,16 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.primary300,
     fontWeight: 'bold',
     textAlign: 'justify',
     marginHorizontal: 2,
   },
   price: {
-    fontSize: 18,
+    marginTop: 6,
+    fontWeight: 'bold',
+    fontSize: 20,
     color: Colors.primary300,
   },
 });
