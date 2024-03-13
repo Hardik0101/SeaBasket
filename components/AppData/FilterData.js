@@ -105,6 +105,14 @@ function FilterData({items}) {
         dataItems = itemData.filter(data => data.price);
         dataItems.sort((a, b) => b.price - a.price);
         break;
+      case 'Name: A to Z':
+        dataItems = itemData.filter(data => data.price);
+        dataItems.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'Name: Z to A':
+        dataItems = itemData.filter(data => data.price);
+        dataItems.sort((a, b) => b.title.localeCompare(a.title));
+        break;
       default:
         console.log('The item is Price');
         break;

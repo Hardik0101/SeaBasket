@@ -7,5 +7,10 @@
     {"name": "Rating 3 & Up"},
     {"name": "Rating 4 & Up"}
   ],
-  "short": [{"name": "Price:Low to High"}, {"name": "Price:High to Low"}]
+  "short": [
+    {"name": "Price:Low to High"},
+    {"name": "Price:High to Low"},
+    {"name": "Name: A to Z"},
+    {"name": "Name: Z to A"}
+  ]
 }
