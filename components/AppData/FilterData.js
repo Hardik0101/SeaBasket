@@ -1,17 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  Alert,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
 import Button from '../UI/Button';
-import {Cancel, Filter, Short} from '../../assets/icons';
+import {Filter, Short} from '../../assets/icons';
 import {
   clearState,
   fetchAllProducts,
@@ -29,15 +20,16 @@ import ModalComponent from './ModalComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [filterTitles, setFilterTitles] = useState('');
   const [filterData, setFilterData] = useState(false);
+  const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);
   const [data, setData] = useState([]);
-  const [filterTitles, setFilterTitles] = useState('');
-  const [typeItems, setTypeItems] = useState('');
   const navigation = useNavigation();
-  const product = useSelector(state => state);
   const dispatch = useDispatch();
+  const product = useSelector(state => state);
 
+  //Fetch The all Data from redux
   useEffect(() => {
     async function fetchData() {
       await dispatch(fetchCategory());
@@ -53,16 +45,17 @@ function FilterData({items}) {
     };
   }, []);
 
+  //Set Items base on Active Items
   useEffect(() => {
     DataHandler(items);
   }, [items]);
 
+  //Active item data are stored in setItemData
   function DataHandler(selectedItem) {
     let productData = null;
     switch (selectedItem) {
       case "men's clothing":
         productData = product.data.menClothing;
-
         break;
       case "women's clothing":
         productData = product.data.womenclothing;
@@ -80,6 +73,7 @@ function FilterData({items}) {
     setItemData(productData);
   }
 
+  // Apply Filter Data by Filter type
   function filterHandler(item) {
     let dataItems = [];
     switch (item) {
@@ -120,20 +114,24 @@ function FilterData({items}) {
     setFilterTitles(item);
   }
 
+  //Filtered data show in this function
   function filterDataHandler() {
     setFilterData(false);
   }
 
+  //Set items name of null is "For You"
   if (items === null) {
     items = 'For You';
   }
 
+  //Show Details Fnction
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
   }
 
   return (
     <>
+      {/* Two Button Filter and Sort */}
       <View style={styles.filterContainer}>
         <Button
           onPress={() => {
@@ -156,6 +154,7 @@ function FilterData({items}) {
         </Button>
       </View>
 
+      {/* Open Modal Base on typeItems Filter and Sort */}
       {typeItems === 'filter' && (
         <ModalComponent
           modalVisible={modalVisible}
@@ -174,6 +173,7 @@ function FilterData({items}) {
         />
       )}
 
+      {/* Filtered Data Display */}
       {filterData && (
         <>
           {data.length > 0 && (

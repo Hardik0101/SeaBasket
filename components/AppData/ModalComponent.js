@@ -16,6 +16,7 @@ function ModalComponent({
   typeItems,
 }) {
   return (
+    // Modal From react-native
     <Modal
       animationType="slide"
       transparent={true}
