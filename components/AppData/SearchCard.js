@@ -23,8 +23,8 @@ function SearchCard() {
   const data = useSelector(state => state);
 
   useEffect(() => {
-    async function fetchProducts() {
-      await dispatch(fetchAllProducts());
+    function fetchProducts() {
+      dispatch(fetchAllProducts());
       const result = data.data.allproducts;
       setProducts(result);
     }

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useRoute} from '@react-navigation/native';
-import {clearState, fetchDetails} from '../store/detailsSlice';
+import {fetchDetails} from '../store/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function DetailScreen() {
@@ -16,10 +16,10 @@ function DetailScreen() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
+    function fetchData() {
       try {
         dispatch(fetchDetails(route.params.id));
-        await setTimeout(() => {
+        setTimeout(() => {
           setLoading(false);
         }, 2000);
       } catch (error) {
@@ -28,10 +28,6 @@ function DetailScreen() {
       }
     }
     fetchData();
-
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch, route.params.id]);
 
   const toggleDescription = () => {
@@ -39,8 +35,9 @@ function DetailScreen() {
   };
 
   const description =
-    data.details.details && typeof data.details.details.description === 'string'
-      ? data.details.details.description
+    data?.details?.details &&
+    typeof data.details.details.description === 'string'
+      ? data?.details?.details?.description
       : '';
 
   if (loading) {
@@ -60,35 +57,47 @@ function DetailScreen() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}>
       {data && (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <View style={styles.imageContainer}>
               <Image
-                source={{uri: data.details.details.image}}
+                source={{uri: data?.details?.details?.image}}
                 style={styles.itemImage}
               />
             </View>
             <View style={styles.itemConatiner}>
-              <Text style={styles.itemPrice}>
-                ${data.details.details.price}
+              <Text style={styles.itemTitle}>
+                {data?.details?.details?.title}
               </Text>
-              <Text style={styles.itemTitle}>{data.details.details.title}</Text>
+              <View style={styles.priceAndrate}>
+                <Text style={styles.itemPrice}>
+                  ${data?.details?.details?.price}
+                </Text>
+                <Text style={styles.itemPrice}>
+                  Rate: {data?.details?.details?.rating?.rate}
+                </Text>
+              </View>
+              <Text style={styles.itemDescription}>About this Product: </Text>
               <Text style={styles.itemDescription}>
                 {showFullDescription
                   ? description
-                  : `${description.slice(0, 135)}`}
+                  : `${description.slice(0, 135)}`}{' '}
+                {description.length > 135 && (
+                  <>
+                    <Text onPress={toggleDescription} style={styles.readMore}>
+                      {showFullDescription ? 'Read less' : 'Read more...'}
+                    </Text>
+                  </>
+                )}
               </Text>
-              {description.length > 135 && (
-                <Text onPress={toggleDescription} style={styles.readMore}>
-                  {showFullDescription ? 'Read less' : 'Read more'}
-                </Text>
-              )}
             </View>
           </View>
           <View style={styles.buttons}>
-            <Button>Buy</Button>
+            <Button>Buy Now</Button>
             <Button>Add to Cart</Button>
           </View>
         </View>
@@ -100,9 +109,10 @@ function DetailScreen() {
 export default DetailScreen;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 10,
+  },
   container: {
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
@@ -110,11 +120,18 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 6,
     width: '100%',
   },
   itemConatiner: {
     width: '100%',
+    marginHorizontal: 6,
+  },
+  imageContainer: {
+    borderBottomColor: Colors.primary,
+    borderBottomWidth: 2,
+    width: '100%',
+    alignItems: 'center',
   },
   itemImage: {
     width: 200,
@@ -122,36 +139,56 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     resizeMode: 'contain',
     backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: Colors.primary100,
+    borderRadius: 10,
   },
   itemPrice: {
     fontWeight: 'bold',
     fontSize: 24,
-    marginBottom: 10,
+    marginBottom: 6,
     color: Colors.primary300,
   },
   itemTitle: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 18,
+    marginBottom: 4,
     color: Colors.primary300,
+    fontWeight: '500',
+    letterSpacing: 1,
+    padding: 2,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.primary,
   },
   itemDescription: {
-    fontSize: 14,
-    color: Colors.primary300,
+    marginTop: 2,
+    fontSize: 16,
+    color: Colors.primary200,
     textAlign: 'justify',
+    letterSpacing: 1,
+    lineHeight: 24,
+    fontWeight: '700',
   },
   readMore: {
-    color: Colors.primary,
+    color: Colors.primary300,
+    fontWeight: '700',
   },
   buttons: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    borderBottomColor: Colors.primary,
+    borderBottomWidth: 2,
+    paddingVertical: 10,
+    width: '100%',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  priceAndrate: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 });

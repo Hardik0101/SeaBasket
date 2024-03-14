@@ -32,13 +32,13 @@ function ProductScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    async function fetchData() {
-      await dispatch(fetchCategory()),
-        await dispatch(fetchAllProducts()),
-        await dispatch(fetchElectronics()),
-        await dispatch(fetchJeweleryItems()),
-        await dispatch(fetchMenClothing()),
-        await dispatch(fetchWomenClothing()),
+    function fetchData() {
+      dispatch(fetchCategory()),
+        dispatch(fetchAllProducts()),
+        dispatch(fetchElectronics()),
+        dispatch(fetchJeweleryItems()),
+        dispatch(fetchMenClothing()),
+        dispatch(fetchWomenClothing()),
         setTimeout(() => {
           setLoading(false);
         }, 1000);
@@ -49,7 +49,7 @@ function ProductScreen() {
     };
   }, []);
 
-  const getProductData = async item => {
+  function getProductData(item) {
     let productData = null;
     switch (item) {
       case "men's clothing":
@@ -73,7 +73,7 @@ function ProductScreen() {
     setPressed(productData);
     setActiveItem(item);
     setItems(true);
-  };
+  }
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});

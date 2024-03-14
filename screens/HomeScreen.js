@@ -22,15 +22,15 @@ function HomeScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const loadData = async () => {
-      await dispatch(fetchElectronics());
-      await dispatch(fetchJeweleryItems());
-      await dispatch(fetchMenClothing());
-      await dispatch(fetchWomenClothing());
+    function loadData() {
+      dispatch(fetchElectronics());
+      dispatch(fetchJeweleryItems());
+      dispatch(fetchMenClothing());
+      dispatch(fetchWomenClothing());
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
-    };
+    }
     loadData();
 
     return () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -8,9 +8,20 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {Star} from '../../assets/icons';
+import {FavCart, Star} from '../../assets/icons';
 
-const ItemScrollCard = ({items, detailsHandler}) => {
+function ItemScrollCard({items, detailsHandler}) {
+  const [cartColors, setCartColors] = useState(
+    Array(items.length).fill('none'),
+  );
+
+  function cartHandler(index) {
+    const newCartColors = [...cartColors];
+    newCartColors[index] =
+      newCartColors[index] === 'none' ? Colors.primary200 : 'none';
+    setCartColors(newCartColors);
+  }
+
   return (
     <>
       <ScrollView
@@ -23,6 +34,13 @@ const ItemScrollCard = ({items, detailsHandler}) => {
               style={styles.card}
               onPress={() => detailsHandler(product.id)}>
               <View style={styles.imageContainer}>
+                <FavCart
+                  width={30}
+                  height={30}
+                  fill={cartColors[index]}
+                  style={styles.icon}
+                  onPress={() => cartHandler(index)}
+                />
                 <Image source={{uri: product.image}} style={styles.image} />
               </View>
               <View style={styles.itemTitleView}>
@@ -55,7 +73,7 @@ const ItemScrollCard = ({items, detailsHandler}) => {
       </ScrollView>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   twoItems: {
@@ -93,6 +111,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     marginBottom: 4,
+  },
+  icon: {
+    position: 'absolute',
+    zIndex: 100,
   },
   title: {
     color: Colors.primary,

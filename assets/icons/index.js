@@ -10,6 +10,7 @@ import Short from './short.svg';
 import Search from './search.svg';
 import Cancel from './cancel.svg';
 import Star from './star.svg';
+import FavCart from './favCart.svg';
 export {
   Cart,
   Home,
@@ -23,4 +24,5 @@ export {
   Search,
   Cancel,
   Star,
+  FavCart,
 };

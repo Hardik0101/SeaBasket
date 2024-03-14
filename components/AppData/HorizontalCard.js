@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -8,13 +8,44 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {Star} from '../../assets/icons';
+import {FavCart, Star} from '../../assets/icons';
+import Button from '../UI/Button';
+import ItemScrollCard from './itemScrollCard';
 
-const HorizontalCard = ({items, detailsHandler, children}) => {
+function HorizontalCard({items, detailsHandler, children}) {
+  const [showAll, setShowAll] = useState(false);
+  const [cartColors, setCartColors] = useState(
+    Array(items.length).fill('none'),
+  );
+
+  function cartHandler(index) {
+    const newCartColors = [...cartColors];
+    newCartColors[index] = newCartColors[index] === 'none' ? 'green' : 'none';
+    setCartColors(newCartColors);
+  }
+
+  // function showAllHandler() {
+  //   setShowAll(true);
+  // }
   return (
     <>
+      {/* {showAll && (
+        <View style={styles.allData}>
+          <View style={styles.canclebutton}>
+            <Button onPress={() => setShowAll(false)}>Close</Button>
+          </View>
+
+          <ItemScrollCard items={items} detailsHandler={detailsHandler} />
+        </View>
+      )}
+       */}
       <View style={styles.container}>
-        <Text style={styles.title}>{children}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{children}</Text>
+          {/* <Text style={styles.showAll} onPress={showAllHandler}>
+            show all
+          </Text> */}
+        </View>
         <ScrollView
           horizontal={true}
           contentContainerStyle={styles.contentContainer}>
@@ -24,6 +55,13 @@ const HorizontalCard = ({items, detailsHandler, children}) => {
               style={styles.card}
               onPress={() => detailsHandler(product.id)}>
               <View style={styles.imageContainer}>
+                <FavCart
+                  width={30}
+                  height={30}
+                  fill={cartColors[index]}
+                  style={styles.icon}
+                  onPress={() => cartHandler(index)}
+                />
                 <Image source={{uri: product.image}} style={styles.image} />
               </View>
               <View style={styles.itemTitleView}>
@@ -56,7 +94,7 @@ const HorizontalCard = ({items, detailsHandler, children}) => {
       </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -94,6 +132,10 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 4,
   },
+  icon: {
+    position: 'absolute',
+    zIndex: 100,
+  },
   title: {
     color: Colors.primary,
     fontSize: 18,
@@ -124,6 +166,30 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: Colors.primary300,
     fontWeight: 'bold',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginRight: 6,
+  },
+  showAll: {
+    color: Colors.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  allData: {
+    backgroundColor: Colors.bgcolor,
+    zIndex: 1000,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
+    // height: '100%',
+  },
+  canclebutton: {
+    padding: 4,
   },
 });
 
