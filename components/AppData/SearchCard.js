@@ -25,22 +25,22 @@ function SearchCard() {
   useEffect(() => {
     function fetchProducts() {
       dispatch(fetchAllProducts());
-      const result = data.data.allproducts;
-      setProducts(result);
     }
     fetchProducts();
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchQuery) {
-      const filtered = products.filter(product =>
-        product.title.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts([]);
-    }
-  }, [searchQuery, products]);
+    const result = data.data.allproducts;
+    setProducts(result);
+    filterProducts(searchQuery, result);
+  }, [data.data.allproducts, searchQuery]);
+
+  const filterProducts = (query, products) => {
+    const filtered = products.filter(product =>
+      product.title.toLowerCase().includes(query.toLowerCase()),
+    );
+    setFilteredProducts(filtered);
+  };
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -79,7 +79,7 @@ function SearchCard() {
         </View>
         {searchQuery && (
           <>
-            {filteredProducts.length > 0 && (
+            {filteredProducts.length > 0 ? (
               <View style={styles.list}>
                 <FlatList
                   data={filteredProducts}
@@ -87,9 +87,7 @@ function SearchCard() {
                   keyExtractor={item => item.id.toString()}
                 />
               </View>
-            )}
-
-            {filteredProducts.length === 0 && (
+            ) : (
               <View style={styles.list}>
                 <Text style={styles.text}>Item is not found...</Text>
               </View>

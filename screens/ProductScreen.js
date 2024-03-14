@@ -91,7 +91,7 @@ function ProductScreen() {
     <View style={styles.mainView}>
       {/* ******************* Catagory selction ******************* */}
       <ScrollView
-        horizontal
+        horizontal={true}
         style={styles.container}
         contentContainerStyle={styles.contentContainerHorizontal}>
         <TouchableOpacity

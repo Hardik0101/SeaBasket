@@ -1,17 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ToastAndroid,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useRoute} from '@react-navigation/native';
 import {fetchDetails} from '../store/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import {addCart} from '../store/cartSlice';
 
 function DetailScreen() {
   const dispatch = useDispatch();
   const data = useSelector(state => state);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -30,10 +39,16 @@ function DetailScreen() {
     fetchData();
   }, [dispatch, route.params.id]);
 
-  const toggleDescription = () => {
+  function toggleDescription() {
     setShowFullDescription(!showFullDescription);
-  };
+  }
 
+  function addToCart() {
+    setCart([...cart, data.details.details]);
+    dispatch(addCart(data.details.details));
+    ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
+  }
+  // console.log(data.carts);
   const description =
     data?.details?.details &&
     typeof data.details.details.description === 'string'
@@ -98,7 +113,7 @@ function DetailScreen() {
           </View>
           <View style={styles.buttons}>
             <Button>Buy Now</Button>
-            <Button>Add to Cart</Button>
+            <Button onPress={addToCart}>Add to Cart</Button>
           </View>
         </View>
       )}
