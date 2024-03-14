@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -8,8 +8,9 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
+import {FavCart, Star} from '../../assets/icons';
 
-const ItemScrollCard = ({items, detailsHandler}) => {
+function ItemScrollCard({items, detailsHandler}) {
   return (
     <>
       <ScrollView
@@ -25,12 +26,28 @@ const ItemScrollCard = ({items, detailsHandler}) => {
                 <Image source={{uri: product.image}} style={styles.image} />
               </View>
               <View style={styles.itemTitleView}>
-                <Text style={styles.itemPrice}>${product.price}</Text>
                 <Text style={styles.itemTitle}>
                   {product.title.length > 10
-                    ? `${product.title.substring(0, 20)}...`
+                    ? `${product.title.substring(0, 13)}...`
                     : product.title}
                 </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 4,
+                  }}>
+                  <Text style={styles.itemPrice}>${product.price}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 2,
+                    }}>
+                    <Star width={20} height={20} fill={Colors.primary300} />
+                    <Text style={styles.itemRate}>{product.rating.rate}</Text>
+                  </View>
+                </View>
               </View>
             </TouchableOpacity>
           ))}
@@ -38,7 +55,7 @@ const ItemScrollCard = ({items, detailsHandler}) => {
       </ScrollView>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   twoItems: {
@@ -46,20 +63,21 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 6,
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   scrollContainer: {
     paddingHorizontal: 6,
     height: '100%',
   },
   card: {
-    width: '49%',
+    width: 170,
     height: 230,
-    padding: 6,
+    paddingTop: 6,
     marginTop: 2,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: Colors.primary300,
-    backgroundColor: Colors.primary100,
+    backgroundColor: 'white',
     overflow: 'hidden',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -67,15 +85,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 4,
-    borderWidth: 1,
     borderColor: Colors.primary300,
     resizeMode: 'contain',
     backgroundColor: 'white',
   },
   imageContainer: {
-    width: 130,
+    width: '100%',
     height: 150,
+    marginBottom: 4,
   },
   title: {
     color: Colors.primary,
@@ -83,22 +100,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   itemTitleView: {
-    width: 160,
-    marginLeft: 10,
+    width: '100%',
+    backgroundColor: Colors.primary100,
+    padding: 4,
+    height: 60,
   },
   itemTitle: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
     color: Colors.primary300,
+    textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: Colors.primary300,
   },
   contentContainer: {
     paddingBottom: 6,
+  },
+  itemRate: {
+    fontSize: 22,
+    color: Colors.primary300,
+    fontWeight: 'bold',
   },
 });
 

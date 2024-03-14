@@ -22,15 +22,15 @@ function HomeScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const loadData = async () => {
-      await dispatch(fetchElectronics());
-      await dispatch(fetchJeweleryItems());
-      await dispatch(fetchMenClothing());
-      await dispatch(fetchWomenClothing());
+    function loadData() {
+      dispatch(fetchElectronics());
+      dispatch(fetchJeweleryItems());
+      dispatch(fetchMenClothing());
+      dispatch(fetchWomenClothing());
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
-    };
+    }
     loadData();
 
     return () => {
@@ -59,20 +59,24 @@ function HomeScreen() {
           <View style={styles.dataContainer}>
             <AddCard />
           </View>
-          <View>
-            <HorizontalCard
-              children="New Electronic"
-              detailsHandler={detailsHandler}
-              items={data.data.electronics}
-            />
-          </View>
-          <View>
-            <HorizontalCard
-              children="New Jewelery"
-              detailsHandler={detailsHandler}
-              items={data.data.jewelery}
-            />
-          </View>
+
+          <HorizontalCard
+            children="New For Men"
+            detailsHandler={detailsHandler}
+            items={data.data.menClothing}
+          />
+
+          <HorizontalCard
+            children="New Electronic"
+            detailsHandler={detailsHandler}
+            items={data.data.electronics}
+          />
+
+          <HorizontalCard
+            children="New Jewelery"
+            detailsHandler={detailsHandler}
+            items={data.data.jewelery}
+          />
         </ScrollView>
       )}
     </>
