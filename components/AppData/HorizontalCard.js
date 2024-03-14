@@ -14,15 +14,6 @@ import ItemScrollCard from './itemScrollCard';
 
 function HorizontalCard({items, detailsHandler, children}) {
   const [showAll, setShowAll] = useState(false);
-  const [cartColors, setCartColors] = useState(
-    Array(items.length).fill('none'),
-  );
-
-  function cartHandler(index) {
-    const newCartColors = [...cartColors];
-    newCartColors[index] = newCartColors[index] === 'none' ? 'green' : 'none';
-    setCartColors(newCartColors);
-  }
 
   // function showAllHandler() {
   //   setShowAll(true);
@@ -55,13 +46,6 @@ function HorizontalCard({items, detailsHandler, children}) {
               style={styles.card}
               onPress={() => detailsHandler(product.id)}>
               <View style={styles.imageContainer}>
-                <FavCart
-                  width={30}
-                  height={30}
-                  fill={cartColors[index]}
-                  style={styles.icon}
-                  onPress={() => cartHandler(index)}
-                />
                 <Image source={{uri: product.image}} style={styles.image} />
               </View>
               <View style={styles.itemTitleView}>

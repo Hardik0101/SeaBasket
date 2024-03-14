@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    marginHorizontal: 6,
   },
   modalView: {
     backgroundColor: Colors.primary200,
-    borderRadius: 10,
-    paddingVertical: 10,
+    padding: 10,
     width: '100%',
     alignItems: 'center',
     shadowColor: '#000',
