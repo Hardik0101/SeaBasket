@@ -10,7 +10,7 @@ import {
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
-} from '../store/dataSlice';
+} from '../store/redux/dataSlice';
 import {useNavigation} from '@react-navigation/native';
 import SearchCard from '../components/AppData/SearchCard';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
@@ -29,7 +29,7 @@ function HomeScreen() {
       dispatch(fetchWomenClothing());
       setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 3000);
     }
     loadData();
 
@@ -56,27 +56,28 @@ function HomeScreen() {
           style={styles.container}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.dataContainer}>
+          <View style={styles.addContainer}>
             <AddCard />
           </View>
+          <View style={styles.dataContainer}>
+            <HorizontalCard
+              children="New For Men"
+              detailsHandler={detailsHandler}
+              items={data.data.menClothing}
+            />
 
-          <HorizontalCard
-            children="New For Men"
-            detailsHandler={detailsHandler}
-            items={data.data.menClothing}
-          />
+            <HorizontalCard
+              children="New Electronic"
+              detailsHandler={detailsHandler}
+              items={data.data.electronics}
+            />
 
-          <HorizontalCard
-            children="New Electronic"
-            detailsHandler={detailsHandler}
-            items={data.data.electronics}
-          />
-
-          <HorizontalCard
-            children="New Jewelery"
-            detailsHandler={detailsHandler}
-            items={data.data.jewelery}
-          />
+            <HorizontalCard
+              children="New Jewelery"
+              detailsHandler={detailsHandler}
+              items={data.data.jewelery}
+            />
+          </View>
         </ScrollView>
       )}
     </>
@@ -103,14 +104,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dataContainer: {
+    marginLeft: 6,
+    overflow: 'hidden',
+  },
+  contentContainer: {
+    paddingBottom: 6,
+  },
+  addContainer: {
     marginHorizontal: 6,
     borderRadius: 12,
     height: 210,
     borderWidth: 2,
     borderColor: Colors.primary300,
     overflow: 'hidden',
-  },
-  contentContainer: {
-    paddingBottom: 6,
   },
 });

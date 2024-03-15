@@ -13,7 +13,7 @@ import LoginScreen from './screens/AuthScreens/LoginScreen';
 import SignupScreen from './screens/AuthScreens/SignupScreen';
 import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
 import {Provider} from 'react-redux';
-import {store} from './store/store';
+import {store} from './store/redux/store';
 import DetailScreen from './screens/DetailsScreen';
 
 const Tab = createBottomTabNavigator();

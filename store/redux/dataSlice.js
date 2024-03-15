@@ -8,7 +8,7 @@ import {
   getMenCloths,
   getProduct,
   getWomenClothing,
-} from '../apiCall/dataApi';
+} from '../../apiCall/dataApi';
 
 const dataSlice = createSlice({
   name: 'data',

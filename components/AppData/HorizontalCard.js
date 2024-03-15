@@ -83,7 +83,7 @@ function HorizontalCard({items, detailsHandler, children}) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    paddingLeft: 6,
+    // paddingLeft: 6,
   },
   title: {
     color: Colors.primary,
