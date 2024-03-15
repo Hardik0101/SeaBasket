@@ -15,6 +15,7 @@ import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
 import {Provider} from 'react-redux';
 import {store} from './store/redux/store';
 import DetailScreen from './screens/DetailsScreen';
+import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -151,6 +152,13 @@ function CombineStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Details" component={DetailScreen} />
+      <Stack.Screen
+        name="CheckoutScreen"
+        component={ItemsCheckoutScreen}
+        options={{
+          title: 'CheckOut',
+        }}
+      />
     </Stack.Navigator>
   );
 }

@@ -10,7 +10,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
@@ -23,7 +23,7 @@ function DetailScreen() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
+  const navigation = useNavigation();
   useEffect(() => {
     function fetchData() {
       try {
@@ -43,12 +43,16 @@ function DetailScreen() {
     setShowFullDescription(!showFullDescription);
   }
 
+  function checkoutItems() {
+    navigation.navigate('CheckoutScreen');
+  }
+
   function addToCart() {
     setCart([...cart, data.details.details]);
     dispatch(addCart(data.details.details));
     ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
   }
-  // console.log(data.carts);
+
   const description =
     data?.details?.details &&
     typeof data.details.details.description === 'string'
@@ -112,7 +116,7 @@ function DetailScreen() {
             </View>
           </View>
           <View style={styles.buttons}>
-            <Button>Buy Now</Button>
+            <Button onPress={checkoutItems}>Buy Now</Button>
             <Button onPress={addToCart}>Add to Cart</Button>
           </View>
         </View>

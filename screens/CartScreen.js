@@ -60,6 +60,10 @@ function CartScreen() {
     navigation.navigate('Product');
   }
 
+  function checkoutItems() {
+    navigation.navigate('CheckoutScreen');
+  }
+
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
   }
@@ -141,24 +145,27 @@ function CartScreen() {
                 </View>
               </TouchableOpacity>
             ))}
-            <View>
-              <View style={styles.totalConatiner}>
-                <View style={styles.totalTextContainer}>
-                  <Text style={styles.totalText}>
-                    Total Items: {totalQuantity}{' '}
-                  </Text>
-                  <Text style={styles.totalText}>
-                    Total Price: ${totalPrice.toFixed(2)}
-                  </Text>
-                </View>
-                <Button>Buy Now</Button>
-              </View>
-            </View>
           </>
         )}
-
-        {data.carts.cart.length === 0 && (
-          <>
+      </ScrollView>
+      {data.carts.cart.length > 0 && (
+        <View style={styles.itemSummary}>
+          <View style={styles.totalConatiner}>
+            <View style={styles.totalTextContainer}>
+              <Text style={styles.totalText}>
+                Total Items: {totalQuantity}{' '}
+              </Text>
+              <Text style={styles.totalText}>
+                Total Price: ${totalPrice.toFixed(2)}
+              </Text>
+            </View>
+            <Button onPress={checkoutItems}>Buy Now</Button>
+          </View>
+        </View>
+      )}
+      {data.carts.cart.length === 0 && (
+        <>
+          <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
               <Text style={styles.text}> The Cart is Empty :) </Text>
             </View>
@@ -174,9 +181,9 @@ function CartScreen() {
               detailsHandler={byProductHandler}
               items={data.data.menClothing}
             />
-          </>
-        )}
-      </ScrollView>
+          </View>
+        </>
+      )}
     </>
   );
 }
@@ -185,7 +192,7 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   scrollStyle: {
-    paddingBottom: 6,
+    paddingBottom: 90,
   },
   conatiner: {
     marginHorizontal: 6,
@@ -253,6 +260,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 10,
+    padding: 8,
   },
   totalTextContainer: {
     flexDirection: 'row',
@@ -264,5 +275,14 @@ const styles = StyleSheet.create({
     color: Colors.primary300,
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  itemSummary: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    padding: 6,
+    backgroundColor: Colors.bgcolor,
   },
 });

@@ -33,15 +33,15 @@ function ProductScreen() {
 
   useEffect(() => {
     async function fetchData() {
-      setTimeout(() => {
-        dispatch(fetchCategory()),
-          dispatch(fetchAllProducts()),
-          dispatch(fetchElectronics()),
-          dispatch(fetchJeweleryItems()),
-          dispatch(fetchMenClothing()),
-          dispatch(fetchWomenClothing()),
+      dispatch(fetchCategory()),
+        dispatch(fetchAllProducts()),
+        dispatch(fetchElectronics()),
+        dispatch(fetchJeweleryItems()),
+        dispatch(fetchMenClothing()),
+        dispatch(fetchWomenClothing()),
+        setTimeout(() => {
           setLoading(false);
-      }, 2000);
+        }, 2000);
     }
     fetchData();
     return () => {
