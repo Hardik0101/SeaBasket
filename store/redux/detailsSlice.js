@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getProductsDetails} from '../apiCall/dataApi';
+import {getProductsDetails} from '../../apiCall/dataApi';
 
 const detailsSlice = createSlice({
   name: 'details',

@@ -10,7 +10,7 @@ import {
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
-} from '../store/dataSlice';
+} from '../store/redux/dataSlice';
 import {useNavigation} from '@react-navigation/native';
 import SearchCard from '../components/AppData/SearchCard';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
@@ -29,7 +29,7 @@ function HomeScreen() {
       dispatch(fetchWomenClothing());
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 3000);
     }
     loadData();
 

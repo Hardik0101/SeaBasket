@@ -15,11 +15,15 @@ import {
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
-} from '../store/dataSlice';
+} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import Button from '../components/UI/Button';
 import {Minus, Plus} from '../assets/icons';
-import {removeCart} from '../store/cartSlice';
+import {
+  decrementCart,
+  incrementCart,
+  removeCart,
+} from '../store/redux/cartSlice';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -27,6 +31,7 @@ function CartScreen() {
   const data = useSelector(state => state);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const quantity = 1;
 
   useEffect(() => {
     function loadData() {
@@ -40,10 +45,13 @@ function CartScreen() {
 
   useEffect(() => {
     const totalPrice = data.carts.cart.reduce(
-      (acc, product) => acc + product.price,
+      (acc, product) => product?.quantity * product?.price + acc,
       0,
     );
-    const totalQuantity = data.carts.cart.reduce((acc, product) => acc + 1, 0);
+    const totalQuantity = data.carts.cart.reduce(
+      (acc, product) => acc + product?.quantity,
+      0,
+    );
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
   }, [data.carts.cart]);
@@ -56,8 +64,16 @@ function CartScreen() {
     navigation.navigate('Details', {id});
   }
 
-  function removeCartHandler(id) {
-    dispatch(removeCart(id));
+  function removeCartHandler(index) {
+    dispatch(removeCart(index));
+  }
+
+  function increaseQuantity(index) {
+    dispatch(incrementCart(index));
+  }
+
+  function decreaseQuantity(index) {
+    dispatch(decrementCart(index));
   }
 
   return (
@@ -87,13 +103,22 @@ function CartScreen() {
                       ? `${product?.title.substring(0, 25)}...`
                       : product?.title}
                   </Text>
-                  <Text style={styles.itemPrice}>${product?.price}</Text>
-                  <Text style={styles.itemTitle}>Qty:1</Text>
+                  <Text style={styles.itemPrice}>
+                    {product.quantity}*${product?.price} = $
+                    {(product?.quantity * product?.price).toFixed(2)}
+                  </Text>
+                  <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
-                    <Button>
+                    <Button onPress={() => increaseQuantity(index)}>
                       <Plus width={18} height={18} />
                     </Button>
-                    <Button onPress={() => removeCartHandler(index)}>
+                    <Button
+                      onPress={() => {
+                        if (product.quantity === 1) {
+                          removeCartHandler(index);
+                        }
+                        decreaseQuantity(index);
+                      }}>
                       <Minus width={18} height={18} />
                     </Button>
                   </View>

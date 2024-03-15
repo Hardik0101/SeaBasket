@@ -12,7 +12,7 @@ import {Colors} from '../../constant/styles';
 import {Search} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchAllProducts} from '../../store/dataSlice';
+import {fetchAllProducts} from '../../store/redux/dataSlice';
 
 function SearchCard() {
   const [searchQuery, setSearchQuery] = useState('');

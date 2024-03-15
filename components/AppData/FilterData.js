@@ -11,7 +11,7 @@ import {
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
-} from '../../store/dataSlice';
+} from '../../store/redux/dataSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';

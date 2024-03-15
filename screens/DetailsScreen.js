@@ -11,9 +11,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useRoute} from '@react-navigation/native';
-import {fetchDetails} from '../store/detailsSlice';
+import {fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
-import {addCart} from '../store/cartSlice';
+import {addCart} from '../store/redux/cartSlice';
 
 function DetailScreen() {
   const dispatch = useDispatch();

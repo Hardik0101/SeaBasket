@@ -16,7 +16,7 @@ import {
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
-} from '../store/dataSlice';
+} from '../store/redux/dataSlice';
 import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
@@ -32,16 +32,16 @@ function ProductScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    function fetchData() {
-      dispatch(fetchCategory()),
-        dispatch(fetchAllProducts()),
-        dispatch(fetchElectronics()),
-        dispatch(fetchJeweleryItems()),
-        dispatch(fetchMenClothing()),
-        dispatch(fetchWomenClothing()),
-        setTimeout(() => {
+    async function fetchData() {
+      setTimeout(() => {
+        dispatch(fetchCategory()),
+          dispatch(fetchAllProducts()),
+          dispatch(fetchElectronics()),
+          dispatch(fetchJeweleryItems()),
+          dispatch(fetchMenClothing()),
+          dispatch(fetchWomenClothing()),
           setLoading(false);
-        }, 1000);
+      }, 2000);
     }
     fetchData();
     return () => {
