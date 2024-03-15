@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
@@ -64,7 +65,23 @@ function CartScreen() {
   }
 
   function removeCartHandler(index) {
-    dispatch(removeCart(index));
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          onPress: () => {
+            dispatch(removeCart(index));
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   }
 
   function increaseQuantity(index) {
