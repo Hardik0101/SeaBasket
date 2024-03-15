@@ -31,7 +31,6 @@ function CartScreen() {
   const data = useSelector(state => state);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  const quantity = 1;
 
   useEffect(() => {
     function loadData() {
@@ -112,15 +111,15 @@ function CartScreen() {
                     <Button onPress={() => increaseQuantity(index)}>
                       <Plus width={18} height={18} />
                     </Button>
-                    <Button
-                      onPress={() => {
-                        if (product.quantity === 1) {
-                          removeCartHandler(index);
-                        }
-                        decreaseQuantity(index);
-                      }}>
-                      <Minus width={18} height={18} />
+                    <Button onPress={() => removeCartHandler(index)}>
+                      Remove
                     </Button>
+
+                    {product.quantity > 1 && (
+                      <Button onPress={() => decreaseQuantity(index)}>
+                        <Minus width={18} height={18} />
+                      </Button>
+                    )}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -146,13 +145,18 @@ function CartScreen() {
             <View style={styles.textConatiner}>
               <Text style={styles.text}> The Cart is Empty :) </Text>
             </View>
-            <View>
-              <HorizontalCard
-                children="Buy New Products"
-                detailsHandler={byProductHandler}
-                items={data.data.electronics}
-              />
-            </View>
+
+            <HorizontalCard
+              children="Buy New Products"
+              detailsHandler={byProductHandler}
+              items={data.data.electronics}
+            />
+
+            <HorizontalCard
+              children="Buy New Products"
+              detailsHandler={byProductHandler}
+              items={data.data.menClothing}
+            />
           </>
         )}
       </ScrollView>
@@ -226,6 +230,7 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 6,
   },
   totalConatiner: {
     justifyContent: 'center',
