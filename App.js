@@ -16,6 +16,7 @@ import {Provider} from 'react-redux';
 import {store} from './store/redux/store';
 import DetailScreen from './screens/DetailsScreen';
 import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -157,6 +158,13 @@ function CombineStack() {
         component={ItemsCheckoutScreen}
         options={{
           title: 'CheckOut',
+        }}
+      />
+      <Stack.Screen
+        name="PaymentScreen"
+        component={PaymentScreen}
+        options={{
+          title: 'Payment',
         }}
       />
     </Stack.Navigator>

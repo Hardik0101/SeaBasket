@@ -41,6 +41,7 @@ function ItemsCheckoutScreen() {
       (acc, product) => acc + product?.quantity,
       0,
     );
+
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
   }, [data.check.check]);
@@ -82,10 +83,29 @@ function ItemsCheckoutScreen() {
     dispatch(decrementCheck(index));
   }
 
+  function paymentHandler() {
+    navigation.navigate('PaymentScreen');
+  }
+
   if (data.check.check.length === 0) {
     navigation.goBack();
     return null;
   }
+
+  let Discount = 15.5;
+  if (totalPrice > 300 && totalPrice < 600) {
+    Discount = 50;
+  } else if (totalPrice >= 600 && totalPrice < 1200) {
+    Discount = 70.8;
+  } else if (totalPrice >= 1200) {
+    Discount = 170.8;
+  }
+
+  let Delivery = 20;
+  if (totalPrice > 500) {
+    Delivery = 'Free';
+  }
+  const totalPay = totalPrice + Delivery - Discount;
 
   return (
     <>
@@ -141,9 +161,9 @@ function ItemsCheckoutScreen() {
               <Text style={styles.itemPrice}>Delivery Fee:</Text>
             </View>
             <View>
-              <Text style={styles.itemPrice}>${totalPrice}</Text>
-              <Text style={styles.itemPrice}>$-50.80</Text>
-              <Text style={styles.itemPrice}>F̶r̶e̶e̶ $28</Text>
+              <Text style={styles.itemPrice}>${totalPrice.toFixed(2)}</Text>
+              <Text style={styles.itemPrice}>-${Discount}</Text>
+              <Text style={styles.itemPrice}>${Delivery}</Text>
             </View>
           </View>
         </View>
@@ -156,10 +176,10 @@ function ItemsCheckoutScreen() {
                 Total Items: {totalQuantity}{' '}
               </Text>
               <Text style={styles.totalText}>
-                Total Pay: ${totalPrice.toFixed(2)}
+                Total Pay: ${totalPay.toFixed(2)}
               </Text>
             </View>
-            <Button onPress={() => {}}>plase order</Button>
+            <Button onPress={paymentHandler}>Place order</Button>
           </View>
         </View>
       </View>
@@ -175,7 +195,7 @@ const styles = StyleSheet.create({
   },
   conatiner: {
     marginHorizontal: 6,
-    marginTop: 10,
+    marginTop: 6,
   },
   itemConatiner: {
     flexDirection: 'row',
