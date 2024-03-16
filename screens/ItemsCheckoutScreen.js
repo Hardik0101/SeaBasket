@@ -113,7 +113,8 @@ function ItemsCheckoutScreen() {
                   : product?.title}
               </Text>
               <Text style={styles.itemPrice}>
-                {product?.quantity} *${product?.price} = ${product?.price}
+                {product?.quantity} *${product?.price} = $
+                {(product?.quantity * product?.price).toFixed(2)}
               </Text>
               <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
@@ -131,16 +132,35 @@ function ItemsCheckoutScreen() {
             </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
-      <View style={styles.itemSummary}>
-        <View style={styles.totalConatiner}>
-          <View style={styles.totalTextContainer}>
-            <Text style={styles.totalText}>Total Items: {totalQuantity} </Text>
-            <Text style={styles.totalText}>
-              Total Price: ${totalPrice.toFixed(2)}
-            </Text>
+        <Text style={styles.billPrice}>Bill Details</Text>
+        <View style={styles.conatiner}>
+          <View style={styles.billContainer}>
+            <View style={styles.priceContainer}>
+              <Text style={styles.itemPrice}>Total Price:</Text>
+              <Text style={styles.itemPrice}>Discount:</Text>
+              <Text style={styles.itemPrice}>Delivery Fee:</Text>
+            </View>
+            <View>
+              <Text style={styles.itemPrice}>${totalPrice}</Text>
+              <Text style={styles.itemPrice}>$-50.80</Text>
+              <Text style={styles.itemPrice}>F̶r̶e̶e̶ $28</Text>
+            </View>
           </View>
-          <Button onPress={() => {}}>plase order</Button>
+        </View>
+      </ScrollView>
+      <View style={styles.itemSummaryContainer}>
+        <View style={styles.itemSummary}>
+          <View style={styles.totalConatiner}>
+            <View style={styles.totalTextContainer}>
+              <Text style={styles.totalText}>
+                Total Items: {totalQuantity}{' '}
+              </Text>
+              <Text style={styles.totalText}>
+                Total Pay: ${totalPrice.toFixed(2)}
+              </Text>
+            </View>
+            <Button onPress={() => {}}>plase order</Button>
+          </View>
         </View>
       </View>
     </>
@@ -151,7 +171,7 @@ export default ItemsCheckoutScreen;
 
 const styles = StyleSheet.create({
   scrollStyle: {
-    paddingBottom: 6,
+    paddingBottom: 96,
   },
   conatiner: {
     marginHorizontal: 6,
@@ -232,10 +252,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   itemSummary: {
-    position: 'absolute',
-    bottom: 10,
-    width: '100%',
     backgroundColor: Colors.bgcolor,
+    borderColor: Colors.primary,
+    borderWidth: 2,
+    borderRadius: 10,
     padding: 6,
+  },
+  billPrice: {
+    fontSize: 20,
+    color: Colors.primary300,
+    fontWeight: 'bold',
+  },
+  billContainer: {
+    borderBottomColor: Colors.primary,
+    borderBottomWidth: 2,
+    marginBottom: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  priceContainer: {
+    padding: 4,
+  },
+  itemSummaryContainer: {
+    backgroundColor: Colors.bgcolor,
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
   },
 });

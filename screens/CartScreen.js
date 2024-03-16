@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.primary300,
     fontWeight: 'bold',
+    fontFamily: 'Anek Devanagari',
   },
   dataConatiner: {
     width: '70%',
