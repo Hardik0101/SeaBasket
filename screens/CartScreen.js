@@ -25,6 +25,7 @@ import {
   incrementCart,
   removeCart,
 } from '../store/redux/cartSlice';
+import {setCheck} from '../store/redux/checkoutSlice';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ function CartScreen() {
       dispatch(fetchWomenClothing());
     }
     loadData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const totalPrice = data.carts.cart.reduce(
@@ -56,12 +57,8 @@ function CartScreen() {
     setTotalQuantity(totalQuantity);
   }, [data.carts.cart]);
 
-  function byProductHandler() {
+  function buyProductHandler() {
     navigation.navigate('Product');
-  }
-
-  function checkoutItems() {
-    navigation.navigate('CheckoutScreen');
   }
 
   function detailsHandler(id) {
@@ -94,6 +91,15 @@ function CartScreen() {
 
   function decreaseQuantity(index) {
     dispatch(decrementCart(index));
+  }
+
+  function checkoutItems() {
+    {
+      data.carts.cart.map(items => {
+        dispatch(setCheck(items));
+      });
+    }
+    navigation.navigate('CheckoutScreen');
   }
 
   return (
@@ -172,13 +178,13 @@ function CartScreen() {
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
+              detailsHandler={buyProductHandler}
               items={data.data.electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
+              detailsHandler={buyProductHandler}
               items={data.data.menClothing}
             />
           </View>

@@ -14,13 +14,13 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
+import {setCheck} from '../store/redux/checkoutSlice';
 
 function DetailScreen() {
   const dispatch = useDispatch();
   const data = useSelector(state => state);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigation = useNavigation();
@@ -43,14 +43,14 @@ function DetailScreen() {
     setShowFullDescription(!showFullDescription);
   }
 
-  function checkoutItems() {
-    navigation.navigate('CheckoutScreen');
-  }
-
   function addToCart() {
-    setCart([...cart, data.details.details]);
     dispatch(addCart(data.details.details));
     ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
+  }
+
+  function checkoutItems() {
+    dispatch(setCheck(data.details.details));
+    navigation.navigate('CheckoutScreen');
   }
 
   const description =

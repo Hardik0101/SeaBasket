@@ -47,7 +47,7 @@ function ProductScreen() {
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [dispatch]);
 
   function getProductData(item) {
     let productData = null;

@@ -5,21 +5,87 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {fetchJeweleryItems} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import Button from '../components/UI/Button';
 import {Minus, Plus} from '../assets/icons';
+import {
+  decrementCheck,
+  incrementCheck,
+  removeCheck,
+  setClearCheck,
+} from '../store/redux/checkoutSlice';
+import {useNavigation} from '@react-navigation/native';
 
-function ItemsCheckoutScreen({type, items}) {
+function ItemsCheckoutScreen() {
   const data = useSelector(state => state);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
 
   useEffect(() => {
     dispatch(fetchJeweleryItems());
-  });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const totalPrice = data.check.check.reduce(
+      (acc, product) => product?.quantity * product?.price + acc,
+      0,
+    );
+    const totalQuantity = data.check.check.reduce(
+      (acc, product) => acc + product?.quantity,
+      0,
+    );
+    setTotalPrice(totalPrice);
+    setTotalQuantity(totalQuantity);
+  }, [data.check.check]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setClearCheck());
+    };
+  }, [dispatch]);
+
+  function detailsHandler(id) {
+    navigation.navigate('Details', {id});
+  }
+
+  function removeCartHandler(index) {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          onPress: () => {
+            dispatch(removeCheck(index));
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+  function increaseQuantity(index) {
+    dispatch(incrementCheck(index));
+  }
+
+  function decreaseQuantity(index) {
+    dispatch(decrementCheck(index));
+  }
+
+  if (data.check.check.length === 0) {
+    navigation.goBack();
+    return null;
+  }
 
   return (
     <>
@@ -27,7 +93,7 @@ function ItemsCheckoutScreen({type, items}) {
         style={styles.conatiner}
         contentContainerStyle={styles.scrollStyle}
         showsVerticalScrollIndicator={false}>
-        {data.data.jewelery.map((product, index) => (
+        {data.check.check.map((product, index) => (
           <TouchableOpacity
             key={index}
             style={styles.itemConatiner}
@@ -47,9 +113,9 @@ function ItemsCheckoutScreen({type, items}) {
                   : product?.title}
               </Text>
               <Text style={styles.itemPrice}>
-                *${product?.price} = ${(product?.price).toFixed(2)}
+                {product?.quantity} *${product?.price} = ${product?.price}
               </Text>
-              <Text style={styles.itemTitle}>Qty:1</Text>
+              <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
                 <Button onPress={() => increaseQuantity(index)}>
                   <Plus width={18} height={18} />
@@ -69,8 +135,10 @@ function ItemsCheckoutScreen({type, items}) {
       <View style={styles.itemSummary}>
         <View style={styles.totalConatiner}>
           <View style={styles.totalTextContainer}>
-            <Text style={styles.totalText}>Total Items: 4 </Text>
-            <Text style={styles.totalText}>Total Price: $1200</Text>
+            <Text style={styles.totalText}>Total Items: {totalQuantity} </Text>
+            <Text style={styles.totalText}>
+              Total Price: ${totalPrice.toFixed(2)}
+            </Text>
           </View>
           <Button onPress={() => {}}>plase order</Button>
         </View>
