@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     fontSize: 18,
     color: Colors.secondary,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   inputInvalid: {
     backgroundColor: Colors.error100,

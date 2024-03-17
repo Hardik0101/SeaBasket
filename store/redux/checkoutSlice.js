@@ -4,6 +4,7 @@ const checkSlice = createSlice({
   name: 'checkSlice',
   initialState: {
     check: [],
+    totalPay: [],
   },
   reducers: {
     setCheck: (state, action) => {
@@ -33,6 +34,9 @@ const checkSlice = createSlice({
         item.quantity--;
       }
     },
+    setTotalPay: (state, action) => {
+      state.totalPay = action.payload;
+    },
     setClearCheck: (state, action) => {
       state.check = [];
     },
@@ -44,6 +48,7 @@ export const {
   decrementCheck,
   incrementCheck,
   removeCheck,
+  setTotalPay,
   setClearCheck,
 } = checkSlice.actions;
 

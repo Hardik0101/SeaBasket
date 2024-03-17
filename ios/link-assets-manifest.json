@@ -2,7 +2,11 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/Anek-Devanagari.ttf",
+      "path": "assets/fonts/AnekDevanagari-Bold.ttf",
+      "sha1": "dc2c59be7a8f64aad22429f1cdece5b356e56455"
+    },
+    {
+      "path": "assets/fonts/AnekDevanagari.ttf",
       "sha1": "dc2c59be7a8f64aad22429f1cdece5b356e56455"
     },
     {

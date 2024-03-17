@@ -46,9 +46,9 @@ function HorizontalCard({items, detailsHandler, children}) {
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 2,
-                      height: 26,
+                      height: 22,
                     }}>
-                    <Star width={18} height={18} fill={Colors.primary300} />
+                    <Star width={12} height={12} fill={Colors.primary300} />
                     <Text style={styles.itemRate}>{product.rating.rate}</Text>
                   </View>
                 </View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.primary,
     fontSize: 20,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   itemTitleView: {
     width: '100%',
@@ -104,23 +104,23 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 18,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
     textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
   contentContainer: {
     paddingBottom: 6,
   },
   itemRate: {
-    fontSize: 22,
+    fontSize: 18,
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   textContainer: {
     flexDirection: 'row',
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     overflow: 'hidden',
-    // height: '100%',
   },
   canclebutton: {
     padding: 4,

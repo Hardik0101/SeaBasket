@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'black',
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'center',
     fontSize: 18,
     width: 200,

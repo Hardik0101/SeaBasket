@@ -115,13 +115,12 @@ function CartScreen() {
                 key={index}
                 style={styles.itemConatiner}
                 onPress={() => detailsHandler(product.id)}>
-                <View style={styles.imageConatiner}>
-                  <Image
-                    source={{uri: product?.image}}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                </View>
+                <Image
+                  source={{uri: product?.image}}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+
                 <View style={styles.dataConatiner}>
                   <Text style={styles.itemTitle}>
                     {' '}
@@ -226,15 +225,8 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.primary300,
     fontSize: 22,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     letterSpacing: 1,
-  },
-  imageConatiner: {
-    height: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.primary100,
   },
   image: {
     width: 100,
@@ -244,7 +236,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   dataConatiner: {
     width: '70%',
@@ -253,7 +245,7 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 20,
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   buttons: {
     flexDirection: 'row',
@@ -278,7 +270,7 @@ const styles = StyleSheet.create({
   },
   totalText: {
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     fontSize: 22,
   },
   itemSummary: {

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'center',
     color: Colors.primary300,
   },

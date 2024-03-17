@@ -55,7 +55,14 @@ function AppData() {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerStyle: {backgroundColor: 'lightgreen'},
+        headerTitleStyle: {
+          fontFamily: 'AnekDevanagari',
+          fontSize: 22,
+          alignItems: 'center',
+        },
+        headerStyle: {
+          backgroundColor: 'lightgreen',
+        },
         tabBarActiveTintColor: Colors.primary,
         tabBarStyle: {
           paddingHorizontal: 10,
@@ -83,7 +90,6 @@ function AppData() {
               <Logo width={28} height={28} />
             </View>
           ),
-          // tabBarLabel: () => null,
         }}
       />
 
@@ -98,7 +104,6 @@ function AppData() {
               fill={focused ? Colors.primary : 'gray'}
             />
           ),
-          // tabBarLabel: () => null,
         }}
       />
       <Tab.Screen
@@ -112,7 +117,6 @@ function AppData() {
               fill={focused ? Colors.primary : 'gray'}
             />
           ),
-          // tabBarLabel: () => null,
         }}
       />
 
@@ -127,7 +131,6 @@ function AppData() {
               fill={focused ? Colors.primary : 'gray'}
             />
           ),
-          // tabBarLabel: () => null,
         }}
       />
     </Tab.Navigator>
@@ -141,6 +144,7 @@ function CombineStack() {
         headerStyle: {backgroundColor: 'lightgreen'},
         contentStyle: {backgroundColor: Colors.bgcolor},
         headerTitleAlign: 'center',
+        headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       <Stack.Screen
         name="Auth"

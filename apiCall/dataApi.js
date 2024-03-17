@@ -12,7 +12,6 @@ const API_DETAILS = `https://fakestoreapi.com/products/:id`;
 export async function getAllProducts() {
   try {
     const response = await axios.get(BASE_URL);
-    // console.log('Response is ', response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -23,7 +22,6 @@ export async function getAllProducts() {
 export async function getProduct() {
   try {
     const response = await axios.get(API_ALL_PRODUCTS);
-    // console.log('Response is ', response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -34,7 +32,6 @@ export async function getProduct() {
 export async function getCategory() {
   try {
     const response = await axios.get(API_CATEGORY);
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -45,7 +42,6 @@ export async function getCategory() {
 export async function getJeweleryItems() {
   try {
     const response = await axios.get(API_JEWELERY);
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -56,7 +52,6 @@ export async function getJeweleryItems() {
 export async function getMenCloths() {
   try {
     const response = await axios.get(API_MENCLOTHS);
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -67,7 +62,6 @@ export async function getMenCloths() {
 export async function getWomenClothing() {
   try {
     const response = await axios.get(API_WOMENCLOTHING);
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -78,7 +72,6 @@ export async function getWomenClothing() {
 export async function getElectronics() {
   try {
     const response = await axios.get(API_ELECTRONICS);
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -89,7 +82,6 @@ export async function getElectronics() {
 export async function getProductsDetails(id) {
   try {
     const response = await axios.get(API_DETAILS.replace(':id', id));
-    // console.log('The details are: ', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching product details:', error);

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.secondary,
     fontSize: 14,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     letterSpacing: 1,
   },
 });

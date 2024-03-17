@@ -4,6 +4,7 @@ export const Colors = {
   primary200: '#53966c',
   primary300: '#2b5c3a',
   secondary: '#000000',
-  bgcolor: '#f7ede1',
+  bgcolor: 'white',
+  bg: '#f7ede1',
   error100: '#ccacac',
 };

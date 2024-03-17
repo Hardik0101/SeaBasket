@@ -49,8 +49,9 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Anek-Devanagari.ttf</string>
 		<string>Angkor-Regular.ttf</string>
+		<string>AnekDevanagari.ttf</string>
+		<string>AnekDevanagari-Bold.ttf</string>
 	</array>
 </dict>
 </plist>

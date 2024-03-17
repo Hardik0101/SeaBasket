@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 20,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
 });

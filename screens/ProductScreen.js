@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'center',
     color: Colors.primary300,
     textTransform: 'capitalize',

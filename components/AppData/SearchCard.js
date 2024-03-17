@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'justify',
     marginHorizontal: 2,
   },
   price: {
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     fontSize: 20,
     color: Colors.primary300,
   },

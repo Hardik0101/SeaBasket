@@ -15,6 +15,7 @@ import {fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
+import Swiper from 'react-native-swiper';
 
 function DetailScreen() {
   const dispatch = useDispatch();
@@ -82,12 +83,26 @@ function DetailScreen() {
       {data && (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                source={{uri: data?.details?.details?.image}}
-                style={styles.itemImage}
-              />
-            </View>
+            <Swiper style={styles.wrapper} showsButtons={true} height={300}>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+            </Swiper>
             <View style={styles.itemConatiner}>
               <Text style={styles.itemTitle}>
                 {data?.details?.details?.title}
@@ -97,7 +112,10 @@ function DetailScreen() {
                   ${data?.details?.details?.price}
                 </Text>
                 <Text style={styles.itemPrice}>
-                  Rate: {data?.details?.details?.rating?.rate}
+                  Rating:{' '}
+                  <Text style={{fontSize: 20}}>
+                    {data?.details?.details?.rating?.rate}
+                  </Text>
                 </Text>
               </View>
               <Text style={styles.itemDescription}>About this Product: </Text>
@@ -145,37 +163,34 @@ const styles = StyleSheet.create({
   itemConatiner: {
     width: '100%',
     marginHorizontal: 6,
+    marginTop: 10,
   },
   imageContainer: {
     borderBottomColor: Colors.primary,
     borderBottomWidth: 2,
     width: '100%',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   itemImage: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
     marginBottom: 10,
     resizeMode: 'contain',
-    backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: Colors.primary100,
-    borderRadius: 10,
   },
   itemPrice: {
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     fontSize: 24,
     marginBottom: 6,
     color: Colors.primary300,
   },
   itemTitle: {
-    fontSize: 20,
-    marginBottom: 4,
+    fontSize: 24,
+    lineHeight: 32,
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari-Bold',
     letterSpacing: 1,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.primary,
+    paddingTop: 10,
   },
   itemDescription: {
     marginTop: 2,
@@ -183,21 +198,19 @@ const styles = StyleSheet.create({
     color: Colors.primary200,
     textAlign: 'justify',
     letterSpacing: 1,
+    fontFamily: 'AnekDevanagari',
     lineHeight: 24,
-    fontFamily: 'Anek-Devanagari',
   },
   readMore: {
     color: Colors.primary300,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
   },
   buttons: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomColor: Colors.primary,
-    borderBottomWidth: 2,
+    justifyContent: 'center',
+    gap: 20,
     paddingVertical: 10,
-    width: '100%',
   },
   loadingContainer: {
     flex: 1,
@@ -207,6 +220,11 @@ const styles = StyleSheet.create({
   priceAndrate: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

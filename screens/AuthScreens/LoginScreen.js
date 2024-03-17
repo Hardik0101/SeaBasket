@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, View, ImageBackground} from 'react-native';
+import {Text, StyleSheet, View, ImageBackground, Image} from 'react-native';
 import AuthContent from '../../components/Auth/AuthContent';
 import {useNavigation} from '@react-navigation/native';
 import {login} from '../../apiCall/authApi';
@@ -19,6 +19,12 @@ function LoginScreen() {
 
   return (
     <View style={styles.mainContainer}>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.logoImage}
+          source={require('../../assets/images/Logo.png')}
+        />
+      </View>
       <ImageBackground
         source={require('../../assets/images/Login.png')}
         style={styles.bgImage}
@@ -46,5 +52,13 @@ const styles = StyleSheet.create({
   },
   image: {
     opacity: 0.1,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoImage: {
+    width: 200,
+    height: 200,
   },
 });

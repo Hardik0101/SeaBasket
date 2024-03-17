@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontFamily: 'AnekDevanagari',
     marginRight: 6,
   },
   auth: {

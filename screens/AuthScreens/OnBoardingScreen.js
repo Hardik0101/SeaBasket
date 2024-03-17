@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     marginBottom: 10,
     textAlign: 'center',
     color: Colors.secondary,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
   image: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   notice: {
     marginTop: 14,
     fontSize: 20,
-    fontFamily: 'Anek-Devanagari',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
 });
