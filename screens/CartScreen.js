@@ -57,10 +57,6 @@ function CartScreen() {
     setTotalQuantity(totalQuantity);
   }, [data.carts.cart]);
 
-  function buyProductHandler() {
-    navigation.navigate('Product');
-  }
-
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
   }
@@ -104,11 +100,11 @@ function CartScreen() {
 
   return (
     <>
-      <ScrollView
-        style={styles.conatiner}
-        contentContainerStyle={styles.scrollStyle}
-        showsVerticalScrollIndicator={false}>
-        {data.carts.cart.length > 0 && (
+      {data.carts.cart.length > 0 && (
+        <ScrollView
+          style={styles.conatiner}
+          contentContainerStyle={styles.scrollStyle}
+          showsVerticalScrollIndicator={false}>
           <>
             {data.carts.cart.map((product, index) => (
               <TouchableOpacity
@@ -151,8 +147,8 @@ function CartScreen() {
               </TouchableOpacity>
             ))}
           </>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
       {data.carts.cart.length > 0 && (
         <View style={styles.itemSummary}>
           <View style={styles.totalConatiner}>
@@ -177,13 +173,13 @@ function CartScreen() {
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={buyProductHandler}
+              detailsHandler={detailsHandler}
               items={data.data.electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={buyProductHandler}
+              detailsHandler={detailsHandler}
               items={data.data.menClothing}
             />
           </View>
@@ -214,11 +210,6 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   textConatiner: {
-    padding: 6,
-    height: 100,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

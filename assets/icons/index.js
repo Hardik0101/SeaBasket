@@ -13,7 +13,9 @@ import Star from './star.svg';
 import FavCart from './favCart.svg';
 import Plus from './plus.svg';
 import Minus from './minus.svg';
+import Address from './address.svg';
 export {
+  Address,
   Cart,
   Home,
   Account,

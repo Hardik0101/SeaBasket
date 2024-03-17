@@ -107,7 +107,11 @@ function ItemsCheckoutScreen() {
   if (totalPrice > 500) {
     Delivery = 'Free';
   }
-  const totalPay = totalPrice + Delivery - Discount;
+
+  let totalPay = totalPrice + Delivery - Discount;
+  if (Delivery === 'Free') {
+    totalPay = totalPrice - Discount;
+  }
 
   return (
     <>
@@ -286,6 +290,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   priceContainer: {
     padding: 4,

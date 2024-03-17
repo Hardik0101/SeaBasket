@@ -83,7 +83,12 @@ function DetailScreen() {
       {data && (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <Swiper style={styles.wrapper} showsButtons={true} height={300}>
+            <Swiper
+              style={styles.wrapper}
+              autoplay={true}
+              autoplayTimeout={4}
+              activeDotColor="green"
+              height={300}>
               <View style={styles.slide}>
                 <Image
                   source={{uri: data?.details?.details?.image}}
@@ -226,5 +231,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  wrapper: {
+    color: Colors.primary,
   },
 });
