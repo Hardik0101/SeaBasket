@@ -222,22 +222,22 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: Colors.secondary,
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 20,
+    fontFamily: 'Anek-Devanagari',
   },
   title: {
     fontSize: 24,
     color: Colors.primary300,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginHorizontal: 2,
+    fontFamily: 'Anek-Devanagari',
   },
   filterTitle: {
     fontSize: 18,
     color: Colors.primary300,
-    fontWeight: 'bold',
     textAlign: 'center',
     margin: 4,
+    fontFamily: 'Anek-Devanagari',
   },
   filterData: {
     backgroundColor: Colors.bgcolor,

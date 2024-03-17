@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontFamily: 'Anek-Devanagari',
     textAlign: 'center',
     color: Colors.primary300,
   },

@@ -8,34 +8,14 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {FavCart, Star} from '../../assets/icons';
-import Button from '../UI/Button';
-import ItemScrollCard from './itemScrollCard';
+import {Star} from '../../assets/icons';
 
 function HorizontalCard({items, detailsHandler, children}) {
-  const [showAll, setShowAll] = useState(false);
-
-  // function showAllHandler() {
-  //   setShowAll(true);
-  // }
   return (
     <>
-      {/* {showAll && (
-        <View style={styles.allData}>
-          <View style={styles.canclebutton}>
-            <Button onPress={() => setShowAll(false)}>Close</Button>
-          </View>
-
-          <ItemScrollCard items={items} detailsHandler={detailsHandler} />
-        </View>
-      )}
-       */}
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{children}</Text>
-          {/* <Text style={styles.showAll} onPress={showAllHandler}>
-            show all
-          </Text> */}
         </View>
         <ScrollView
           horizontal={true}
@@ -66,8 +46,9 @@ function HorizontalCard({items, detailsHandler, children}) {
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 2,
+                      height: 26,
                     }}>
-                    <Star width={20} height={20} fill={Colors.primary300} />
+                    <Star width={18} height={18} fill={Colors.primary300} />
                     <Text style={styles.itemRate}>{product.rating.rate}</Text>
                   </View>
                 </View>
@@ -83,12 +64,6 @@ function HorizontalCard({items, detailsHandler, children}) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    // paddingLeft: 6,
-  },
-  title: {
-    color: Colors.primary,
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   card: {
     width: 170,
@@ -116,14 +91,10 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 4,
   },
-  icon: {
-    position: 'absolute',
-    zIndex: 100,
-  },
   title: {
     color: Colors.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'Anek-Devanagari',
   },
   itemTitleView: {
     width: '100%',
@@ -133,14 +104,14 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
     color: Colors.primary300,
     textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
     color: Colors.primary300,
   },
   contentContainer: {
@@ -149,7 +120,7 @@ const styles = StyleSheet.create({
   itemRate: {
     fontSize: 22,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
   },
   textContainer: {
     flexDirection: 'row',

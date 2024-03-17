@@ -139,21 +139,21 @@ function ItemsCheckoutScreen() {
               <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
                 <Button onPress={() => increaseQuantity(index)}>
-                  <Plus width={18} height={18} />
+                  <Plus width={20} height={20} />
                 </Button>
                 <Button onPress={() => removeCartHandler(index)}>Remove</Button>
 
                 {product.quantity > 1 && (
                   <Button onPress={() => decreaseQuantity(index)}>
-                    <Minus width={18} height={18} />
+                    <Minus width={20} height={20} />
                   </Button>
                 )}
               </View>
             </View>
           </TouchableOpacity>
         ))}
-        <Text style={styles.billPrice}>Bill Details</Text>
         <View style={styles.conatiner}>
+          <Text style={styles.billPrice}>Bill Details:</Text>
           <View style={styles.billContainer}>
             <View style={styles.priceContainer}>
               <Text style={styles.itemPrice}>Total Price:</Text>
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   itemConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 120,
+    height: 130,
     borderWidth: 2,
     borderColor: Colors.primary300,
     borderRadius: 10,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.primary300,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
     letterSpacing: 1,
   },
   imageConatiner: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
   },
   dataConatiner: {
     width: '70%',
@@ -246,14 +246,14 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 20,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
   },
   buttons: {
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: 2,
   },
   totalConatiner: {
     justifyContent: 'center',
@@ -264,11 +264,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
   totalText: {
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
     fontSize: 20,
   },
   itemSummary: {
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
   billPrice: {
     fontSize: 20,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
   },
   billContainer: {
     borderBottomColor: Colors.primary,

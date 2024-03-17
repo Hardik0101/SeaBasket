@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   message: {
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: 'Anek-Devanagari',
     color: Colors.primary300,
   },
 });

@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary300,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'Anek-Devanagari',
     textAlign: 'center',
     color: Colors.primary300,
     textTransform: 'capitalize',

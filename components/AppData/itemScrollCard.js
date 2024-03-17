@@ -43,8 +43,9 @@ function ItemScrollCard({items, detailsHandler}) {
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 2,
+                      height: 26,
                     }}>
-                    <Star width={20} height={20} fill={Colors.primary300} />
+                    <Star width={16} height={16} fill={Colors.primary300} />
                     <Text style={styles.itemRate}>{product.rating.rate}</Text>
                   </View>
                 </View>
@@ -94,11 +95,6 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 4,
   },
-  title: {
-    color: Colors.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   itemTitleView: {
     width: '100%',
     backgroundColor: Colors.primary100,
@@ -106,16 +102,16 @@ const styles = StyleSheet.create({
     height: 60,
   },
   itemTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'Anek-Devanagari',
     color: Colors.primary300,
     textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
-    fontWeight: 'bold',
     color: Colors.primary300,
+    fontFamily: 'Anek-Devanagari',
   },
   contentContainer: {
     paddingBottom: 6,
@@ -123,7 +119,7 @@ const styles = StyleSheet.create({
   itemRate: {
     fontSize: 22,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'Anek-Devanagari',
   },
 });
 
