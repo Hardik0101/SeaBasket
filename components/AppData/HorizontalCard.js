@@ -101,6 +101,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary100,
     padding: 4,
     height: 60,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
   },
   itemTitle: {
     fontSize: 18,

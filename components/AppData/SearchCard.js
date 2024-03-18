@@ -74,6 +74,7 @@ function SearchCard() {
             returnKeyType="search"
             onChangeText={text => setSearchQuery(text)}
             value={searchQuery}
+            placeholderTextColor={Colors.bgcolor}
           />
           <Search width={28} height={28} />
         </View>

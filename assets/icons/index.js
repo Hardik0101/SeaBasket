@@ -6,7 +6,7 @@ import Login from './login.svg';
 import Signup from './signup.svg';
 import Logo from './logo.svg';
 import Filter from './filter.svg';
-import Short from './short.svg';
+import Sort from './sort.svg';
 import Search from './search.svg';
 import Cancel from './cancel.svg';
 import Star from './star.svg';
@@ -24,7 +24,7 @@ export {
   Signup,
   Logo,
   Filter,
-  Short,
+  Sort,
   Search,
   Cancel,
   Star,

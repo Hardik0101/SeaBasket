@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
 import Button from '../UI/Button';
-import {Filter, Short} from '../../assets/icons';
+import {Filter, Sort} from '../../assets/icons';
 import {
   clearState,
   fetchAllProducts,
@@ -156,7 +156,7 @@ function FilterData({items}) {
             setModalVisible(true), setTypeItems('sort');
           }}>
           <View style={{flexDirection: 'row'}}>
-            <Short width={24} height={24} fill={Colors.secondary} />
+            <Sort width={24} height={24} fill={Colors.bgcolor} />
             <Text style={styles.buttonText}> Sort</Text>
           </View>
         </Button>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: Colors.secondary,
+    color: Colors.bgcolor,
     fontSize: 20,
     fontFamily: 'AnekDevanagari',
   },

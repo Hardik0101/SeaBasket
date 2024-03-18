@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: Colors.secondary,
+    color: Colors.bgcolor,
     fontSize: 14,
     fontFamily: 'AnekDevanagari',
     letterSpacing: 1,

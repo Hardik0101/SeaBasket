@@ -11,11 +11,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {fetchDetails} from '../store/redux/detailsSlice';
+import {clearState, fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
 import Swiper from 'react-native-swiper';
+import {Star} from '../assets/icons';
 
 function DetailScreen() {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ function DetailScreen() {
       }
     }
     fetchData();
+    return () => {
+      dispatch(clearState());
+    };
   }, [dispatch, route.params.id]);
 
   function toggleDescription() {
@@ -117,7 +121,7 @@ function DetailScreen() {
                   ${data?.details?.details?.price}
                 </Text>
                 <Text style={styles.itemPrice}>
-                  Rating:{' '}
+                  <Star width={14} height={14} fill={Colors.primary300} />{' '}
                   <Text style={{fontSize: 20}}>
                     {data?.details?.details?.rating?.rate}
                   </Text>

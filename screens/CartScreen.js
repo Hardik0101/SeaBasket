@@ -12,6 +12,7 @@ import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  clearState,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
@@ -42,6 +43,9 @@ function CartScreen() {
       dispatch(fetchWomenClothing());
     }
     loadData();
+    return () => {
+      dispatch(clearState());
+    };
   }, [dispatch]);
 
   useEffect(() => {

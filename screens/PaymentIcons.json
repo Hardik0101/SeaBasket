@@ -1,0 +1,28 @@
+{
+  "payment_icons": [
+    {
+      "name": "visa",
+      "image": "https://flowcdn.io/util/logos/payment-methods/visa/120/original.png"
+    },
+    {
+      "name": "paypal",
+      "image": "https://flowcdn.io/util/logos/payment-methods/paypal/120/original.png"
+    },
+    {
+      "name": "google_pay",
+      "image": "https://flowcdn.io/util/logos/payment-methods/google_pay/120/original.png"
+    },
+    {
+      "name": "apple_pay",
+      "image": "https://flowcdn.io/util/logos/payment-methods/apple_pay/120/original.png"
+    },
+    {
+      "name": "mastercard",
+      "image": "https://flowcdn.io/util/logos/payment-methods/mastercard/120/original.png"
+    },
+    {
+      "name": "cash_on_delivery",
+      "image": "https://flowcdn.io/util/logos/payment-methods/cash_on_delivery/120/original.png"
+    }
+  ]
+}

@@ -31,6 +31,9 @@ function ItemsCheckoutScreen() {
 
   useEffect(() => {
     dispatch(fetchJeweleryItems());
+    return () => {
+      dispatch(setClearCheck());
+    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -46,12 +49,6 @@ function ItemsCheckoutScreen() {
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
   }, [data.check.check]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(setClearCheck());
-    };
-  }, [dispatch]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -157,6 +154,9 @@ function ItemsCheckoutScreen() {
             </View>
           </TouchableOpacity>
         ))}
+        <Text style={styles.text}>
+          You get free delivery when you buy 500 or more.
+        </Text>
         <View style={styles.conatiner}>
           <Text style={styles.billPrice}>Bill Details:</Text>
           <View style={styles.billContainer}>
@@ -227,9 +227,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.primary300,
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'AnekDevanagari',
     letterSpacing: 1,
+    textAlign: 'center',
   },
   image: {
     width: 100,

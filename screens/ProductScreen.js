@@ -181,10 +181,10 @@ const styles = StyleSheet.create({
     paddingEnd: 6,
   },
   activeTitleContainer: {
-    backgroundColor: Colors.primary200,
+    backgroundColor: Colors.primary300,
   },
   activeTitle: {
-    color: Colors.secondary,
+    color: Colors.bgcolor,
   },
   loadingContainer: {
     flex: 1,
