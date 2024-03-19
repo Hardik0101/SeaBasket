@@ -12,7 +12,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/AuthScreens/LoginScreen';
 import SignupScreen from './screens/AuthScreens/SignupScreen';
 import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import {store} from './store/redux/store';
 import DetailScreen from './screens/DetailsScreen';
 import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
@@ -53,6 +53,7 @@ function AuthStack() {
 }
 
 function AppData() {
+  const data = useSelector(data => data);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -67,6 +68,7 @@ function AppData() {
         tabBarActiveTintColor: Colors.primary,
         tabBarStyle: {
           paddingHorizontal: 10,
+          paddingVertical: 6,
         },
         tabBarItemStyle: {
           marginBottom: 10,
@@ -112,11 +114,14 @@ function AppData() {
         component={CartScreen}
         options={{
           tabBarIcon: ({focused}) => (
-            <Cart
-              width={24}
-              height={24}
-              fill={focused ? Colors.primary : 'gray'}
-            />
+            <>
+              <Text style={styles.text}>{data.carts.cart.length}</Text>
+              <Cart
+                width={22}
+                height={22}
+                fill={focused ? Colors.primary : 'gray'}
+              />
+            </>
           ),
         }}
       />
@@ -208,6 +213,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  text: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: Colors.text,
+    position: 'absolute',
+    top: -4,
+    width: 10,
+    height: 12,
+    borderRadius: 10,
+    backgroundColor: Colors.bgcolor,
+    justifyContent: 'center',
+    textAlign: 'center',
+    zIndex: 10,
   },
 });
 

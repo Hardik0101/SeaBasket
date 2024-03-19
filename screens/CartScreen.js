@@ -129,8 +129,7 @@ function CartScreen() {
                       : product?.title}
                   </Text>
                   <Text style={styles.itemPrice}>
-                    {product.quantity}*${product?.price} = $
-                    {(product?.quantity * product?.price).toFixed(2)}
+                    ${(product?.quantity * product?.price).toFixed(2)}
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
@@ -158,7 +157,7 @@ function CartScreen() {
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>
-                Total Items: {totalQuantity}{' '}
+                Total Items: {data.carts.cart.length}
               </Text>
               <Text style={styles.totalText}>
                 Total Price: ${totalPrice.toFixed(2)}
@@ -172,7 +171,7 @@ function CartScreen() {
         <>
           <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
-              <Text style={styles.text}> The Cart is Empty :) </Text>
+              <Text style={styles.text}> Your Cart is Empty :) </Text>
             </View>
 
             <HorizontalCard
@@ -253,9 +252,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    borderRadius: 10,
     padding: 8,
   },
   totalTextContainer: {

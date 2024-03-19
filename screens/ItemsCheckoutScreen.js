@@ -135,8 +135,7 @@ function ItemsCheckoutScreen() {
                   : product?.title}
               </Text>
               <Text style={styles.itemPrice}>
-                {product?.quantity} *${product?.price} = $
-                {(product?.quantity * product?.price).toFixed(2)}
+                ${(product?.quantity * product?.price).toFixed(2)}
               </Text>
               <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
@@ -182,7 +181,7 @@ function ItemsCheckoutScreen() {
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>
-                Total Items: {totalQuantity}{' '}
+                Total Items: {data.check.check.length}
               </Text>
               <Text style={styles.totalText}>
                 Total Pay: ${totalPay.toFixed(2)}
@@ -275,9 +274,6 @@ const styles = StyleSheet.create({
   },
   itemSummary: {
     backgroundColor: Colors.bgcolor,
-    borderColor: Colors.primary,
-    borderWidth: 2,
-    borderRadius: 10,
     padding: 6,
   },
   billPrice: {

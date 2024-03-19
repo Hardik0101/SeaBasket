@@ -81,7 +81,7 @@ function PaymentScreen() {
       <View style={styles.addressComatiner}>
         <Text style={styles.text}>Address:</Text>
         <View style={styles.inputTextContainer}>
-          <Address width={26} height={26} />
+          <Address width={28} height={28} />
           {!address && (
             <Text
               style={[styles.addressText, select && styles.selectableAddress]}>
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   inputTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   selectableAddress: {
     backgroundColor: Colors.primary200,
@@ -217,6 +218,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.primary,
     padding: 4,
+    width: '90%',
+    textAlign: 'justify',
   },
   textMessage: {
     fontSize: 16,
