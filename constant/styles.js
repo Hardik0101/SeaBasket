@@ -6,5 +6,6 @@ export const Colors = {
   secondary: '#000000',
   bgcolor: 'white',
   bg: '#f7ede1',
+  text: '#000000',
   error100: '#ccacac',
 };

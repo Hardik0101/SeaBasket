@@ -4,17 +4,17 @@ import InputText from './InputText';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-function GooglePay() {
-  const [upiId, setUpiId] = useState('');
+function ApplePay() {
+  const [appleId, setAppleId] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  const [upiValid, setUpiValid] = useState(false);
+  const [appleValid, setAppleValid] = useState(false);
   const navigation = useNavigation();
 
   function validateInputs() {
     const errorsObj = {};
-    if (upiId.length !== 10) {
-      errorsObj.upiId = 'Invalid UPI id';
+    if (appleId.length !== 10) {
+      errorsObj.appleId = 'Invalid apple id';
     }
 
     if (password.length < 4) {
@@ -25,11 +25,11 @@ function GooglePay() {
     return Object.keys(errorsObj).length === 0;
   }
 
-  function handleupiSubmit() {
-    if (upiId === '0987654321' && password === '15052021') {
+  function handleappleSubmit() {
+    if (appleId === '0987654321' && password === '15052021') {
       navigation.navigate('ConfirmScreen');
     } else {
-      setUpiValid(true);
+      setAppleValid(true);
     }
   }
 
@@ -37,13 +37,13 @@ function GooglePay() {
     <>
       <View style={styles.container}>
         <InputText
-          children={'UPI id'}
+          children={'apple id'}
           keyboardType={'number-pad'}
           maxLength={16}
-          placeholder={'Enter UPI id'}
-          updatedValue={setUpiId}
-          value={upiId}
-          error={errors.upiId}
+          placeholder={'Enter apple id'}
+          updatedValue={setAppleId}
+          value={appleId}
+          error={errors.appleId}
         />
         <InputText
           children={'Password'}
@@ -57,19 +57,19 @@ function GooglePay() {
 
         <Button
           onPress={() => {
-            handleupiSubmit(), validateInputs();
+            handleappleSubmit(), validateInputs();
           }}>
           Pay and Confirm
         </Button>
       </View>
-      {upiValid && (
-        <Text style={styles.text}>Please Check the upi Details</Text>
+      {appleValid && (
+        <Text style={styles.text}>Please Check the apple Details</Text>
       )}
     </>
   );
 }
 
-export default GooglePay;
+export default ApplePay;
 
 const styles = StyleSheet.create({
   container: {

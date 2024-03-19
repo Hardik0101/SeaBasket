@@ -1,9 +1,18 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
+import InputText from './InputText';
+import Button from '../UI/Button';
 
 function PaypalMethod() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Paypal Method</Text>
+      <InputText children={'Paypal id'} placeholder={'Enter Paypal ID'} />
+      <InputText
+        children={'Password'}
+        placeholder={'Enter Paypal Password'}
+        secureTextEntry={true}
+      />
+
+      <Button>Pay and Confirm</Button>
     </View>
   );
 }

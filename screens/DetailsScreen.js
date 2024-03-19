@@ -121,7 +121,7 @@ function DetailScreen() {
                   ${data?.details?.details?.price}
                 </Text>
                 <Text style={styles.itemPrice}>
-                  <Star width={14} height={14} fill={Colors.primary300} />{' '}
+                  <Star width={14} height={14} fill={'#daa520'} />{' '}
                   <Text style={{fontSize: 20}}>
                     {data?.details?.details?.rating?.rate}
                   </Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AnekDevanagari',
     fontSize: 24,
     marginBottom: 6,
-    color: Colors.primary300,
+    color: Colors.text,
   },
   itemTitle: {
     fontSize: 24,
@@ -204,14 +204,14 @@ const styles = StyleSheet.create({
   itemDescription: {
     marginTop: 2,
     fontSize: 18,
-    color: Colors.primary200,
+    color: 'gray',
     textAlign: 'justify',
     letterSpacing: 1,
     fontFamily: 'AnekDevanagari',
     lineHeight: 24,
   },
   readMore: {
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
   buttons: {

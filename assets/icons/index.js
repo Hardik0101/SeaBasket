@@ -14,7 +14,9 @@ import FavCart from './favCart.svg';
 import Plus from './plus.svg';
 import Minus from './minus.svg';
 import Address from './address.svg';
+import Tick from './tick.svg';
 export {
+  Tick,
   Address,
   Cart,
   Home,

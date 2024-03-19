@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
   dataConatiner: {
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 20,
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
   buttons: {
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   totalText: {
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
     fontSize: 20,
   },
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   billPrice: {
     fontSize: 20,
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
   billContainer: {

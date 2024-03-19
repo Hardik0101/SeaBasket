@@ -48,7 +48,7 @@ function HorizontalCard({items, detailsHandler, children}) {
                       gap: 2,
                       height: 22,
                     }}>
-                    <Star width={12} height={12} fill={Colors.primary300} />
+                    <Star width={12} height={12} fill={'#d2c900'} />
                     <Text style={styles.itemRate}>{product.rating.rate}</Text>
                   </View>
                 </View>
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderColor: Colors.primary300,
     resizeMode: 'contain',
     backgroundColor: 'white',
   },
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
   },
   itemTitleView: {
     width: '100%',
-    backgroundColor: Colors.primary100,
+    backgroundColor: Colors.primary200,
     padding: 4,
     height: 60,
     borderTopRightRadius: 8,
@@ -107,21 +106,21 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 18,
     fontFamily: 'AnekDevanagari',
-    color: Colors.primary300,
+    color: Colors.text,
     textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
     fontFamily: 'AnekDevanagari',
-    color: Colors.primary300,
+    color: Colors.text,
   },
   contentContainer: {
     paddingBottom: 6,
   },
   itemRate: {
     fontSize: 18,
-    color: Colors.primary300,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
   textContainer: {

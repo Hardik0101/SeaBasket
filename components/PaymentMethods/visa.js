@@ -1,55 +1,102 @@
-import {View, Text, StyleSheet, TextInput} from 'react-native';
-import {Colors} from '../../constant/styles';
+import {View, StyleSheet, Text} from 'react-native';
 import Button from '../UI/Button';
+import InputText from './InputText';
+import {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 function VisaMethod() {
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCVV] = useState('');
+  const [cardHolderName, setCardHolderName] = useState('');
+  const [errors, setErrors] = useState({});
+  const [cardValid, setCardValid] = useState(false);
+  const navigation = useNavigation();
+
+  function validateInputs() {
+    const errorsObj = {};
+    if (cardNumber.length !== 16) {
+      errorsObj.cardNumber = 'Invalid card number';
+    }
+
+    if (expiryDate.length !== 4) {
+      errorsObj.expiryDate = 'Invalid expiry date';
+    }
+
+    if (cvv.length !== 3) {
+      errorsObj.cvv = 'Invalid CVV';
+    }
+
+    if (cardHolderName.length === 0) {
+      errorsObj.cardHolderName = 'Card holder name is required';
+    }
+
+    setErrors(errorsObj);
+    return Object.keys(errorsObj).length === 0;
+  }
+
+  function handleCardSubmit() {
+    if (
+      cardNumber === '1234123412341234' &&
+      cvv === '123' &&
+      cardHolderName === 'seaflux'
+    ) {
+      navigation.navigate('ConfirmScreen');
+    } else {
+      setCardValid(true);
+    }
+  }
+
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.cardNumber}>
-          <Text style={styles.text}>Card Number</Text>
-          <TextInput
-            style={styles.inputText}
-            keyboardType="number-pad"
-            placeholder="Enter Card Number"
-            placeholderTextColor={Colors.primary100}
-            maxLength={16}
-          />
-        </View>
+        <InputText
+          children={'Card Number'}
+          keyboardType={'number-pad'}
+          maxLength={16}
+          placeholder={'Enter Card Number'}
+          updatedValue={setCardNumber}
+          value={cardNumber}
+          error={errors.cardNumber}
+        />
         <View style={styles.dateAndCvv}>
-          <View>
-            <Text style={styles.text}>Expiry Date</Text>
-            <TextInput
-              style={styles.inputText}
-              keyboardType="number-pad"
-              placeholder="MM/YY"
-              placeholderTextColor={Colors.primary100}
-              maxLength={5}
-            />
-          </View>
-          <View>
-            <Text style={styles.text}>CVV</Text>
-            <TextInput
-              style={styles.inputText}
-              keyboardType="number-pad"
-              placeholder="Enter CVV"
-              placeholderTextColor={Colors.primary100}
-              maxLength={3}
-              secureTextEntry={true}
-            />
-          </View>
-        </View>
-        <View style={styles.cardHolder}>
-          <Text style={styles.text}>Card Holder Name</Text>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Enter Card Holder Name"
-            placeholderTextColor={Colors.primary100}
-            maxLength={16}
+          <InputText
+            children={'Expiry Date'}
+            keyboardType={'number-pad'}
+            maxLength={5}
+            placeholder={'MM/YY'}
+            updatedValue={setExpiryDate}
+            value={expiryDate}
+            error={errors.expiryDate}
+          />
+          <InputText
+            children={'CVV'}
+            keyboardType={'number-pad'}
+            maxLength={3}
+            placeholder={'CVV'}
+            secureTextEntry={true}
+            updatedValue={setCVV}
+            value={cvv}
+            error={errors.cvv}
           />
         </View>
-        <Button>Pay and Confirm</Button>
+        <InputText
+          children={'Card Holder Name'}
+          placeholder={'Enter Card Holder Name'}
+          updatedValue={setCardHolderName}
+          value={cardHolderName}
+          error={errors.cardHolderName}
+        />
+        <Button
+          onPress={() => {
+            handleCardSubmit(), validateInputs();
+          }}>
+          Pay and Confirm
+        </Button>
       </View>
+      {cardValid && (
+        <Text style={styles.text}>Please Check the Card Details</Text>
+      )}
     </>
   );
 }
@@ -60,32 +107,16 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 6,
   },
-  text: {
-    fontSize: 18,
-    fontFamily: 'AnekDevanagari',
-    color: Colors.primary,
-  },
-  inputText: {
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    borderRadius: 10,
-    color: Colors.primary,
-    fontFamily: 'AnekDevanagari',
-    fontSize: 20,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    textAlign: 'center',
-  },
-  cardNumber: {
-    marginBottom: 10,
-  },
   dateAndCvv: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
-  cardHolder: {
-    marginBottom: 10,
+  text: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'red',
+    fontFamily: 'AnekDevanagari',
+    letterSpacing: 1,
   },
 });

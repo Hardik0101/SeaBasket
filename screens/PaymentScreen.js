@@ -16,6 +16,9 @@ import PaymentIcons from './PaymentIcons.json';
 import VisaMethod from '../components/PaymentMethods/visa';
 import PaypalMethod from '../components/PaymentMethods/paypal';
 import CashOnDeliveryMethod from '../components/PaymentMethods/cashOnDelivery';
+import GooglePay from '../components/PaymentMethods/gPay';
+import ApplePay from '../components/PaymentMethods/applePay';
+import MasterCard from '../components/PaymentMethods/masterCard';
 
 function PaymentScreen() {
   const data = useSelector(state => state);
@@ -45,19 +48,19 @@ function PaymentScreen() {
         payment = <PaypalMethod />;
         break;
       case 'google_pay':
-        payment = PaymentIcons.paypal;
+        payment = <GooglePay />;
         break;
       case 'apple_pay':
-        payment = PaymentIcons.debitCard;
+        payment = <ApplePay />;
         break;
       case 'mastercard':
-        payment = PaymentIcons.cashOnDelivery;
+        payment = <MasterCard />;
         break;
       case 'cash_on_delivery':
         payment = <CashOnDeliveryMethod />;
         break;
       default:
-        payment = PaymentIcons.creditCard;
+        payment = null;
         break;
     }
     setActiveItem(item);
@@ -142,17 +145,18 @@ function PaymentScreen() {
                   <Image
                     key={index}
                     source={{uri: icon.image}}
-                    style={{width: 60, height: 30}}
+                    style={{width: 50, height: 30}}
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
               </>
             ))}
           </View>
+          {selectPayment && (
+            <View style={styles.paymentMethod}>{paymentMethod}</View>
+          )}
         </View>
       )}
-
-      {selectPayment && <View style={styles.visa}>{paymentMethod}</View>}
     </ScrollView>
   );
 }
@@ -165,14 +169,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 22,
     fontFamily: 'AnekDevanagari',
-    color: Colors.primary,
+    color: Colors.text,
   },
   methods: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 20,
+    gap: 10,
     marginTop: 8,
   },
   order: {
@@ -186,7 +190,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 28,
     fontFamily: 'AnekDevanagari',
-    color: Colors.primary,
+    color: Colors.text,
   },
   inputTextContainer: {
     flexDirection: 'row',
@@ -201,14 +205,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.primary,
     width: '90%',
-    color: Colors.primary,
+    color: Colors.text,
     fontFamily: 'AnekDevanagari',
     fontSize: 18,
   },
   addressText: {
     fontSize: 16,
     fontFamily: 'AnekDevanagari',
-    color: Colors.primary,
+    color: Colors.text,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.primary,
@@ -221,10 +225,11 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: 14,
     marginHorizontal: 8,
+    gap: 20,
   },
   payment: {
     marginTop: 10,
@@ -243,20 +248,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.primary,
     borderRadius: 8,
-    // backgroundColor: Colors.primary100,
   },
   payText: {
     textAlign: 'center',
     fontFamily: 'AnekDevanagari',
     fontSize: 20,
-    color: Colors.primary300,
+    color: Colors.text,
   },
-  visa: {
-    backgroundColor: Colors.bgcolor,
-    borderRadius: 10,
+  paymentMethod: {
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.primary,
-    padding: 4,
+    padding: 8,
     marginTop: 10,
   },
 });
