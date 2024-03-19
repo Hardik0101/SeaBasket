@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
     width: 200,
   },
   filterOption: {

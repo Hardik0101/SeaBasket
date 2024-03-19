@@ -33,21 +33,21 @@ function ProductScreen() {
 
   useEffect(() => {
     async function fetchData() {
-      setTimeout(() => {
-        dispatch(fetchCategory()),
-          dispatch(fetchAllProducts()),
-          dispatch(fetchElectronics()),
-          dispatch(fetchJeweleryItems()),
-          dispatch(fetchMenClothing()),
-          dispatch(fetchWomenClothing()),
+      dispatch(fetchCategory()),
+        dispatch(fetchAllProducts()),
+        dispatch(fetchElectronics()),
+        dispatch(fetchJeweleryItems()),
+        dispatch(fetchMenClothing()),
+        dispatch(fetchWomenClothing()),
+        setTimeout(() => {
           setLoading(false);
-      }, 2000);
+        }, 2000);
     }
     fetchData();
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [dispatch]);
 
   function getProductData(item) {
     let productData = null;
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary300,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'AnekDevanagari',
     textAlign: 'center',
     color: Colors.primary300,
     textTransform: 'capitalize',
@@ -181,10 +181,10 @@ const styles = StyleSheet.create({
     paddingEnd: 6,
   },
   activeTitleContainer: {
-    backgroundColor: Colors.primary200,
+    backgroundColor: Colors.primary300,
   },
   activeTitle: {
-    color: Colors.secondary,
+    color: Colors.bgcolor,
   },
   loadingContainer: {
     flex: 1,

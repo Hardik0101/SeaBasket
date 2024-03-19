@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 6,
     borderBottomColor: Colors.secondary,
     borderBottomWidth: 2,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.secondary,
-    fontWeight: '300',
+    fontFamily: 'AnekDevanagari',
   },
   inputInvalid: {
     backgroundColor: Colors.error100,

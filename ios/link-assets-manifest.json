@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/AnekDevanagari-Bold.ttf",
+      "sha1": "dc2c59be7a8f64aad22429f1cdece5b356e56455"
+    },
+    {
+      "path": "assets/fonts/AnekDevanagari.ttf",
+      "sha1": "dc2c59be7a8f64aad22429f1cdece5b356e56455"
+    },
+    {
+      "path": "assets/fonts/Angkor-Regular.ttf",
+      "sha1": "1157da8d1ec9f8f1d89afaf83f22d047bd13402e"
+    }
+  ]
+}

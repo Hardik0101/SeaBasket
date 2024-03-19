@@ -36,7 +36,7 @@ function HomeScreen() {
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [dispatch]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});

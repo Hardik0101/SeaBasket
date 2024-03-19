@@ -74,6 +74,7 @@ function SearchCard() {
             returnKeyType="search"
             onChangeText={text => setSearchQuery(text)}
             value={searchQuery}
+            placeholderTextColor={Colors.bgcolor}
           />
           <Search width={28} height={28} />
         </View>
@@ -152,15 +153,14 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'justify',
     marginHorizontal: 2,
   },
   price: {
-    marginTop: 6,
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     fontSize: 20,
     color: Colors.primary300,
   },

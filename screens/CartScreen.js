@@ -12,6 +12,7 @@ import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  clearState,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
@@ -25,6 +26,7 @@ import {
   incrementCart,
   removeCart,
 } from '../store/redux/cartSlice';
+import {setCheck} from '../store/redux/checkoutSlice';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -41,7 +43,10 @@ function CartScreen() {
       dispatch(fetchWomenClothing());
     }
     loadData();
-  }, []);
+    return () => {
+      dispatch(clearState());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     const totalPrice = data.carts.cart.reduce(
@@ -55,10 +60,6 @@ function CartScreen() {
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
   }, [data.carts.cart]);
-
-  function byProductHandler() {
-    navigation.navigate('Product');
-  }
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -92,26 +93,34 @@ function CartScreen() {
     dispatch(decrementCart(index));
   }
 
+  function checkoutItems() {
+    {
+      data.carts.cart.map(items => {
+        dispatch(setCheck(items));
+      });
+    }
+    navigation.navigate('CheckoutScreen');
+  }
+
   return (
     <>
-      <ScrollView
-        style={styles.conatiner}
-        contentContainerStyle={styles.scrollStyle}
-        showsVerticalScrollIndicator={false}>
-        {data.carts.cart.length > 0 && (
+      {data.carts.cart.length > 0 && (
+        <ScrollView
+          style={styles.conatiner}
+          contentContainerStyle={styles.scrollStyle}
+          showsVerticalScrollIndicator={false}>
           <>
             {data.carts.cart.map((product, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.itemConatiner}
                 onPress={() => detailsHandler(product.id)}>
-                <View style={styles.imageConatiner}>
-                  <Image
-                    source={{uri: product?.image}}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                </View>
+                <Image
+                  source={{uri: product?.image}}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+
                 <View style={styles.dataConatiner}>
                   <Text style={styles.itemTitle}>
                     {' '}
@@ -120,13 +129,12 @@ function CartScreen() {
                       : product?.title}
                   </Text>
                   <Text style={styles.itemPrice}>
-                    {product.quantity}*${product?.price} = $
-                    {(product?.quantity * product?.price).toFixed(2)}
+                    ${(product?.quantity * product?.price).toFixed(2)}
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
                     <Button onPress={() => increaseQuantity(index)}>
-                      <Plus width={18} height={18} />
+                      <Plus width={20} height={20} />
                     </Button>
                     <Button onPress={() => removeCartHandler(index)}>
                       Remove
@@ -134,49 +142,52 @@ function CartScreen() {
 
                     {product.quantity > 1 && (
                       <Button onPress={() => decreaseQuantity(index)}>
-                        <Minus width={18} height={18} />
+                        <Minus width={20} height={20} />
                       </Button>
                     )}
                   </View>
                 </View>
               </TouchableOpacity>
             ))}
-            <View>
-              <View style={styles.totalConatiner}>
-                <View style={styles.totalTextContainer}>
-                  <Text style={styles.totalText}>
-                    Total Items: {totalQuantity}{' '}
-                  </Text>
-                  <Text style={styles.totalText}>
-                    Total Price: ${totalPrice.toFixed(2)}
-                  </Text>
-                </View>
-                <Button>Buy Now</Button>
-              </View>
-            </View>
           </>
-        )}
-
-        {data.carts.cart.length === 0 && (
-          <>
+        </ScrollView>
+      )}
+      {data.carts.cart.length > 0 && (
+        <View style={styles.itemSummary}>
+          <View style={styles.totalConatiner}>
+            <View style={styles.totalTextContainer}>
+              <Text style={styles.totalText}>
+                Total Items: {data.carts.cart.length}
+              </Text>
+              <Text style={styles.totalText}>
+                Total Price: ${totalPrice.toFixed(2)}
+              </Text>
+            </View>
+            <Button onPress={checkoutItems}>Buy Now</Button>
+          </View>
+        </View>
+      )}
+      {data.carts.cart.length === 0 && (
+        <>
+          <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
-              <Text style={styles.text}> The Cart is Empty :) </Text>
+              <Text style={styles.text}> Your Cart is Empty :) </Text>
             </View>
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
+              detailsHandler={detailsHandler}
               items={data.data.electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
+              detailsHandler={detailsHandler}
               items={data.data.menClothing}
             />
-          </>
-        )}
-      </ScrollView>
+          </View>
+        </>
+      )}
     </>
   );
 }
@@ -185,7 +196,7 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   scrollStyle: {
-    paddingBottom: 6,
+    paddingBottom: 90,
   },
   conatiner: {
     marginHorizontal: 6,
@@ -194,7 +205,7 @@ const styles = StyleSheet.create({
   itemConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 120,
+    height: 130,
     borderWidth: 2,
     borderColor: Colors.primary300,
     borderRadius: 10,
@@ -202,26 +213,14 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   textConatiner: {
-    padding: 6,
-    height: 100,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     color: Colors.primary300,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontFamily: 'AnekDevanagari',
     letterSpacing: 1,
-  },
-  imageConatiner: {
-    height: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.primary100,
   },
   image: {
     width: 100,
@@ -230,8 +229,8 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   dataConatiner: {
     width: '70%',
@@ -239,30 +238,39 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 20,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   buttons: {
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: 2,
   },
   totalConatiner: {
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
+    padding: 8,
   },
   totalTextContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
   totalText: {
-    color: Colors.primary300,
-    fontWeight: 'bold',
-    fontSize: 20,
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
+    fontSize: 22,
+  },
+  itemSummary: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    padding: 6,
+    backgroundColor: Colors.bgcolor,
   },
 });

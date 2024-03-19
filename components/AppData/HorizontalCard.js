@@ -8,34 +8,14 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {FavCart, Star} from '../../assets/icons';
-import Button from '../UI/Button';
-import ItemScrollCard from './itemScrollCard';
+import {Star} from '../../assets/icons';
 
 function HorizontalCard({items, detailsHandler, children}) {
-  const [showAll, setShowAll] = useState(false);
-
-  // function showAllHandler() {
-  //   setShowAll(true);
-  // }
   return (
     <>
-      {/* {showAll && (
-        <View style={styles.allData}>
-          <View style={styles.canclebutton}>
-            <Button onPress={() => setShowAll(false)}>Close</Button>
-          </View>
-
-          <ItemScrollCard items={items} detailsHandler={detailsHandler} />
-        </View>
-      )}
-       */}
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{children}</Text>
-          {/* <Text style={styles.showAll} onPress={showAllHandler}>
-            show all
-          </Text> */}
         </View>
         <ScrollView
           horizontal={true}
@@ -66,8 +46,9 @@ function HorizontalCard({items, detailsHandler, children}) {
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 2,
+                      height: 22,
                     }}>
-                    <Star width={20} height={20} fill={Colors.primary300} />
+                    <Star width={12} height={12} fill={'#d2c900'} />
                     <Text style={styles.itemRate}>{product.rating.rate}</Text>
                   </View>
                 </View>
@@ -83,12 +64,6 @@ function HorizontalCard({items, detailsHandler, children}) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    // paddingLeft: 6,
-  },
-  title: {
-    color: Colors.primary,
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   card: {
     width: 170,
@@ -107,7 +82,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderColor: Colors.primary300,
     resizeMode: 'contain',
     backgroundColor: 'white',
   },
@@ -116,40 +90,38 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 4,
   },
-  icon: {
-    position: 'absolute',
-    zIndex: 100,
-  },
   title: {
     color: Colors.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'AnekDevanagari',
   },
   itemTitleView: {
     width: '100%',
-    backgroundColor: Colors.primary100,
+    backgroundColor: Colors.primary200,
     padding: 4,
     height: 60,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
   },
   itemTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.primary300,
+    fontFamily: 'AnekDevanagari',
+    color: Colors.text,
     textAlign: 'justify',
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
-    fontWeight: 'bold',
-    color: Colors.primary300,
+    fontFamily: 'AnekDevanagari',
+    color: Colors.text,
   },
   contentContainer: {
     paddingBottom: 6,
   },
   itemRate: {
-    fontSize: 22,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    fontSize: 18,
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   textContainer: {
     flexDirection: 'row',
@@ -170,7 +142,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     overflow: 'hidden',
-    // height: '100%',
   },
   canclebutton: {
     padding: 4,

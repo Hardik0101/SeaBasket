@@ -10,20 +10,22 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
-import {useRoute} from '@react-navigation/native';
-import {fetchDetails} from '../store/redux/detailsSlice';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {clearState, fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
+import {setCheck} from '../store/redux/checkoutSlice';
+import Swiper from 'react-native-swiper';
+import {Star} from '../assets/icons';
 
 function DetailScreen() {
   const dispatch = useDispatch();
   const data = useSelector(state => state);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
+  const navigation = useNavigation();
   useEffect(() => {
     function fetchData() {
       try {
@@ -37,6 +39,9 @@ function DetailScreen() {
       }
     }
     fetchData();
+    return () => {
+      dispatch(clearState());
+    };
   }, [dispatch, route.params.id]);
 
   function toggleDescription() {
@@ -44,11 +49,15 @@ function DetailScreen() {
   }
 
   function addToCart() {
-    setCart([...cart, data.details.details]);
     dispatch(addCart(data.details.details));
     ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
   }
-  // console.log(data.carts);
+
+  function checkoutItems() {
+    dispatch(setCheck(data.details.details));
+    navigation.navigate('CheckoutScreen');
+  }
+
   const description =
     data?.details?.details &&
     typeof data.details.details.description === 'string'
@@ -78,12 +87,31 @@ function DetailScreen() {
       {data && (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                source={{uri: data?.details?.details?.image}}
-                style={styles.itemImage}
-              />
-            </View>
+            <Swiper
+              style={styles.wrapper}
+              autoplay={true}
+              autoplayTimeout={4}
+              activeDotColor="green"
+              height={300}>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+              <View style={styles.slide}>
+                <Image
+                  source={{uri: data?.details?.details?.image}}
+                  style={styles.itemImage}
+                />
+              </View>
+            </Swiper>
             <View style={styles.itemConatiner}>
               <Text style={styles.itemTitle}>
                 {data?.details?.details?.title}
@@ -93,7 +121,10 @@ function DetailScreen() {
                   ${data?.details?.details?.price}
                 </Text>
                 <Text style={styles.itemPrice}>
-                  Rate: {data?.details?.details?.rating?.rate}
+                  <Star width={14} height={14} fill={'#daa520'} />{' '}
+                  <Text style={{fontSize: 20}}>
+                    {data?.details?.details?.rating?.rate}
+                  </Text>
                 </Text>
               </View>
               <Text style={styles.itemDescription}>About this Product: </Text>
@@ -112,7 +143,7 @@ function DetailScreen() {
             </View>
           </View>
           <View style={styles.buttons}>
-            <Button>Buy Now</Button>
+            <Button onPress={checkoutItems}>Buy Now</Button>
             <Button onPress={addToCart}>Add to Cart</Button>
           </View>
         </View>
@@ -141,60 +172,54 @@ const styles = StyleSheet.create({
   itemConatiner: {
     width: '100%',
     marginHorizontal: 6,
+    marginTop: 10,
   },
   imageContainer: {
     borderBottomColor: Colors.primary,
     borderBottomWidth: 2,
     width: '100%',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   itemImage: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
     marginBottom: 10,
     resizeMode: 'contain',
-    backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: Colors.primary100,
-    borderRadius: 10,
   },
   itemPrice: {
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     fontSize: 24,
     marginBottom: 6,
-    color: Colors.primary300,
+    color: Colors.text,
   },
   itemTitle: {
-    fontSize: 18,
-    marginBottom: 4,
+    fontSize: 24,
+    lineHeight: 32,
     color: Colors.primary300,
-    fontWeight: '500',
+    fontFamily: 'AnekDevanagari-Bold',
     letterSpacing: 1,
-    padding: 2,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.primary,
+    paddingTop: 10,
   },
   itemDescription: {
     marginTop: 2,
-    fontSize: 16,
-    color: Colors.primary200,
+    fontSize: 18,
+    color: 'gray',
     textAlign: 'justify',
     letterSpacing: 1,
+    fontFamily: 'AnekDevanagari',
     lineHeight: 24,
-    fontWeight: '700',
   },
   readMore: {
-    color: Colors.primary300,
-    fontWeight: '700',
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   buttons: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomColor: Colors.primary,
-    borderBottomWidth: 2,
+    justifyContent: 'center',
+    gap: 20,
     paddingVertical: 10,
-    width: '100%',
   },
   loadingContainer: {
     flex: 1,
@@ -205,5 +230,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wrapper: {
+    color: Colors.primary,
   },
 });

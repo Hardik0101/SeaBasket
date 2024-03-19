@@ -91,15 +91,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 26,
+    fontFamily: 'AnekDevanagari',
     marginBottom: 10,
     textAlign: 'center',
     color: Colors.secondary,
   },
   description: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
   image: {
@@ -118,8 +119,8 @@ const styles = StyleSheet.create({
   },
   notice: {
     marginTop: 14,
-    fontSize: 18,
-    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'AnekDevanagari',
     color: Colors.primary300,
   },
 });
