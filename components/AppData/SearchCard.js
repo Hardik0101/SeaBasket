@@ -13,6 +13,7 @@ import {Search} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAllProducts} from '../../store/redux/dataSlice';
+import {Searchbar} from 'react-native-paper';
 
 function SearchCard() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,17 +68,15 @@ function SearchCard() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Search..."
-            returnKeyType="search"
-            onChangeText={text => setSearchQuery(text)}
-            value={searchQuery}
-            placeholderTextColor={Colors.bgcolor}
-          />
-          <Search width={28} height={28} />
-        </View>
+        <Searchbar
+          placeholder="Search..."
+          returnKeyType="search"
+          onChangeText={text => setSearchQuery(text)}
+          value={searchQuery}
+          style={styles.search}
+          inputStyle={styles.input}
+          iconColor="#000000"
+        />
         {searchQuery && (
           <>
             {filteredProducts.length > 0 ? (
@@ -119,20 +118,17 @@ const styles = StyleSheet.create({
     height: 500,
     overflow: 'hidden',
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary100,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginVertical: 4,
-    marginHorizontal: 6,
-  },
   input: {
-    flex: 1,
-    height: 40,
-    color: Colors.secondary,
     fontWeight: 'bold',
+    margin: -8,
+    color: Colors.bgcolor,
+  },
+  search: {
+    height: 40,
+    backgroundColor: Colors.primary200,
+    borderRadius: 10,
+    marginHorizontal: 6,
+    marginTop: 4,
   },
   itemContainer: {
     flexDirection: 'row',
