@@ -113,9 +113,9 @@ const styles = StyleSheet.create({
   addContainer: {
     marginHorizontal: 6,
     borderRadius: 12,
-    height: 210,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
+    height: 180,
+    borderWidth: 1,
+    borderColor: 'gray',
     overflow: 'hidden',
   },
 });

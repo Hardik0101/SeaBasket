@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 130,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.primary300,
     borderRadius: 10,
     marginBottom: 6,

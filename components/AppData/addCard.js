@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, ScrollView, Image, StyleSheet, Dimensions} from 'react-native';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('screen');
 
 const images = [
-  require('../../assets/images/add2.webp'),
-  require('../../assets/images/add1.webp'),
-  require('../../assets/images/add3.webp'),
-  require('../../assets/images/add4.webp'),
+  require('../../assets/images/add1.jpg'),
+  require('../../assets/images/add2.jpg'),
+  require('../../assets/images/add3.jpg'),
+  require('../../assets/images/add4.jpg'),
 ];
 
 const AddCard = () => {
@@ -38,7 +38,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width,
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
+
+    height: 180,
   },
 });
 

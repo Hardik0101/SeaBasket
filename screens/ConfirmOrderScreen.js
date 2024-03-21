@@ -4,9 +4,13 @@ import {Tick} from '../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../constant/styles';
 import ButtonComponent from '../components/UI/ButtonComponent';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearState} from '../store/redux/cartSlice';
 
 function ConfirmScreen() {
   const navigation = useNavigation();
+  const data = useSelector(data => data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     function backAction() {
@@ -21,6 +25,12 @@ function ConfirmScreen() {
 
     return () => backHandler.remove();
   }, [navigation]);
+
+  useEffect(() => {
+    if (data.carts.cart.length === data.check.check.length) {
+      dispatch(clearState());
+    }
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
