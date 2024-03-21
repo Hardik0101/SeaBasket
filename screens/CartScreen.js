@@ -19,14 +19,14 @@ import {
   fetchWomenClothing,
 } from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
-import Button from '../components/UI/Button';
-import {Minus, Plus} from '../assets/icons';
 import {
   decrementCart,
   incrementCart,
   removeCart,
 } from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import IconButtonComponent from '../components/UI/IconButton';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -133,17 +133,24 @@ function CartScreen() {
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
-                    <Button onPress={() => increaseQuantity(index)}>
-                      <Plus width={20} height={20} />
-                    </Button>
-                    <Button onPress={() => removeCartHandler(index)}>
-                      Remove
-                    </Button>
+                    <IconButtonComponent
+                      icon={'plus'}
+                      size={20}
+                      onPress={() => increaseQuantity(index)}
+                    />
+                    <ButtonComponent
+                      buttonColor={'#2b5c3a'}
+                      color={'#FFFFFF'}
+                      onPress={() => removeCartHandler(index)}
+                      children={'Remove'}
+                    />
 
                     {product.quantity > 1 && (
-                      <Button onPress={() => decreaseQuantity(index)}>
-                        <Minus width={20} height={20} />
-                      </Button>
+                      <IconButtonComponent
+                        icon={'minus'}
+                        onPress={() => decreaseQuantity(index)}
+                        size={20}
+                      />
                     )}
                   </View>
                 </View>
@@ -163,7 +170,12 @@ function CartScreen() {
                 Total Price: ${totalPrice.toFixed(2)}
               </Text>
             </View>
-            <Button onPress={checkoutItems}>Buy Now</Button>
+            <ButtonComponent
+              onPress={checkoutItems}
+              buttonColor={'#2b5c3a'}
+              color={'#FFFFFF'}>
+              {'Buy Now'}
+            </ButtonComponent>
           </View>
         </View>
       )}
@@ -243,10 +255,10 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 2,
+    marginTop: -4,
   },
   totalConatiner: {
     justifyContent: 'center',

@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import Button from '../UI/Button';
 import Input from './Input';
 import {Login, Signup} from '../../assets/icons';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
   const [enteredUsername, setEnteredUsername] = useState('');
@@ -91,13 +91,19 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
           )}
 
           <View style={styles.buttons}>
-            <Button onPress={submitHandler}>
-              {isLogin ? (
-                <Login fill={'black'} width={26} height={26} />
-              ) : (
-                <Signup fill={'black'} width={26} height={26} />
-              )}
-            </Button>
+            {isLogin ? (
+              <ButtonComponent
+                icon={'login'}
+                children={'Login'}
+                onPress={submitHandler}
+              />
+            ) : (
+              <ButtonComponent
+                icon={'account-box-multiple'}
+                children={'SignUp'}
+                onPress={submitHandler}
+              />
+            )}
           </View>
         </View>
       </View>

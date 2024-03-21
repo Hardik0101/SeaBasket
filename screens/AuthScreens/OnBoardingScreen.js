@@ -7,9 +7,8 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import Button from '../../components/UI/Button';
 import {Colors} from '../../constant/styles';
-
+import ButtonComponent from '../../components/UI/ButtonComponent';
 const {width} = Dimensions.get('window');
 
 function OnboardingScreen({navigation}) {
@@ -68,7 +67,12 @@ function OnboardingScreen({navigation}) {
         {currentPage === pages.length - 1 && (
           <>
             <View style={styles.buttons}>
-              <Button onPress={handleLogin}>Get Started</Button>
+              <ButtonComponent
+                buttonColor={'#2b5c3a'}
+                color={'#FFFFFF'}
+                children={'Get Started'}
+                onPress={handleLogin}
+              />
             </View>
           </>
         )}

@@ -8,7 +8,6 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {clearState, fetchDetails} from '../store/redux/detailsSlice';
@@ -17,6 +16,7 @@ import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
 import Swiper from 'react-native-swiper';
 import {Star} from '../assets/icons';
+import ButtonComponent from '../components/UI/ButtonComponent';
 
 function DetailScreen() {
   const dispatch = useDispatch();
@@ -143,8 +143,12 @@ function DetailScreen() {
             </View>
           </View>
           <View style={styles.buttons}>
-            <Button onPress={checkoutItems}>Buy Now</Button>
-            <Button onPress={addToCart}>Add to Cart</Button>
+            <ButtonComponent onPress={checkoutItems}>
+              {' Buy Now'}
+            </ButtonComponent>
+            <ButtonComponent onPress={addToCart}>
+              {' Add to Cart'}
+            </ButtonComponent>
           </View>
         </View>
       )}

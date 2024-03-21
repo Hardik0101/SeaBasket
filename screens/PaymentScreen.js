@@ -11,7 +11,6 @@ import {useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 import {Address} from '../assets/icons';
 import {useState} from 'react';
-import Button from '../components/UI/Button';
 import PaymentIcons from './PaymentIcons.json';
 import VisaMethod from '../components/PaymentMethods/visa';
 import PaypalMethod from '../components/PaymentMethods/paypal';
@@ -19,6 +18,8 @@ import CashOnDeliveryMethod from '../components/PaymentMethods/cashOnDelivery';
 import GooglePay from '../components/PaymentMethods/gPay';
 import ApplePay from '../components/PaymentMethods/applePay';
 import MasterCard from '../components/PaymentMethods/masterCard';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import IconButtonComponent from '../components/UI/IconButton';
 
 function PaymentScreen() {
   const data = useSelector(state => state);
@@ -98,30 +99,33 @@ function PaymentScreen() {
             />
           )}
         </View>
-
         <View style={styles.buttons}>
-          <Button onPress={() => setAddress(true)}>Edit</Button>
+          <ButtonComponent
+            icon={'clipboard-edit-outline'}
+            onPress={() => setAddress(true)}>
+            {'Edit'}
+          </ButtonComponent>
           {!select && (
             <Text style={styles.textMessage}>Please select the address ➤</Text>
           )}
           {!address && (
-            <Button
+            <ButtonComponent
               onPress={() => {
                 setSelect(true);
               }}>
               {select ? 'Selected' : 'Select'}
-            </Button>
+            </ButtonComponent>
           )}
 
           {address && (
-            <Button
+            <ButtonComponent
               onPress={() => {
                 setAddress(false);
                 setSelect(false);
                 AddressHandler(input);
               }}>
-              Done
-            </Button>
+              {'Done'}
+            </ButtonComponent>
           )}
         </View>
       </View>
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 14,
     marginHorizontal: 8,
-    gap: 20,
+    gap: 8,
   },
   payment: {
     marginTop: 10,

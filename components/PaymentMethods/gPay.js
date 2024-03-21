@@ -1,8 +1,8 @@
 import {View, StyleSheet, Text} from 'react-native';
-import Button from '../UI/Button';
 import InputText from './InputText';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function GooglePay() {
   const [upiId, setUpiId] = useState('');
@@ -55,12 +55,12 @@ function GooglePay() {
           error={errors.password}
         />
 
-        <Button
+        <ButtonComponent
           onPress={() => {
             handleupiSubmit(), validateInputs();
           }}>
-          Pay and Confirm
-        </Button>
+          {'Pay and Confirm'}
+        </ButtonComponent>
       </View>
       {upiValid && (
         <Text style={styles.text}>Please Check the upi Details</Text>

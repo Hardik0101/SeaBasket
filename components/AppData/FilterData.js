@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
-import Button from '../UI/Button';
 import {Filter, Sort} from '../../assets/icons';
 import {
   clearState,
@@ -17,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';
 import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -141,25 +141,24 @@ function FilterData({items}) {
     <>
       {/* Two Button Filter and Sort */}
       <View style={styles.filterContainer}>
-        <Button
+        <ButtonComponent
+          buttonColor={'#2b5c3a'}
+          color={'#FFFFFF'}
+          icon={'filter-variant'}
           onPress={() => {
             setModalVisible(true), setTypeItems('filter');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Filter width={24} height={24} />
-            <Text style={styles.buttonText}>Filter</Text>
-          </View>
-        </Button>
-        <Button
-          short
+          }}
+          children={'Filter'}
+        />
+        <ButtonComponent
+          buttonColor={'#2b5c3a'}
+          color={'#FFFFFF'}
+          icon={'sort-variant'}
           onPress={() => {
             setModalVisible(true), setTypeItems('sort');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Sort width={24} height={24} fill={Colors.bgcolor} />
-            <Text style={styles.buttonText}> Sort</Text>
-          </View>
-        </Button>
+          }}
+          children={'Sort'}
+        />
       </View>
 
       {/* Open Modal Base on typeItems Filter and Sort */}

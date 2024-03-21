@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Modal, TextInput} from 'react-native';
-import Button from '../UI/Button';
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../../constant/styles';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function CashOnDeliveryMethod() {
   const navigation = useNavigation();
@@ -25,7 +25,9 @@ function CashOnDeliveryMethod() {
 
   return (
     <View style={styles.container}>
-      <Button onPress={ConfirmHandler}>Confirm The Order</Button>
+      <ButtonComponent onPress={ConfirmHandler}>
+        {'Confirm The Order'}
+      </ButtonComponent>
       <Modal
         animationType="slide"
         transparent={true}
@@ -49,7 +51,9 @@ function CashOnDeliveryMethod() {
               secureTextEntry={true}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <Button onPress={handleOTPSubmit}>Confirm</Button>
+            <ButtonComponent onPress={handleOTPSubmit}>
+              {'Confirm'}
+            </ButtonComponent>
           </View>
         </View>
       </Modal>

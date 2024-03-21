@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, BackHandler} from 'react-native';
 import {Tick} from '../assets/icons';
 import {useNavigation} from '@react-navigation/native';
-import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
+import ButtonComponent from '../components/UI/ButtonComponent';
 
 function ConfirmScreen() {
   const navigation = useNavigation();
@@ -30,9 +30,9 @@ function ConfirmScreen() {
         <Text style={styles.textMessage}>
           Your order has been successfully.
         </Text>
-        <Button onPress={() => navigation.navigate('Home')}>
-          Continue Shopping
-        </Button>
+        <ButtonComponent onPress={() => navigation.navigate('Home')}>
+          {'Continue Shopping'}
+        </ButtonComponent>
       </View>
     </View>
   );

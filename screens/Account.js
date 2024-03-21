@@ -5,7 +5,7 @@ import {Colors} from '../constant/styles';
 import InputText from '../components/PaymentMethods/InputText';
 import {IconButton, MD3Colors} from 'react-native-paper';
 import {TextInput} from 'react-native-paper';
-import ButtonComponent from '../components/ButtonComponent';
+import ButtonComponent from '../components/UI/ButtonComponent';
 
 function AccountScreen({navigation}) {
   const [edit, setEdit] = useState(false);
