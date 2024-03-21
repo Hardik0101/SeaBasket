@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
-import {Filter, Sort} from '../../assets/icons';
 import {
   clearState,
   fetchAllProducts,
@@ -186,7 +185,9 @@ function FilterData({items}) {
           {data.length > 0 && (
             <View style={styles.filterData}>
               <View style={styles.canclebutton}>
-                <Button onPress={filterDataHandler}>Close</Button>
+                <ButtonComponent onPress={filterDataHandler}>
+                  Close
+                </ButtonComponent>
               </View>
               <Text style={styles.filterTitle}>{filterTitles}</Text>
               <ItemScrollCard items={data} detailsHandler={detailsHandler} />
@@ -195,7 +196,9 @@ function FilterData({items}) {
           {data.length === 0 && (
             <View style={styles.filterData}>
               <View style={styles.canclebutton}>
-                <Button onPress={filterDataHandler}>Close</Button>
+                <ButtonComponent onPress={filterDataHandler}>
+                  Close
+                </ButtonComponent>
               </View>
               <Text style={styles.title}>Item is not Found...</Text>
             </View>

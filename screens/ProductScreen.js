@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
 import ItemScrollCard from '../components/AppData/itemScrollCard';
+import {Chip} from 'react-native-paper';
 
 function ProductScreen() {
   const dispatch = useDispatch();
@@ -94,40 +95,30 @@ function ProductScreen() {
         horizontal={true}
         style={styles.container}
         contentContainerStyle={styles.contentContainerHorizontal}>
-        <TouchableOpacity
+        <Chip
           onPress={() => getProductData()}
-          style={styles.scrollItems}>
-          <View
-            style={[
-              styles.titleContainer,
-              activeItem === null && styles.activeTitleContainer,
-            ]}>
-            <Text
-              style={[styles.title, activeItem === null && styles.activeTitle]}>
-              For You
-            </Text>
-          </View>
-        </TouchableOpacity>
-
+          style={[
+            styles.titleContainer,
+            activeItem === null && styles.activeTitleContainer,
+          ]}
+          textStyle={[styles.title, activeItem === null && styles.activeTitle]}>
+          For You
+        </Chip>
         {product.data.category.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => getProductData(item)}
-            style={styles.scrollItems}>
-            <View
+          <>
+            <Chip
+              onPress={() => getProductData(item)}
               style={[
                 styles.titleContainer,
                 activeItem === item && styles.activeTitleContainer,
+              ]}
+              textStyle={[
+                styles.title,
+                activeItem === item && styles.activeTitle,
               ]}>
-              <Text
-                style={[
-                  styles.title,
-                  activeItem === item && styles.activeTitle,
-                ]}>
-                {item}
-              </Text>
-            </View>
-          </TouchableOpacity>
+              {item}
+            </Chip>
+          </>
         ))}
       </ScrollView>
 
@@ -152,30 +143,26 @@ const styles = StyleSheet.create({
   mainView: {
     height: '100%',
   },
-  scrollItems: {
-    marginRight: 6,
-  },
   container: {
     padding: 6,
     flexDirection: 'row',
-    width: '100%',
-    height: 56,
+    height: 58,
     borderBottomWidth: 1,
     borderColor: Colors.primary300,
   },
   title: {
-    fontSize: 20,
-    fontFamily: 'AnekDevanagari',
-    textAlign: 'center',
+    fontSize: 18,
+    lineHeight: 18,
     color: Colors.primary300,
     textTransform: 'capitalize',
   },
   titleContainer: {
-    padding: 4,
-    borderRadius: 12,
-    borderWidth: 2,
     borderColor: Colors.primary300,
-    width: '100%',
+    marginRight: 6,
+    backgroundColor: Colors.bgcolor,
+    borderWidth: 2,
+    padding: 2,
+    justifyContent: 'center',
   },
   contentContainerHorizontal: {
     paddingEnd: 6,

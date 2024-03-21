@@ -1,7 +1,6 @@
 import {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Input from './Input';
-import {Login, Signup} from '../../assets/icons';
 import ButtonComponent from '../UI/ButtonComponent';
 
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
