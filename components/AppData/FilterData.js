@@ -19,7 +19,7 @@ import ButtonComponent from '../UI/ButtonComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [filterTitles, setFilterTitles] = useState(null);
+  const [filterTitles, setFilterTitles] = useState([]);
   const [filterData, setFilterData] = useState(false);
   const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);

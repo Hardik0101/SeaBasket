@@ -9,7 +9,6 @@ import ButtonComponent from '../components/UI/ButtonComponent';
 
 function AccountScreen({navigation}) {
   const [edit, setEdit] = useState(false);
-  const [text, setText] = React.useState('');
 
   const handleLogin = () => {
     navigation.navigate('Login');
@@ -32,10 +31,8 @@ function AccountScreen({navigation}) {
         {edit && (
           <>
             <TextInput
-              mode="outlined"
               label="User Name"
-              value={text}
-              onChangeText={text => setText(text)}
+              left={<TextInput.Icon icon="account" size={20} />}
             />
 
             <InputText
@@ -56,7 +53,7 @@ function AccountScreen({navigation}) {
         )}
 
         <FlatButton>My Orders</FlatButton>
-        {/* <Button>Logout</Button> */}
+        <ButtonComponent>Logout</ButtonComponent>
         <FlatButton onPress={handleLogin}>Login</FlatButton>
       </View>
     </View>
@@ -94,4 +91,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // fontFamily: 'AnekDevanagari',
   },
+  input: {},
 });

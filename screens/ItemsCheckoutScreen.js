@@ -21,6 +21,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import IconButtonComponent from '../components/UI/IconButton';
+import {IconButton} from 'react-native-paper';
 
 function ItemsCheckoutScreen() {
   const data = useSelector(state => state);
@@ -143,6 +144,8 @@ function ItemsCheckoutScreen() {
                   icon={'plus'}
                   size={20}
                   onPress={() => increaseQuantity(index)}
+                  containerColor={'#2b5c3a'}
+                  iconColor={'#FFFFFF'}
                 />
                 <ButtonComponent
                   buttonColor={'#2b5c3a'}
@@ -156,6 +159,8 @@ function ItemsCheckoutScreen() {
                     icon={'minus'}
                     onPress={() => decreaseQuantity(index)}
                     size={20}
+                    containerColor={'#2b5c3a'}
+                    iconColor={'#FFFFFF'}
                   />
                 )}
               </View>

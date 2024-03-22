@@ -12,19 +12,15 @@ function FilterModalComponent({
   typeItems,
   type,
 }) {
-  const [sliderValues, setSliderValues] = useState([200, 870]);
-  const [max, setMax] = useState([]);
-  const [min, setMin] = useState([]);
+  const [sliderValues, setSliderValues] = useState([600, 8000]);
   const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     setFilter(type);
-  }, [setFilter]);
+  }, [type]);
 
   function handleSliderChange(values) {
     setSliderValues(values);
-    setMax(values[1]);
-    setMin(values[0]);
   }
 
   return (
@@ -39,6 +35,8 @@ function FilterModalComponent({
             size={16}
             onPress={() => setModalVisible(!modalVisible)}
             mode={'outlined'}
+            iconColor={'#000000'}
+            containerColor={'#ffffff'}
           />
         </View>
         {filter === 'filter' && (
@@ -88,7 +86,7 @@ export default FilterModalComponent;
 
 const styles = StyleSheet.create({
   modalView: {
-    backgroundColor: Colors.primary200,
+    backgroundColor: Colors.bgcolor,
     padding: 10,
     margin: 20,
     alignItems: 'center',
