@@ -19,7 +19,7 @@ import ButtonComponent from '../UI/ButtonComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [filterTitles, setFilterTitles] = useState('');
+  const [filterTitles, setFilterTitles] = useState(null);
   const [filterData, setFilterData] = useState(false);
   const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);
@@ -76,16 +76,16 @@ function FilterData({items}) {
   function filterHandler(item) {
     let dataItems = [];
     switch (item) {
-      case 'Price Under $100':
-        dataItems = itemData.filter(data => data.price <= 100);
+      case 'Price Under ₹500':
+        dataItems = itemData.filter(data => data.price * 87.37 <= 500);
         break;
-      case 'Price:$100-$500':
+      case 'Price:₹500-₹1000':
         dataItems = itemData.filter(
-          data => data.price < 500 && data.price > 100,
+          data => data.price * 87.37 < 1000 && data.price * 87.37 > 500,
         );
         break;
-      case 'Price Over $500':
-        dataItems = itemData.filter(data => data.price >= 500);
+      case 'Price Over ₹1000':
+        dataItems = itemData.filter(data => data.price * 87.37 >= 1000);
         break;
       case 'Rating 2 & Up':
         dataItems = itemData.filter(data => data.rating.rate >= 2);
@@ -113,9 +113,15 @@ function FilterData({items}) {
         dataItems.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
-        console.log('The item is Price');
+        dataItems = itemData.filter(
+          data =>
+            data.price * 87.37 < filterTitles[1] &&
+            data.price * 87.37 > filterTitles[0],
+        );
+
         break;
     }
+
     setFilterData(true);
     setData(dataItems);
     setFilterTitles(item);
@@ -126,14 +132,16 @@ function FilterData({items}) {
     setFilterData(false);
   }
 
-  //Set items name of null is "For You"
-  if (items === null) {
-    items = 'For You';
-  }
-
   //Show Details Fnction
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
+  }
+
+  let title;
+  if (typeof filterTitles === 'string') {
+    title = filterTitles;
+  } else {
+    title = `₹${filterTitles[0]} - ₹${filterTitles[1]}`;
   }
 
   return (
@@ -167,6 +175,7 @@ function FilterData({items}) {
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
           typeItems={filter}
+          type={'filter'}
         />
       )}
 
@@ -176,6 +185,7 @@ function FilterData({items}) {
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
           typeItems={short}
+          type={'sort'}
         />
       )}
 
@@ -189,7 +199,7 @@ function FilterData({items}) {
                   Close
                 </ButtonComponent>
               </View>
-              <Text style={styles.filterTitle}>{filterTitles}</Text>
+              <Text style={styles.filterTitle}>{title}</Text>
               <ItemScrollCard items={data} detailsHandler={detailsHandler} />
             </View>
           )}

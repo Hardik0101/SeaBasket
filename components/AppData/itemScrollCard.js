@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {FavCart, Star} from '../../assets/icons';
 import {Card, Icon} from 'react-native-paper';
 
 function ItemScrollCard({items, detailsHandler}) {
@@ -41,7 +40,7 @@ function ItemScrollCard({items, detailsHandler}) {
                     marginTop: 4,
                   }}>
                   <Text variant="bodyMedium" style={styles.itemPrice}>
-                    ${product.price}
+                    ₹{(product.price * 87.37).toFixed(0)}
                   </Text>
                   <View
                     style={{

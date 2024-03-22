@@ -44,7 +44,7 @@ function HorizontalCard({items, detailsHandler, children}) {
                       marginTop: 4,
                     }}>
                     <Text variant="bodyMedium" style={styles.itemPrice}>
-                      ${product.price}
+                      ₹{(product.price * 87.37).toFixed(0)}
                     </Text>
                     <View
                       style={{
