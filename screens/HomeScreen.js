@@ -63,18 +63,21 @@ function HomeScreen() {
           </View>
           <View style={styles.dataContainer}>
             <HorizontalCard
+              key="menClothing"
               children="New For Men"
               detailsHandler={detailsHandler}
               items={menClothing}
             />
 
             <HorizontalCard
+              key="electronics"
               children="New Electronic"
               detailsHandler={detailsHandler}
               items={electronics}
             />
 
             <HorizontalCard
+              key="jewelery"
               children="New Jewelery"
               detailsHandler={detailsHandler}
               items={jewelery}

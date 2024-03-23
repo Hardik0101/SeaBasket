@@ -101,6 +101,7 @@ function ProductScreen() {
         style={styles.container}
         contentContainerStyle={styles.contentContainerHorizontal}>
         <Chip
+          key={'ForYou'}
           onPress={() => getProductData()}
           style={[
             styles.titleContainer,
@@ -110,20 +111,19 @@ function ProductScreen() {
           For You
         </Chip>
         {category.map((item, index) => (
-          <>
-            <Chip
-              onPress={() => getProductData(item)}
-              style={[
-                styles.titleContainer,
-                activeItem === item && styles.activeTitleContainer,
-              ]}
-              textStyle={[
-                styles.title,
-                activeItem === item && styles.activeTitle,
-              ]}>
-              {item}
-            </Chip>
-          </>
+          <Chip
+            key={index.toString()}
+            onPress={() => getProductData(item)}
+            style={[
+              styles.titleContainer,
+              activeItem === item && styles.activeTitleContainer,
+            ]}
+            textStyle={[
+              styles.title,
+              activeItem === item && styles.activeTitle,
+            ]}>
+            {item}
+          </Chip>
         ))}
       </ScrollView>
 

@@ -5,59 +5,55 @@ import {Card, Icon} from 'react-native-paper';
 
 function HorizontalCard({items, detailsHandler, children}) {
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{children}</Text>
-        </View>
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.contentContainer}>
-          {items.map((product, index) => (
-            <>
-              <Card
-                key={index}
-                onPress={() => detailsHandler(product.id)}
-                style={styles.card}>
-                <Card.Cover
-                  source={{uri: product.image}}
-                  style={styles.image}
-                  resizeMode="contain"
-                />
-                <Card.Content style={styles.itemTitleView}>
-                  <Text variant="titleLarge" style={styles.itemTitle}>
-                    {product.title.length > 10
-                      ? `${product.title.substring(0, 13)}...`
-                      : product.title}
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 4,
-                    }}>
-                    <Text variant="bodyMedium" style={styles.itemPrice}>
-                      ₹{(product.price * 87.37).toFixed(0)}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        height: 30,
-                      }}>
-                      <Icon source={'star'} color="#d2c900" size={14} />
-                      <Text variant="bodyMedium" style={styles.itemRate}>
-                        {product.rating.rate}
-                      </Text>
-                    </View>
-                  </View>
-                </Card.Content>
-              </Card>
-            </>
-          ))}
-        </ScrollView>
+    <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{children}</Text>
       </View>
-    </>
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.contentContainer}>
+        {items.map(product => (
+          <Card
+            key={product.id}
+            onPress={() => detailsHandler(product.id)}
+            style={styles.card}>
+            <Card.Cover
+              source={{uri: product.image}}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <Card.Content style={styles.itemTitleView}>
+              <Text variant="titleLarge" style={styles.itemTitle}>
+                {product.title.length > 10
+                  ? `${product.title.substring(0, 13)}...`
+                  : product.title}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 4,
+                }}>
+                <Text variant="bodyMedium" style={styles.itemPrice}>
+                  ₹{(product.price * 87.37).toFixed(0)}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    height: 30,
+                  }}>
+                  <Icon source={'star'} color="#d2c900" size={14} />
+                  <Text variant="bodyMedium" style={styles.itemRate}>
+                    {product.rating.rate}
+                  </Text>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     overflow: 'hidden',
   },
-  canclebutton: {
+  cancelButton: {
     padding: 4,
   },
 });

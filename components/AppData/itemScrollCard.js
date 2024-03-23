@@ -17,9 +17,9 @@ function ItemScrollCard({items, detailsHandler}) {
         style={styles.scrollContainer}
         contentContainerStyle={styles.contentContainer}>
         <View style={styles.twoItems}>
-          {items.map((product, index) => (
+          {items.map(product => (
             <Card
-              key={index}
+              key={product.id}
               onPress={() => detailsHandler(product.id)}
               style={styles.card}>
               <Card.Cover
