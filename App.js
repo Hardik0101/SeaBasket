@@ -136,18 +136,7 @@ function AppData() {
     </Tab.Navigator>
   );
 }
-function TabAndDetails() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="New"
-        component={AppData}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="Details" component={DetailScreen} />
-    </Stack.Navigator>
-  );
-}
+
 function MainApp() {
   const authCtx = useContext(AuthContext);
   return (
@@ -168,11 +157,14 @@ function MainApp() {
         />
       )}
       {authCtx.isGuest && (
-        <Stack.Screen
-          name="TabAndDetails"
-          component={TabAndDetails}
-          options={{headerShown: false}}
-        />
+        <>
+          <Stack.Screen
+            name="New"
+            component={AppData}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="Details" component={DetailScreen} />
+        </>
       )}
     </Stack.Navigator>
   );

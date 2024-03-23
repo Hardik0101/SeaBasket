@@ -9,7 +9,8 @@ import {clearState} from '../store/redux/cartSlice';
 
 function ConfirmScreen() {
   const navigation = useNavigation();
-  const data = useSelector(data => data);
+  const cartLength = useSelector(state => state.cart.cart.length);
+  const checkoutLength = useSelector(state => state.checkout.check.length);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function ConfirmScreen() {
   }, [navigation]);
 
   useEffect(() => {
-    if (data.cart.cart.length === data.checkout.check.length) {
+    if (cartLength === checkoutLength) {
       dispatch(clearState());
     }
   }, [dispatch]);

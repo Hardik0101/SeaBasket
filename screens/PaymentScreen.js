@@ -136,24 +136,21 @@ function PaymentScreen() {
             Please Select the Payment Method ➤
           </Text>
           <View style={styles.methods}>
-            {PaymentIcons.payment_icons.map((icon, index) => (
-              <>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => PaymentMethodHandler(icon.name)}
-                  key={index}
-                  style={[
-                    styles.paymentType,
-                    activeItem === icon.name && styles.paymentTypeSelect,
-                  ]}>
-                  <Image
-                    key={index}
-                    source={{uri: icon.image}}
-                    style={{width: 50, height: 30}}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </>
+            {PaymentIcons.payment_icons.map(icon => (
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => PaymentMethodHandler(icon.name)}
+                key={icon.name}
+                style={[
+                  styles.paymentType,
+                  activeItem === icon.name && styles.paymentTypeSelect,
+                ]}>
+                <Image
+                  source={{uri: icon.image}}
+                  style={{width: 50, height: 30}}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             ))}
           </View>
           {selectPayment && (
