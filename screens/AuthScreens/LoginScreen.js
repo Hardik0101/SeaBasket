@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   },
   auth: {
     width: '100%',
+    height: '100%',
   },
   bgImage: {
     flex: 1,
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    height: '36%',
   },
   logoImage: {
     width: 200,

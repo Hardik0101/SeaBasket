@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
   textConatiner: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: 100,
   },
   text: {
     color: Colors.primary300,

@@ -29,7 +29,6 @@ function AuthStack() {
       screenOptions={{
         headerStyle: {backgroundColor: 'lightgreen'},
         contentStyle: {backgroundColor: Colors.bgcolor},
-        headerTitleAlign: 'center',
         headerShown: false,
       }}>
       <Stack.Screen

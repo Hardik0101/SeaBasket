@@ -19,7 +19,7 @@ function Input({
         onChangeText={onUpdateValue}
         value={value}
         placeholder={placeholder}
-        placeholderTextColor={Colors.primary100}
+        placeholderTextColor={Colors.primary300}
       />
     </View>
   );
@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
-    borderBottomColor: Colors.primary100,
+    borderBottomColor: Colors.primary300,
     borderBottomWidth: 2,
     fontSize: 16,
-    color: Colors.primary100,
+    color: Colors.primary300,
     fontWeight: '300',
   },
   inputInvalid: {

@@ -69,7 +69,10 @@ function AuthContent({isLogin, onAuthenticate}) {
             credentialsInvalid={credentialsInvalid}
           />
           <View style={styles.buttons}>
-            <Button onPress={switchAuthModeHandler}>
+            <Button
+              textColor="#2b5c3a"
+              style={styles.buttons}
+              onPress={switchAuthModeHandler}>
               {isLogin ? 'Create a new user' : 'Log in instead'}
             </Button>
           </View>
@@ -83,11 +86,10 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   authContent: {
-    marginTop: 64,
-    marginHorizontal: 32,
+    marginHorizontal: 30,
     padding: 16,
     borderRadius: 8,
-    backgroundColor: Colors.primary800,
+    backgroundColor: Colors.primary100,
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: {width: 1, height: 1},
@@ -95,13 +97,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   buttons: {
-    marginTop: 8,
-  },
-  image: {
-    width: 300,
-    height: 200,
-    marginLeft: 18,
-    resizeMode: 'contain',
-    marginBottom: -56,
+    borderRadius: 8,
+    marginTop: 4,
   },
 });
