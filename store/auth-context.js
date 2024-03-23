@@ -6,23 +6,23 @@ export const AuthContext = createContext({
   gtoken: '',
   isAuthenticated: false,
   isGuest: false,
-  authanticate: function (token) {},
+  authenticate: function (token) {},
   logout: function () {},
-  guestUser: function (token) {},
+  setGuestUserToken: function (gtoken) {},
 });
 
 function AuthContextProvider({children}) {
-  const [authToken, setAuthToken] = useState();
-  const [guestToken, setGuestToken] = useState();
+  const [authToken, setAuthToken] = useState('');
+  const [guestToken, setGuestToken] = useState('');
 
-  function guestUser(gtoken) {
+  function setGuestUserToken(gtoken) {
     setGuestToken(gtoken);
     AsyncStorage.setItem('guestToken', gtoken)
-      .then(() => console.log('Token stored successfully'))
-      .catch(error => console.log('Error storing token:', error));
+      .then(() => console.log('Guest token stored successfully'))
+      .catch(error => console.log('Error storing guest token:', error));
   }
 
-  function authanticate(token) {
+  function authenticate(token) {
     setAuthToken(token);
     AsyncStorage.setItem('authToken', token)
       .then(() => console.log('Token stored successfully'))
@@ -30,29 +30,42 @@ function AuthContextProvider({children}) {
   }
 
   function logout() {
-    setAuthToken(null);
+    setAuthToken('');
+    setGuestToken('');
     AsyncStorage.removeItem('authToken')
-      .then(() => console.log('Token removed successfully'))
-      .catch(error => console.log('Error removing token:', error));
+      .then(() => {
+        console.log('Token removed successfully');
+        return AsyncStorage.removeItem('guestToken');
+      })
+      .then(() => console.log('Guest token removed successfully'))
+      .catch(error => console.log('Error removing tokens:', error));
   }
 
   useEffect(() => {
     AsyncStorage.getItem('authToken')
       .then(token => {
         if (token) {
-          authanticate(token);
+          authenticate(token);
         }
       })
       .catch(error => console.log('Error retrieving token:', error));
+
+    AsyncStorage.getItem('guestToken')
+      .then(gtoken => {
+        if (gtoken) {
+          setGuestUserToken(gtoken);
+        }
+      })
+      .catch(error => console.log('Error retrieving guest token:', error));
   }, []);
 
   const value = {
     token: authToken,
     isAuthenticated: !!authToken,
-    authanticate: authanticate,
+    authenticate: authenticate,
     logout: logout,
-    guestUser: guestUser,
-    isGuest: !!authToken,
+    setGuestUserToken: setGuestUserToken,
+    isGuest: !!guestToken,
     gtoken: guestToken,
   };
 

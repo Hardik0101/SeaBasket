@@ -136,7 +136,18 @@ function AppData() {
     </Tab.Navigator>
   );
 }
-
+function TabAndDetails() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="New"
+        component={AppData}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="Details" component={DetailScreen} />
+    </Stack.Navigator>
+  );
+}
 function MainApp() {
   const authCtx = useContext(AuthContext);
   return (
@@ -152,20 +163,16 @@ function MainApp() {
           component={OnboardingScreen}
           options={{
             headerShown: false,
-
             title: 'Steps ',
           }}
         />
       )}
       {authCtx.isGuest && (
-        <>
-          <Stack.Screen
-            name="New"
-            component={AppData}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen name="Details" component={DetailScreen} />
-        </>
+        <Stack.Screen
+          name="TabAndDetails"
+          component={TabAndDetails}
+          options={{headerShown: false}}
+        />
       )}
     </Stack.Navigator>
   );

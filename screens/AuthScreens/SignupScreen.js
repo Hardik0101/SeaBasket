@@ -14,7 +14,7 @@ function SignupScreen() {
     setIsAuthenticating(true);
     try {
       const token = await createUser(email, password);
-      authCtx.authanticate(token);
+      authCtx.authenticate(token);
       setIsAuthenticating(false);
     } catch {
       Alert.alert(

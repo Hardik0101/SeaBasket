@@ -21,7 +21,7 @@ function LoginScreen() {
     setIsAuthenticating(true);
     try {
       const token = await login(email, password);
-      authCtx.authanticate(token);
+      authCtx.authenticate(token);
       setIsAuthenticating(false);
       console.log(token);
     } catch (error) {
