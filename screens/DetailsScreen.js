@@ -21,7 +21,7 @@ import {Card, Icon} from 'react-native-paper';
 
 function DetailScreen() {
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const details = useSelector(state => state.details.details);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -50,19 +50,18 @@ function DetailScreen() {
   }
 
   function addToCart() {
-    dispatch(addCart(data.details.details));
+    dispatch(addCart(details));
     ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
   }
 
   function checkoutItems() {
-    dispatch(setCheck(data.details.details));
-    navigation.navigate('CheckoutScreen');
+    dispatch(setCheck(details));
+    navigation.navigate('Order');
   }
 
   const description =
-    data?.details?.details &&
-    typeof data.details.details.description === 'string'
-      ? data?.details?.details?.description
+    details && typeof details.description === 'string'
+      ? details?.description
       : '';
 
   if (loading) {
@@ -85,104 +84,87 @@ function DetailScreen() {
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}>
-      {data && (
-        <>
-          <View style={styles.container}>
-            <Swiper
-              style={styles.wrapper}
-              autoplay={true}
-              autoplayTimeout={4}
-              activeDotColor="green"
-              height={300}>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-            </Swiper>
-            <Card>
-              <Card.Content style={styles.itemConatiner}>
-                <Text style={styles.itemTitle}>
-                  {data?.details?.details?.title}
+      <>
+        <View style={styles.container}>
+          <Swiper
+            style={styles.wrapper}
+            autoplay={true}
+            autoplayTimeout={4}
+            activeDotColor="green"
+            height={300}>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+          </Swiper>
+          <Card>
+            <Card.Content style={styles.itemConatiner}>
+              <Text style={styles.itemTitle}>{details?.title}</Text>
+              <View style={styles.priceAndrate}>
+                <Text style={styles.itemPrice}>${details?.price}</Text>
+                <Text style={styles.itemPrice}>
+                  <Star width={14} height={14} fill={'#daa520'} />{' '}
+                  <Text style={{fontSize: 20}}>{details?.rating?.rate}</Text>
                 </Text>
-                <View style={styles.priceAndrate}>
-                  <Text style={styles.itemPrice}>
-                    ${data?.details?.details?.price}
-                  </Text>
-                  <Text style={styles.itemPrice}>
-                    <Star width={14} height={14} fill={'#daa520'} />{' '}
-                    <Text style={{fontSize: 20}}>
-                      {data?.details?.details?.rating?.rate}
+              </View>
+              <Text style={styles.itemDescription}>About this Product: </Text>
+              <Text style={styles.itemDescription}>
+                {showFullDescription
+                  ? description
+                  : `${description.slice(0, 135)}`}{' '}
+                {description.length > 135 && (
+                  <>
+                    <Text onPress={toggleDescription} style={styles.readMore}>
+                      {showFullDescription ? 'Read less' : 'Read more...'}
                     </Text>
-                  </Text>
-                </View>
-                <Text style={styles.itemDescription}>About this Product: </Text>
-                <Text style={styles.itemDescription}>
-                  {showFullDescription
-                    ? description
-                    : `${description.slice(0, 135)}`}{' '}
-                  {description.length > 135 && (
-                    <>
-                      <Text onPress={toggleDescription} style={styles.readMore}>
-                        {showFullDescription ? 'Read less' : 'Read more...'}
-                      </Text>
-                    </>
-                  )}
-                </Text>
-                <View style={styles.buttons}>
-                  <ButtonComponent onPress={checkoutItems}>
-                    {' Buy Now'}
-                  </ButtonComponent>
-                  <ButtonComponent onPress={addToCart}>
-                    {' Add to Cart'}
-                  </ButtonComponent>
-                </View>
-              </Card.Content>
-            </Card>
+                  </>
+                )}
+              </Text>
+              <View style={styles.buttons}>
+                <ButtonComponent onPress={checkoutItems}>
+                  {' Buy Now'}
+                </ButtonComponent>
+                <ButtonComponent onPress={addToCart}>
+                  {' Add to Cart'}
+                </ButtonComponent>
+              </View>
+            </Card.Content>
+          </Card>
 
-            <Card style={styles.colorConatiner}>
-              <Card.Content>
-                <View style={styles.colors}>
-                  <Text style={styles.itemTitle}>Colors </Text>
-                  <Icon
-                    source={'checkbox-blank-circle'}
-                    size={40}
-                    color="#ff0000"
-                  />
-                  <Icon
-                    source={'checkbox-blank-circle'}
-                    size={40}
-                    color="#008080"
-                  />
-                  <Icon
-                    source={'checkbox-blank-circle'}
-                    size={40}
-                    color="#00bfff"
-                  />
-                  <Icon
-                    source={'checkbox-blank-circle'}
-                    size={40}
-                    color="#c71585"
-                  />
-                </View>
-              </Card.Content>
-            </Card>
-          </View>
-        </>
-      )}
+          <Card style={styles.colorConatiner}>
+            <Card.Content>
+              <View style={styles.colors}>
+                <Text style={styles.itemTitle}>Colors </Text>
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#ff0000"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#008080"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#00bfff"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#c71585"
+                />
+              </View>
+            </Card.Content>
+          </Card>
+        </View>
+      </>
     </ScrollView>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import {Colors} from '../../constant/styles';
 import ButtonComponent from '../../components/UI/ButtonComponent';
+import {AuthContext} from '../../store/auth-context';
 const {width} = Dimensions.get('window');
 
 function OnboardingScreen({navigation}) {
   const [currentPage, setCurrentPage] = useState(0);
+  const authCtx = useContext(AuthContext);
 
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
@@ -20,9 +22,11 @@ function OnboardingScreen({navigation}) {
     setCurrentPage(page);
   };
 
-  const handleLogin = () => {
+  function handleLogin() {
+    const token = 'Guest User';
+    authCtx.guestUser(token);
     navigation.navigate('New');
-  };
+  }
 
   const pages = [
     {

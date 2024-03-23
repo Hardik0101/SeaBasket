@@ -2,6 +2,7 @@ import {View, Text, TextInput, StyleSheet, Icon} from 'react-native';
 import {Colors} from '../../constant/styles';
 
 function Input({
+  label,
   keyboardType,
   secure,
   onUpdateValue,
@@ -19,7 +20,7 @@ function Input({
         onChangeText={onUpdateValue}
         value={value}
         placeholder={placeholder}
-        placeholderTextColor={Colors.secondary}
+        placeholderTextColor={Colors.primary100}
       />
     </View>
   );
@@ -36,11 +37,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
-    borderBottomColor: Colors.secondary,
+    borderBottomColor: Colors.primary100,
     borderBottomWidth: 2,
-    fontSize: 18,
-    color: Colors.secondary,
-    fontFamily: 'AnekDevanagari',
+    fontSize: 16,
+    color: Colors.primary100,
+    fontWeight: '300',
   },
   inputInvalid: {
     backgroundColor: Colors.error100,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import FlatButton from '../components/UI/FlatButton';
 import {Colors} from '../constant/styles';
@@ -6,9 +6,11 @@ import InputText from '../components/PaymentMethods/InputText';
 import {IconButton, MD3Colors} from 'react-native-paper';
 import {TextInput} from 'react-native-paper';
 import ButtonComponent from '../components/UI/ButtonComponent';
+import {AuthContext} from '../store/auth-context';
 
 function AccountScreen({navigation}) {
   const [edit, setEdit] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const handleLogin = () => {
     navigation.navigate('Login');
@@ -53,7 +55,9 @@ function AccountScreen({navigation}) {
         )}
 
         <FlatButton>My Orders</FlatButton>
-        <ButtonComponent>Logout</ButtonComponent>
+        <ButtonComponent onPress={() => authCtx.logout()}>
+          Logout
+        </ButtonComponent>
         <FlatButton onPress={handleLogin}>Login</FlatButton>
       </View>
     </View>

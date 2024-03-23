@@ -27,7 +27,7 @@ function ConfirmScreen() {
   }, [navigation]);
 
   useEffect(() => {
-    if (data.carts.cart.length === data.check.check.length) {
+    if (data.cart.cart.length === data.checkout.check.length) {
       dispatch(clearState());
     }
   }, [dispatch]);

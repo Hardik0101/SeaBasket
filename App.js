@@ -1,19 +1,20 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
-import {Image, StatusBar, StyleSheet, Text, View} from 'react-native';
-import HomeScreen from './screens/HomeScreen';
-import CartScreen from './screens/CartScreen';
+import React, {useContext} from 'react';
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {Provider, useSelector} from 'react-redux';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {store} from './store/redux/store';
+import AuthContextProvider, {AuthContext} from './store/auth-context';
 import {Account, Cart, Home, Logo, Product} from './assets/icons';
 import {Colors} from './constant/styles';
+import HomeScreen from './screens/HomeScreen';
+import CartScreen from './screens/CartScreen';
 import AccountScreen from './screens/Account';
 import ProductScreen from './screens/ProductScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/AuthScreens/LoginScreen';
 import SignupScreen from './screens/AuthScreens/SignupScreen';
 import OnboardingScreen from './screens/AuthScreens/OnBoardingScreen';
-import {Provider, useSelector} from 'react-redux';
-import {store} from './store/redux/store';
 import DetailScreen from './screens/DetailsScreen';
 import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
 import PaymentScreen from './screens/PaymentScreen';
@@ -32,13 +33,6 @@ function AuthStack() {
         headerShown: false,
       }}>
       <Stack.Screen
-        name="OnBoardingScreen"
-        component={OnboardingScreen}
-        options={{
-          title: 'Steps ',
-        }}
-      />
-      <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{title: 'Login', headerShown: true}}
@@ -53,7 +47,7 @@ function AuthStack() {
 }
 
 function AppData() {
-  const data = useSelector(data => data);
+  const cartItemCount = useSelector(state => state.cart.cart.length);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -115,7 +109,7 @@ function AppData() {
         options={{
           tabBarIcon: ({focused}) => (
             <>
-              <Text style={styles.text}>{data.carts.cart.length}</Text>
+              <Text style={styles.text}>{cartItemCount}</Text>
               <Cart
                 width={22}
                 height={22}
@@ -143,6 +137,86 @@ function AppData() {
   );
 }
 
+function MainApp() {
+  const authCtx = useContext(AuthContext);
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleStyle: {fontFamily: 'AnekDevanagari'},
+      }}>
+      {!authCtx.isGuest && (
+        <Stack.Screen
+          name="OnBoardingScreen"
+          component={OnboardingScreen}
+          options={{
+            headerShown: false,
+
+            title: 'Steps ',
+          }}
+        />
+      )}
+      {authCtx.isGuest && (
+        <>
+          <Stack.Screen
+            name="New"
+            component={AppData}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="Details" component={DetailScreen} />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+}
+
+function OrderApp() {
+  const authCtx = useContext(AuthContext);
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleStyle: {fontFamily: 'AnekDevanagari'},
+      }}>
+      {!authCtx.isAuthenticated && (
+        <Stack.Screen
+          name="Auth"
+          component={AuthStack}
+          options={{headerShown: false}}
+        />
+      )}
+      {authCtx.isAuthenticated && (
+        <>
+          <Stack.Screen
+            name="CheckoutScreen"
+            component={ItemsCheckoutScreen}
+            options={{
+              title: 'CheckOut',
+            }}
+          />
+
+          <Stack.Screen
+            name="PaymentScreen"
+            component={PaymentScreen}
+            options={{
+              title: 'Payment',
+            }}
+          />
+          <Stack.Screen
+            name="ConfirmScreen"
+            component={ConfirmScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+}
+
 function CombineStack() {
   return (
     <Stack.Navigator
@@ -153,37 +227,14 @@ function CombineStack() {
         headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       <Stack.Screen
-        name="Auth"
-        component={AuthStack}
+        name="Main"
+        component={MainApp}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="New"
-        component={AppData}
+        name="Order"
+        component={OrderApp}
         options={{headerShown: false}}
-      />
-      <Stack.Screen name="Details" component={DetailScreen} />
-      <Stack.Screen
-        name="CheckoutScreen"
-        component={ItemsCheckoutScreen}
-        options={{
-          title: 'CheckOut',
-        }}
-      />
-      <Stack.Screen
-        name="PaymentScreen"
-        component={PaymentScreen}
-        options={{
-          title: 'Payment',
-        }}
-      />
-
-      <Stack.Screen
-        name="ConfirmScreen"
-        component={ConfirmScreen}
-        options={{
-          headerShown: false,
-        }}
       />
     </Stack.Navigator>
   );
@@ -201,8 +252,10 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <StatusBar style="light" />
-        <Navigation />
+        <AuthContextProvider>
+          <StatusBar style="light" />
+          <Navigation />
+        </AuthContextProvider>
       </Provider>
     </>
   );

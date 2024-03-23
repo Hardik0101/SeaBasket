@@ -25,7 +25,12 @@ import {Chip} from 'react-native-paper';
 
 function ProductScreen() {
   const dispatch = useDispatch();
-  const product = useSelector(state => state);
+  const category = useSelector(state => state.data.category);
+  const menClothing = useSelector(state => state.data.menClothing);
+  const womenClothing = useSelector(state => state.data.womenclothing);
+  const electronics = useSelector(state => state.data.electronics);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const allproducts = useSelector(state => state.data.allproducts);
   const [pressed, setPressed] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const [items, setItems] = useState(false);
@@ -54,20 +59,20 @@ function ProductScreen() {
     let productData = null;
     switch (item) {
       case "men's clothing":
-        productData = product.data.menClothing;
+        productData = menClothing;
         break;
       case "women's clothing":
-        productData = product.data.womenclothing;
+        productData = womenClothing;
         break;
       case 'jewelery':
-        productData = product.data.jewelery;
+        productData = jewelery;
         break;
       case 'electronics':
-        productData = product.data.electronics;
+        productData = electronics;
         break;
       default:
         item = null;
-        productData = product.data.allproducts;
+        productData = allproducts;
         break;
     }
 
@@ -104,7 +109,7 @@ function ProductScreen() {
           textStyle={[styles.title, activeItem === null && styles.activeTitle]}>
           For You
         </Chip>
-        {product.data.category.map((item, index) => (
+        {category.map((item, index) => (
           <>
             <Chip
               onPress={() => getProductData(item)}
@@ -130,10 +135,7 @@ function ProductScreen() {
         <ItemScrollCard items={pressed} detailsHandler={detailsHandler} />
       )}
       {!items && (
-        <ItemScrollCard
-          items={product.data.allproducts}
-          detailsHandler={detailsHandler}
-        />
+        <ItemScrollCard items={allproducts} detailsHandler={detailsHandler} />
       )}
     </View>
   );

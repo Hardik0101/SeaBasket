@@ -17,7 +17,9 @@ import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function HomeScreen() {
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const electronics = useSelector(state => state.data.electronics);
+  const menClothing = useSelector(state => state.data.menClothing);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -63,19 +65,19 @@ function HomeScreen() {
             <HorizontalCard
               children="New For Men"
               detailsHandler={detailsHandler}
-              items={data.data.menClothing}
+              items={menClothing}
             />
 
             <HorizontalCard
               children="New Electronic"
               detailsHandler={detailsHandler}
-              items={data.data.electronics}
+              items={electronics}
             />
 
             <HorizontalCard
               children="New Jewelery"
               detailsHandler={detailsHandler}
-              items={data.data.jewelery}
+              items={jewelery}
             />
           </View>
         </ScrollView>

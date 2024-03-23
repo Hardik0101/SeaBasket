@@ -26,8 +26,11 @@ function FilterData({items}) {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const product = useSelector(state => state);
-
+  const menClothing = useSelector(state => state.data.menClothing);
+  const womenClothing = useSelector(state => state.data.womenclothing);
+  const electronics = useSelector(state => state.data.electronics);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const allproducts = useSelector(state => state.data.allproducts);
   //Fetch The all Data from redux
   useEffect(() => {
     function fetchData() {
@@ -54,19 +57,19 @@ function FilterData({items}) {
     let productData = null;
     switch (selectedItem) {
       case "men's clothing":
-        productData = product.data.menClothing;
+        productData = menClothing;
         break;
       case "women's clothing":
-        productData = product.data.womenclothing;
+        productData = womenClothing;
         break;
       case 'jewelery':
-        productData = product.data.jewelery;
+        productData = jewelery;
         break;
       case 'electronics':
-        productData = product.data.electronics;
+        productData = electronics;
         break;
       default:
-        productData = product.data.allproducts;
+        productData = allproducts;
         break;
     }
     setItemData(productData);

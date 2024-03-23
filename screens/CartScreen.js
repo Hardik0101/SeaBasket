@@ -31,7 +31,9 @@ import IconButtonComponent from '../components/UI/IconButton';
 function CartScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const carts = useSelector(state => state.cart.cart);
+  const electronics = useSelector(state => state.data.electronics);
+  const menClothing = useSelector(state => state.data.menClothing);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
 
@@ -49,17 +51,17 @@ function CartScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    const totalPrice = data.carts.cart.reduce(
+    const totalPrice = carts.reduce(
       (acc, product) => product?.quantity * product?.price + acc,
       0,
     );
-    const totalQuantity = data.carts.cart.reduce(
+    const totalQuantity = carts.reduce(
       (acc, product) => acc + product?.quantity,
       0,
     );
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
-  }, [data.carts.cart]);
+  }, [carts]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -95,22 +97,22 @@ function CartScreen() {
 
   function checkoutItems() {
     {
-      data.carts.cart.map(items => {
+      carts.map(items => {
         dispatch(setCheck(items));
       });
     }
-    navigation.navigate('CheckoutScreen');
+    navigation.navigate('Order');
   }
 
   return (
     <>
-      {data.carts.cart.length > 0 && (
+      {carts.length > 0 && (
         <ScrollView
           style={styles.conatiner}
           contentContainerStyle={styles.scrollStyle}
           showsVerticalScrollIndicator={false}>
           <>
-            {data.carts.cart.map((product, index) => (
+            {carts.map((product, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.itemConatiner}
@@ -163,13 +165,11 @@ function CartScreen() {
           </>
         </ScrollView>
       )}
-      {data.carts.cart.length > 0 && (
+      {carts.length > 0 && (
         <View style={styles.itemSummary}>
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
-              <Text style={styles.totalText}>
-                Total Items: {data.carts.cart.length}
-              </Text>
+              <Text style={styles.totalText}>Total Items: {carts.length}</Text>
               <Text style={styles.totalText}>
                 Total Price: ${totalPrice.toFixed(2)}
               </Text>
@@ -183,7 +183,7 @@ function CartScreen() {
           </View>
         </View>
       )}
-      {data.carts.cart.length === 0 && (
+      {carts.length === 0 && (
         <>
           <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
@@ -193,13 +193,13 @@ function CartScreen() {
             <HorizontalCard
               children="Buy New Products"
               detailsHandler={detailsHandler}
-              items={data.data.electronics}
+              items={electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
               detailsHandler={detailsHandler}
-              items={data.data.menClothing}
+              items={menClothing}
             />
           </View>
         </>

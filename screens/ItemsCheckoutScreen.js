@@ -21,10 +21,9 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import IconButtonComponent from '../components/UI/IconButton';
-import {IconButton} from 'react-native-paper';
 
 function ItemsCheckoutScreen() {
-  const data = useSelector(state => state);
+  const checkout = useSelector(state => state.checkout.check);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -38,18 +37,18 @@ function ItemsCheckoutScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    const totalPrice = data.check.check.reduce(
+    const totalPrice = checkout.reduce(
       (acc, product) => product?.quantity * product?.price + acc,
       0,
     );
-    const totalQuantity = data.check.check.reduce(
+    const totalQuantity = checkout.reduce(
       (acc, product) => acc + product?.quantity,
       0,
     );
 
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
-  }, [data.check.check]);
+  }, [checkout]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -87,7 +86,7 @@ function ItemsCheckoutScreen() {
     navigation.navigate('PaymentScreen');
   }
 
-  if (data.check.check.length === 0) {
+  if (checkout.length === 0) {
     navigation.goBack();
     return null;
   }
@@ -117,7 +116,7 @@ function ItemsCheckoutScreen() {
         style={styles.conatiner}
         contentContainerStyle={styles.scrollStyle}
         showsVerticalScrollIndicator={false}>
-        {data.check.check.map((product, index) => (
+        {checkout.map((product, index) => (
           <TouchableOpacity
             key={index}
             style={styles.itemConatiner}
@@ -195,7 +194,7 @@ function ItemsCheckoutScreen() {
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>
-                Total Items: {data.check.check.length}
+                Total Items: {checkout.length}
               </Text>
               <Text style={styles.totalText}>
                 Total Pay: ${totalPay.toFixed(2)}
