@@ -19,7 +19,6 @@ import GooglePay from '../components/PaymentMethods/gPay';
 import ApplePay from '../components/PaymentMethods/applePay';
 import MasterCard from '../components/PaymentMethods/masterCard';
 import ButtonComponent from '../components/UI/ButtonComponent';
-import IconButtonComponent from '../components/UI/IconButton';
 
 function PaymentScreen() {
   const data = useSelector(state => state.checkout.totalPay);
@@ -72,7 +71,7 @@ function PaymentScreen() {
   return (
     <ScrollView
       style={styles.paymentConatiner}
-      contentContainerStyle={{paddingBottom: 10}}
+      contentContainerStyle={{paddingBottom: 10, height: '100%'}}
       showsVerticalScrollIndicator={false}>
       <Text style={styles.titleText}>Order Summary</Text>
       <View style={styles.order}>
@@ -237,6 +236,7 @@ const styles = StyleSheet.create({
   },
   payment: {
     marginTop: 10,
+    height: '100%',
   },
   paymentType: {
     borderWidth: 1,
