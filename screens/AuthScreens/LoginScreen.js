@@ -1,30 +1,54 @@
-import React from 'react';
-import {Text, StyleSheet, View, ImageBackground} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Image,
+  Alert,
+} from 'react-native';
 import AuthContent from '../../components/Auth/AuthContent';
-import {useNavigation} from '@react-navigation/native';
-import {login} from '../../apiCall/authApi';
+import {AuthContext} from '../../store/auth-context';
+import LoadingOverlay from '../../components/UI/LoadingOverlay';
+import {login} from '../../util/auth';
 
 function LoginScreen() {
-  const navigation = useNavigation();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const handleLogin = async (username, password) => {
+  const authCtx = useContext(AuthContext);
+
+  async function loginHandler({email, password}) {
+    setIsAuthenticating(true);
     try {
-      const response = await login(username, password);
-      console.log('Login successful:', response);
-      navigation.navigate('New');
+      const token = await login(email, password);
+      authCtx.authenticate(token);
+      setIsAuthenticating(false);
+      console.log(token);
     } catch (error) {
-      console.error('Login failed:', error.message);
+      Alert.alert(
+        'Authentication failed!',
+        'Could not log you in. Please check your credentials or try again later!',
+      );
+      setIsAuthenticating(false);
     }
-  };
-
+  }
+  if (isAuthenticating) {
+    return <LoadingOverlay message="Logging you in..." />;
+  }
   return (
     <View style={styles.mainContainer}>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.logoImage}
+          source={require('../../assets/images/Logo.png')}
+        />
+      </View>
       <ImageBackground
         source={require('../../assets/images/Login.png')}
         style={styles.bgImage}
         imageStyle={styles.image}>
         <View style={styles.auth}>
-          <AuthContent isLogin onAuthenticate={handleLogin} />
+          <AuthContent isLogin onAuthenticate={loginHandler} />
         </View>
       </ImageBackground>
     </View>
@@ -39,6 +63,7 @@ const styles = StyleSheet.create({
   },
   auth: {
     width: '100%',
+    height: '100%',
   },
   bgImage: {
     flex: 1,
@@ -46,5 +71,14 @@ const styles = StyleSheet.create({
   },
   image: {
     opacity: 0.1,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '36%',
+  },
+  logoImage: {
+    width: 200,
+    height: 200,
   },
 });

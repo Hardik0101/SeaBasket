@@ -1,11 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -21,10 +15,16 @@ import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
 import ItemScrollCard from '../components/AppData/itemScrollCard';
+import {Chip} from 'react-native-paper';
 
 function ProductScreen() {
   const dispatch = useDispatch();
-  const product = useSelector(state => state);
+  const category = useSelector(state => state.data.category);
+  const menClothing = useSelector(state => state.data.menClothing);
+  const womenClothing = useSelector(state => state.data.womenclothing);
+  const electronics = useSelector(state => state.data.electronics);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const allproducts = useSelector(state => state.data.allproducts);
   const [pressed, setPressed] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const [items, setItems] = useState(false);
@@ -33,40 +33,40 @@ function ProductScreen() {
 
   useEffect(() => {
     async function fetchData() {
-      setTimeout(() => {
-        dispatch(fetchCategory()),
-          dispatch(fetchAllProducts()),
-          dispatch(fetchElectronics()),
-          dispatch(fetchJeweleryItems()),
-          dispatch(fetchMenClothing()),
-          dispatch(fetchWomenClothing()),
+      dispatch(fetchCategory()),
+        dispatch(fetchAllProducts()),
+        dispatch(fetchElectronics()),
+        dispatch(fetchJeweleryItems()),
+        dispatch(fetchMenClothing()),
+        dispatch(fetchWomenClothing()),
+        setTimeout(() => {
           setLoading(false);
-      }, 2000);
+        }, 2000);
     }
     fetchData();
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [dispatch]);
 
   function getProductData(item) {
     let productData = null;
     switch (item) {
       case "men's clothing":
-        productData = product.data.menClothing;
+        productData = menClothing;
         break;
       case "women's clothing":
-        productData = product.data.womenclothing;
+        productData = womenClothing;
         break;
       case 'jewelery':
-        productData = product.data.jewelery;
+        productData = jewelery;
         break;
       case 'electronics':
-        productData = product.data.electronics;
+        productData = electronics;
         break;
       default:
         item = null;
-        productData = product.data.allproducts;
+        productData = allproducts;
         break;
     }
 
@@ -94,40 +94,30 @@ function ProductScreen() {
         horizontal={true}
         style={styles.container}
         contentContainerStyle={styles.contentContainerHorizontal}>
-        <TouchableOpacity
+        <Chip
+          key={'ForYou'}
           onPress={() => getProductData()}
-          style={styles.scrollItems}>
-          <View
+          style={[
+            styles.titleContainer,
+            activeItem === null && styles.activeTitleContainer,
+          ]}
+          textStyle={[styles.title, activeItem === null && styles.activeTitle]}>
+          For You
+        </Chip>
+        {category.map((item, index) => (
+          <Chip
+            key={index.toString()}
+            onPress={() => getProductData(item)}
             style={[
               styles.titleContainer,
-              activeItem === null && styles.activeTitleContainer,
+              activeItem === item && styles.activeTitleContainer,
+            ]}
+            textStyle={[
+              styles.title,
+              activeItem === item && styles.activeTitle,
             ]}>
-            <Text
-              style={[styles.title, activeItem === null && styles.activeTitle]}>
-              For You
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        {product.data.category.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => getProductData(item)}
-            style={styles.scrollItems}>
-            <View
-              style={[
-                styles.titleContainer,
-                activeItem === item && styles.activeTitleContainer,
-              ]}>
-              <Text
-                style={[
-                  styles.title,
-                  activeItem === item && styles.activeTitle,
-                ]}>
-                {item}
-              </Text>
-            </View>
-          </TouchableOpacity>
+            {item}
+          </Chip>
         ))}
       </ScrollView>
 
@@ -139,10 +129,7 @@ function ProductScreen() {
         <ItemScrollCard items={pressed} detailsHandler={detailsHandler} />
       )}
       {!items && (
-        <ItemScrollCard
-          items={product.data.allproducts}
-          detailsHandler={detailsHandler}
-        />
+        <ItemScrollCard items={allproducts} detailsHandler={detailsHandler} />
       )}
     </View>
   );
@@ -152,39 +139,35 @@ const styles = StyleSheet.create({
   mainView: {
     height: '100%',
   },
-  scrollItems: {
-    marginRight: 6,
-  },
   container: {
     padding: 6,
     flexDirection: 'row',
-    width: '100%',
-    height: 56,
+    height: 58,
     borderBottomWidth: 1,
     borderColor: Colors.primary300,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    lineHeight: 18,
     color: Colors.primary300,
     textTransform: 'capitalize',
   },
   titleContainer: {
-    padding: 4,
-    borderRadius: 12,
-    borderWidth: 2,
     borderColor: Colors.primary300,
-    width: '100%',
+    marginRight: 6,
+    backgroundColor: Colors.bgcolor,
+    borderWidth: 2,
+    padding: 2,
+    justifyContent: 'center',
   },
   contentContainerHorizontal: {
     paddingEnd: 6,
   },
   activeTitleContainer: {
-    backgroundColor: Colors.primary200,
+    backgroundColor: Colors.primary300,
   },
   activeTitle: {
-    color: Colors.secondary,
+    color: Colors.bgcolor,
   },
   loadingContainer: {
     flex: 1,

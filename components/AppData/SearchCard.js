@@ -13,6 +13,7 @@ import {Search} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAllProducts} from '../../store/redux/dataSlice';
+import {Searchbar} from 'react-native-paper';
 
 function SearchCard() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,7 +21,7 @@ function SearchCard() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const allproducts = useSelector(state => state.data.allproducts);
 
   useEffect(() => {
     function fetchProducts() {
@@ -30,10 +31,10 @@ function SearchCard() {
   }, [dispatch]);
 
   useEffect(() => {
-    const result = data.data.allproducts;
+    const result = allproducts;
     setProducts(result);
     filterProducts(searchQuery, result);
-  }, [data.data.allproducts, searchQuery]);
+  }, [allproducts, searchQuery]);
 
   const filterProducts = (query, products) => {
     const filtered = products.filter(product =>
@@ -57,7 +58,7 @@ function SearchCard() {
                 ? `${item.title.substring(0, 25)}...`
                 : item.title}
             </Text>
-            <Text style={styles.price}>${item.price}</Text>
+            <Text style={styles.price}>₹{(item.price * 87.37).toFixed(0)}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -67,16 +68,15 @@ function SearchCard() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Search..."
-            returnKeyType="search"
-            onChangeText={text => setSearchQuery(text)}
-            value={searchQuery}
-          />
-          <Search width={28} height={28} />
-        </View>
+        <Searchbar
+          placeholder="Search..."
+          returnKeyType="search"
+          onChangeText={text => setSearchQuery(text)}
+          value={searchQuery}
+          style={styles.search}
+          inputStyle={styles.input}
+          iconColor="#000000"
+        />
         {searchQuery && (
           <>
             {filteredProducts.length > 0 ? (
@@ -118,20 +118,17 @@ const styles = StyleSheet.create({
     height: 500,
     overflow: 'hidden',
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary100,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginVertical: 4,
-    marginHorizontal: 6,
-  },
   input: {
-    flex: 1,
-    height: 40,
-    color: Colors.secondary,
     fontWeight: 'bold',
+    margin: -8,
+    color: Colors.bgcolor,
+  },
+  search: {
+    height: 40,
+    backgroundColor: Colors.primary200,
+    borderRadius: 10,
+    marginHorizontal: 6,
+    marginTop: 4,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -152,15 +149,14 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.primary300,
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     textAlign: 'justify',
     marginHorizontal: 2,
   },
   price: {
-    marginTop: 6,
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
     fontSize: 20,
     color: Colors.primary300,
   },

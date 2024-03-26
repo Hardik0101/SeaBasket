@@ -1,29 +1,27 @@
 import {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import Button from '../UI/Button';
+import {StyleSheet, View} from 'react-native';
+import ButtonComponent from '../UI/ButtonComponent';
 import Input from './Input';
-import {Login, Signup} from '../../assets/icons';
-
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
-  const [enteredUsername, setEnteredUsername] = useState('');
   const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
 
   const {
-    username: usernameIsInvalid,
     email: emailIsInvalid,
+    confirmEmail: emailsDontMatch,
     password: passwordIsInvalid,
     confirmPassword: passwordsDontMatch,
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
-      case 'username':
-        setEnteredUsername(enteredValue);
-        return;
       case 'email':
         setEnteredEmail(enteredValue);
+        break;
+      case 'confirmEmail':
+        setEnteredConfirmEmail(enteredValue);
         break;
       case 'password':
         setEnteredPassword(enteredValue);
@@ -36,72 +34,68 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
 
   function submitHandler() {
     onSubmit({
-      username: enteredUsername,
       email: enteredEmail,
+      confirmEmail: enteredConfirmEmail,
       password: enteredPassword,
       confirmPassword: enteredConfirmPassword,
     });
   }
 
   return (
-    <>
-      <View style={styles.form}>
-        <View>
+    <View style={styles.form}>
+      <View>
+        <Input
+          placeholder="Email Address"
+          onUpdateValue={updateInputValueHandler.bind(this, 'email')}
+          value={enteredEmail}
+          keyboardType="email-address"
+          isInvalid={emailIsInvalid}
+        />
+        {!isLogin && (
           <Input
-            placeholder="UserName"
-            onUpdateValue={updateInputValueHandler.bind(this, 'username')}
-            secure
+            placeholder="Confirm Email Address"
+            onUpdateValue={updateInputValueHandler.bind(this, 'confirmEmail')}
+            value={enteredConfirmEmail}
             keyboardType="email-address"
-            value={enteredUsername}
-            isInvalid={usernameIsInvalid}
+            isInvalid={emailsDontMatch}
           />
-          {!isLogin && (
-            <>
-              <Input
-                placeholder="Email"
-                onUpdateValue={updateInputValueHandler.bind(this, 'email')}
-                secure
-                keyboardType="email-address"
-                value={enteredEmail}
-                isInvalid={emailIsInvalid}
-              />
-            </>
-          )}
+        )}
+        <Input
+          placeholder="Password"
+          onUpdateValue={updateInputValueHandler.bind(this, 'password')}
+          secure
+          value={enteredPassword}
+          isInvalid={passwordIsInvalid}
+        />
+        {!isLogin && (
           <Input
-            placeholder="Password"
-            onUpdateValue={updateInputValueHandler.bind(this, 'password')}
+            placeholder="Confirm Password"
+            onUpdateValue={updateInputValueHandler.bind(
+              this,
+              'confirmPassword',
+            )}
             secure
-            value={enteredPassword}
-            isInvalid={passwordIsInvalid}
+            value={enteredConfirmPassword}
+            isInvalid={passwordsDontMatch}
           />
-
-          {!isLogin && (
-            <>
-              <Input
-                placeholder="Confirm Password"
-                onUpdateValue={updateInputValueHandler.bind(
-                  this,
-                  'confirmPassword',
-                )}
-                secure
-                value={enteredConfirmPassword}
-                isInvalid={passwordsDontMatch}
-              />
-            </>
+        )}
+        <View style={styles.buttons}>
+          {isLogin ? (
+            <ButtonComponent
+              icon={'login'}
+              children={'Login'}
+              onPress={submitHandler}
+            />
+          ) : (
+            <ButtonComponent
+              icon={'account-box-multiple'}
+              children={'SignUp'}
+              onPress={submitHandler}
+            />
           )}
-
-          <View style={styles.buttons}>
-            <Button onPress={submitHandler}>
-              {isLogin ? (
-                <Login fill={'black'} width={26} height={26} />
-              ) : (
-                <Signup fill={'black'} width={26} height={26} />
-              )}
-            </Button>
-          </View>
         </View>
       </View>
-    </>
+    </View>
   );
 }
 

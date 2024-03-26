@@ -6,29 +6,34 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  clearState,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
   fetchWomenClothing,
 } from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
-import Button from '../components/UI/Button';
-import {Minus, Plus} from '../assets/icons';
 import {
   decrementCart,
   incrementCart,
   removeCart,
 } from '../store/redux/cartSlice';
+import {setCheck} from '../store/redux/checkoutSlice';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import IconButtonComponent from '../components/UI/IconButton';
 
 function CartScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const carts = useSelector(state => state.cart.cart);
+  const electronics = useSelector(state => state.data.electronics);
+  const menClothing = useSelector(state => state.data.menClothing);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
 
@@ -40,31 +45,46 @@ function CartScreen() {
       dispatch(fetchWomenClothing());
     }
     loadData();
-  }, []);
+    return () => {
+      dispatch(clearState());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
-    const totalPrice = data.carts.cart.reduce(
-      (acc, product) => product?.quantity * product?.price + acc,
+    const totalPrice = carts.reduce(
+      (acc, product) => product?.quantity * product?.price * 87.37 + acc,
       0,
     );
-    const totalQuantity = data.carts.cart.reduce(
+    const totalQuantity = carts.reduce(
       (acc, product) => acc + product?.quantity,
       0,
     );
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
-  }, [data.carts.cart]);
-
-  function byProductHandler() {
-    navigation.navigate('Product');
-  }
+  }, [carts]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
   }
 
   function removeCartHandler(index) {
-    dispatch(removeCart(index));
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          onPress: () => {
+            dispatch(removeCart(index));
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   }
 
   function increaseQuantity(index) {
@@ -75,26 +95,34 @@ function CartScreen() {
     dispatch(decrementCart(index));
   }
 
+  function checkoutItems() {
+    {
+      carts.map(items => {
+        dispatch(setCheck(items));
+      });
+    }
+    navigation.navigate('Order');
+  }
+
   return (
     <>
-      <ScrollView
-        style={styles.conatiner}
-        contentContainerStyle={styles.scrollStyle}
-        showsVerticalScrollIndicator={false}>
-        {data.carts.cart.length > 0 && (
+      {carts.length > 0 && (
+        <ScrollView
+          style={styles.conatiner}
+          contentContainerStyle={styles.scrollStyle}
+          showsVerticalScrollIndicator={false}>
           <>
-            {data.carts.cart.map((product, index) => (
+            {carts.map((product, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.itemConatiner}
                 onPress={() => detailsHandler(product.id)}>
-                <View style={styles.imageConatiner}>
-                  <Image
-                    source={{uri: product?.image}}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                </View>
+                <Image
+                  source={{uri: product?.image}}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+
                 <View style={styles.dataConatiner}>
                   <Text style={styles.itemTitle}>
                     {' '}
@@ -103,63 +131,79 @@ function CartScreen() {
                       : product?.title}
                   </Text>
                   <Text style={styles.itemPrice}>
-                    {product.quantity}*${product?.price} = $
-                    {(product?.quantity * product?.price).toFixed(2)}
+                    ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
-                    <Button onPress={() => increaseQuantity(index)}>
-                      <Plus width={18} height={18} />
-                    </Button>
-                    <Button onPress={() => removeCartHandler(index)}>
-                      Remove
-                    </Button>
+                    <IconButtonComponent
+                      icon={'plus'}
+                      size={20}
+                      onPress={() => increaseQuantity(index)}
+                      containerColor={'#2b5c3a'}
+                      iconColor={'#FFFFFF'}
+                    />
+                    <ButtonComponent
+                      buttonColor={'#2b5c3a'}
+                      color={'#FFFFFF'}
+                      onPress={() => removeCartHandler(index)}
+                      children={'Remove'}
+                    />
 
                     {product.quantity > 1 && (
-                      <Button onPress={() => decreaseQuantity(index)}>
-                        <Minus width={18} height={18} />
-                      </Button>
+                      <IconButtonComponent
+                        icon={'minus'}
+                        onPress={() => decreaseQuantity(index)}
+                        size={20}
+                        containerColor={'#2b5c3a'}
+                        iconColor={'#FFFFFF'}
+                      />
                     )}
                   </View>
                 </View>
               </TouchableOpacity>
             ))}
-            <View>
-              <View style={styles.totalConatiner}>
-                <View style={styles.totalTextContainer}>
-                  <Text style={styles.totalText}>
-                    Total Items: {totalQuantity}{' '}
-                  </Text>
-                  <Text style={styles.totalText}>
-                    Total Price: ${totalPrice.toFixed(2)}
-                  </Text>
-                </View>
-                <Button>Buy Now</Button>
-              </View>
-            </View>
           </>
-        )}
-
-        {data.carts.cart.length === 0 && (
-          <>
+        </ScrollView>
+      )}
+      {carts.length > 0 && (
+        <View style={styles.itemSummary}>
+          <View style={styles.totalConatiner}>
+            <View style={styles.totalTextContainer}>
+              <Text style={styles.totalText}>Total Items: {carts.length}</Text>
+              <Text style={styles.totalText}>
+                Total Price: ₹{totalPrice.toFixed(0)}
+              </Text>
+            </View>
+            <ButtonComponent
+              onPress={checkoutItems}
+              buttonColor={'#2b5c3a'}
+              color={'#FFFFFF'}>
+              {'Buy Now'}
+            </ButtonComponent>
+          </View>
+        </View>
+      )}
+      {carts.length === 0 && (
+        <>
+          <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
-              <Text style={styles.text}> The Cart is Empty :) </Text>
+              <Text style={styles.text}> Your Cart is Empty :) </Text>
             </View>
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
-              items={data.data.electronics}
+              detailsHandler={detailsHandler}
+              items={electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
-              detailsHandler={byProductHandler}
-              items={data.data.menClothing}
+              detailsHandler={detailsHandler}
+              items={menClothing}
             />
-          </>
-        )}
-      </ScrollView>
+          </View>
+        </>
+      )}
     </>
   );
 }
@@ -168,7 +212,7 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   scrollStyle: {
-    paddingBottom: 6,
+    paddingBottom: 90,
   },
   conatiner: {
     marginHorizontal: 6,
@@ -177,34 +221,23 @@ const styles = StyleSheet.create({
   itemConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 120,
-    borderWidth: 2,
+    height: 130,
+    borderWidth: 1,
     borderColor: Colors.primary300,
     borderRadius: 10,
     marginBottom: 6,
     padding: 6,
   },
   textConatiner: {
-    padding: 6,
-    height: 100,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    height: 100,
   },
   text: {
     color: Colors.primary300,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontFamily: 'AnekDevanagari',
     letterSpacing: 1,
-  },
-  imageConatiner: {
-    height: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.primary100,
   },
   image: {
     width: 100,
@@ -213,8 +246,8 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   dataConatiner: {
     width: '70%',
@@ -222,30 +255,39 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 20,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   buttons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: -4,
   },
   totalConatiner: {
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
+    padding: 8,
   },
   totalTextContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
   totalText: {
-    color: Colors.primary300,
-    fontWeight: 'bold',
-    fontSize: 20,
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
+    fontSize: 22,
+  },
+  itemSummary: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    padding: 6,
+    backgroundColor: Colors.bgcolor,
   },
 });

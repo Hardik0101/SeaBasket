@@ -1,155 +1,112 @@
-import React, {useState} from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Text,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from 'react';
+import {ScrollView, Text, StyleSheet, View} from 'react-native';
 import {Colors} from '../../constant/styles';
-import {FavCart, Star} from '../../assets/icons';
-import Button from '../UI/Button';
-import ItemScrollCard from './itemScrollCard';
+import {Card, Icon} from 'react-native-paper';
 
 function HorizontalCard({items, detailsHandler, children}) {
-  const [showAll, setShowAll] = useState(false);
-
-  // function showAllHandler() {
-  //   setShowAll(true);
-  // }
   return (
-    <>
-      {/* {showAll && (
-        <View style={styles.allData}>
-          <View style={styles.canclebutton}>
-            <Button onPress={() => setShowAll(false)}>Close</Button>
-          </View>
-
-          <ItemScrollCard items={items} detailsHandler={detailsHandler} />
-        </View>
-      )}
-       */}
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{children}</Text>
-          {/* <Text style={styles.showAll} onPress={showAllHandler}>
-            show all
-          </Text> */}
-        </View>
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.contentContainer}>
-          {items.map((product, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.card}
-              onPress={() => detailsHandler(product.id)}>
-              <View style={styles.imageContainer}>
-                <Image source={{uri: product.image}} style={styles.image} />
-              </View>
-              <View style={styles.itemTitleView}>
-                <Text style={styles.itemTitle}>
-                  {product.title.length > 10
-                    ? `${product.title.substring(0, 13)}...`
-                    : product.title}
+    <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{children}</Text>
+      </View>
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.contentContainer}>
+        {items.map(product => (
+          <Card
+            key={product.id}
+            onPress={() => detailsHandler(product.id)}
+            style={styles.card}>
+            <Card.Cover
+              source={{uri: product.image}}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <Card.Content style={styles.itemTitleView}>
+              <Text variant="titleLarge" style={styles.itemTitle}>
+                {product.title.length > 10
+                  ? `${product.title.substring(0, 13)}...`
+                  : product.title}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 4,
+                }}>
+                <Text variant="bodyMedium" style={styles.itemPrice}>
+                  ₹{(product.price * 87.37).toFixed(0)}
                 </Text>
                 <View
                   style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 4,
+                    alignItems: 'center',
+                    height: 30,
                   }}>
-                  <Text style={styles.itemPrice}>${product.price}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 2,
-                    }}>
-                    <Star width={20} height={20} fill={Colors.primary300} />
-                    <Text style={styles.itemRate}>{product.rating.rate}</Text>
-                  </View>
+                  <Icon source={'star'} color="#d2c900" size={14} />
+                  <Text variant="bodyMedium" style={styles.itemRate}>
+                    {product.rating.rate}
+                  </Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    </>
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    // paddingLeft: 6,
+  },
+  card: {
+    width: 170,
+    paddingTop: 6,
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    alignItems: 'center',
+    marginRight: 6,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+  },
+  image: {
+    height: 150,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
   },
   title: {
     color: Colors.primary,
     fontSize: 20,
-    fontWeight: 'bold',
-  },
-  card: {
-    width: 170,
-    height: 230,
-    paddingTop: 6,
-    marginTop: 2,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    backgroundColor: 'white',
-    overflow: 'hidden',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginRight: 6,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderColor: Colors.primary300,
-    resizeMode: 'contain',
-    backgroundColor: 'white',
-  },
-  imageContainer: {
-    width: '100%',
-    height: 150,
-    marginBottom: 4,
-  },
-  icon: {
-    position: 'absolute',
-    zIndex: 100,
-  },
-  title: {
-    color: Colors.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'AnekDevanagari',
   },
   itemTitleView: {
-    width: '100%',
-    backgroundColor: Colors.primary100,
-    padding: 4,
-    height: 60,
+    backgroundColor: Colors.primary200,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+    marginTop: 4,
+    height: 56,
   },
   itemTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.primary300,
-    textAlign: 'justify',
+    fontFamily: 'AnekDevanagari',
+    color: Colors.text,
+    width: 136,
   },
   itemPrice: {
     marginBottom: 2,
     fontSize: 22,
-    fontWeight: 'bold',
-    color: Colors.primary300,
+    fontFamily: 'AnekDevanagari',
+    color: Colors.text,
   },
   contentContainer: {
     paddingBottom: 6,
   },
   itemRate: {
-    fontSize: 22,
-    color: Colors.primary300,
-    fontWeight: 'bold',
+    fontSize: 18,
+    color: Colors.text,
+    fontFamily: 'AnekDevanagari',
   },
   textContainer: {
     flexDirection: 'row',
@@ -170,9 +127,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     overflow: 'hidden',
-    // height: '100%',
   },
-  canclebutton: {
+  cancelButton: {
     padding: 4,
   },
 });

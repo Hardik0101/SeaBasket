@@ -1,36 +1,47 @@
-import React from 'react';
-import {Text, StyleSheet, View, ImageBackground} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {Text, StyleSheet, View, ImageBackground, Alert} from 'react-native';
 import AuthContent from '../../components/Auth/AuthContent';
-import {Cart, Logo} from '../../assets/icons';
-import {Colors} from '../../constant/styles';
-import {newUser} from '../../apiCall/authApi';
-import {useNavigation} from '@react-navigation/native';
+import {Logo} from '../../assets/icons';
+import {createUser} from '../../util/auth';
+import {AuthContext} from '../../store/auth-context';
+import LoadingOverlay from '../../components/UI/LoadingOverlay';
 
 function SignupScreen() {
-  const navigation = useNavigation();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const authCtx = useContext(AuthContext);
 
-  const handleUser = async (username, email, password) => {
+  async function signupHandler({email, password}) {
+    setIsAuthenticating(true);
     try {
-      const response = await newUser(username, email, password);
-      console.log('New User successful:', response);
-      navigation.navigate('Login');
-    } catch (error) {
-      console.error('Create new user is failed:', error.message);
+      const token = await createUser(email, password);
+      authCtx.authenticate(token);
+      setIsAuthenticating(false);
+    } catch {
+      Alert.alert(
+        'Authentication failed!',
+        'Could not create user. Please check your credentials and try later!',
+      );
+      setIsAuthenticating(false);
     }
-  };
+  }
+
+  if (isAuthenticating) {
+    return <LoadingOverlay message="Creating user..." />;
+  }
+
   return (
     <>
       <View style={styles.mainContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Welcome to SeaBasket</Text>
-          <Logo width={28} height={28} fill={Colors.primary300} />
+          <Logo width={28} height={28} />
         </View>
         <ImageBackground
           source={require('../../assets/images/SignUp.png')}
           style={styles.bgImage}
           imageStyle={styles.image}>
           <View style={styles.auth}>
-            <AuthContent isLogin={false} onAuthenticate={handleUser} />
+            <AuthContent onAuthenticate={signupHandler} />
           </View>
         </ImageBackground>
       </View>
@@ -51,8 +62,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontFamily: 'AnekDevanagari',
     marginRight: 6,
   },
   auth: {
