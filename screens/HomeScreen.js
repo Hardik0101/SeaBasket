@@ -17,7 +17,9 @@ import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function HomeScreen() {
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const electronics = useSelector(state => state.data.electronics);
+  const menClothing = useSelector(state => state.data.menClothing);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -61,21 +63,24 @@ function HomeScreen() {
           </View>
           <View style={styles.dataContainer}>
             <HorizontalCard
+              key="menClothing"
               children="New For Men"
               detailsHandler={detailsHandler}
-              items={data.data.menClothing}
+              items={menClothing}
             />
 
             <HorizontalCard
+              key="electronics"
               children="New Electronic"
               detailsHandler={detailsHandler}
-              items={data.data.electronics}
+              items={electronics}
             />
 
             <HorizontalCard
+              key="jewelery"
               children="New Jewelery"
               detailsHandler={detailsHandler}
-              items={data.data.jewelery}
+              items={jewelery}
             />
           </View>
         </ScrollView>
@@ -113,9 +118,9 @@ const styles = StyleSheet.create({
   addContainer: {
     marginHorizontal: 6,
     borderRadius: 12,
-    height: 210,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
+    height: 180,
+    borderWidth: 1,
+    borderColor: 'gray',
     overflow: 'hidden',
   },
 });

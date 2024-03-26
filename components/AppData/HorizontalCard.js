@@ -1,63 +1,59 @@
-import React, {useState} from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Text,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from 'react';
+import {ScrollView, Text, StyleSheet, View} from 'react-native';
 import {Colors} from '../../constant/styles';
-import {Star} from '../../assets/icons';
+import {Card, Icon} from 'react-native-paper';
 
 function HorizontalCard({items, detailsHandler, children}) {
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{children}</Text>
-        </View>
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.contentContainer}>
-          {items.map((product, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.card}
-              onPress={() => detailsHandler(product.id)}>
-              <View style={styles.imageContainer}>
-                <Image source={{uri: product.image}} style={styles.image} />
-              </View>
-              <View style={styles.itemTitleView}>
-                <Text style={styles.itemTitle}>
-                  {product.title.length > 10
-                    ? `${product.title.substring(0, 13)}...`
-                    : product.title}
+    <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{children}</Text>
+      </View>
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.contentContainer}>
+        {items.map(product => (
+          <Card
+            key={product.id}
+            onPress={() => detailsHandler(product.id)}
+            style={styles.card}>
+            <Card.Cover
+              source={{uri: product.image}}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <Card.Content style={styles.itemTitleView}>
+              <Text variant="titleLarge" style={styles.itemTitle}>
+                {product.title.length > 10
+                  ? `${product.title.substring(0, 13)}...`
+                  : product.title}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 4,
+                }}>
+                <Text variant="bodyMedium" style={styles.itemPrice}>
+                  ₹{(product.price * 87.37).toFixed(0)}
                 </Text>
                 <View
                   style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 4,
+                    alignItems: 'center',
+                    height: 30,
                   }}>
-                  <Text style={styles.itemPrice}>${product.price}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 2,
-                      height: 22,
-                    }}>
-                    <Star width={12} height={12} fill={'#d2c900'} />
-                    <Text style={styles.itemRate}>{product.rating.rate}</Text>
-                  </View>
+                  <Icon source={'star'} color="#d2c900" size={14} />
+                  <Text variant="bodyMedium" style={styles.itemRate}>
+                    {product.rating.rate}
+                  </Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    </>
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -67,28 +63,18 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 170,
-    height: 230,
     paddingTop: 6,
-    marginTop: 2,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
     backgroundColor: 'white',
     overflow: 'hidden',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginRight: 6,
+    borderColor: 'lightgray',
+    borderWidth: 1,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    height: 150,
     resizeMode: 'contain',
     backgroundColor: 'white',
-  },
-  imageContainer: {
-    width: '100%',
-    height: 150,
-    marginBottom: 4,
   },
   title: {
     color: Colors.primary,
@@ -96,18 +82,17 @@ const styles = StyleSheet.create({
     fontFamily: 'AnekDevanagari',
   },
   itemTitleView: {
-    width: '100%',
     backgroundColor: Colors.primary200,
-    padding: 4,
-    height: 60,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+    marginTop: 4,
+    height: 56,
   },
   itemTitle: {
     fontSize: 18,
     fontFamily: 'AnekDevanagari',
     color: Colors.text,
-    textAlign: 'justify',
+    width: 136,
   },
   itemPrice: {
     marginBottom: 2,
@@ -143,7 +128,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     overflow: 'hidden',
   },
-  canclebutton: {
+  cancelButton: {
     padding: 4,
   },
 });

@@ -1,14 +1,14 @@
 import {Alert, Image, StyleSheet, View, ScrollView} from 'react-native';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import AuthForm from './AuthForm';
-import {Colors} from '../../constant/styles';
 import FlatButton from '../UI/FlatButton';
+import {Colors} from '../../constant/styles';
+import AuthForm from './AuthForm';
+import {Button} from 'react-native-paper';
 
 function AuthContent({isLogin, onAuthenticate}) {
   const navigation = useNavigation();
   const [credentialsInvalid, setCredentialsInvalid] = useState({
-    username: false,
     email: false,
     password: false,
     confirmEmail: false,
@@ -24,26 +24,25 @@ function AuthContent({isLogin, onAuthenticate}) {
   }
 
   function submitHandler(credentials) {
-    let {username, email, password, confirmPassword} = credentials;
+    let {email, confirmEmail, password, confirmPassword} = credentials;
 
-    username = username.trim();
     email = email.trim();
     password = password.trim();
 
     const emailIsValid = email.includes('@');
-    const usernameIsValid = username.length > 0;
     const passwordIsValid =
-      /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
+      /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
         password,
       );
 
-    const emailsAreEqual = email;
-    const usernameEqual = username;
+    const emailsAreEqual = email === confirmEmail;
     const passwordsAreEqual = password === confirmPassword;
-    if (!usernameIsValid || (!isLogin && !usernameEqual)) {
-      Alert.alert('Invalid input', 'Please check your entered Username.');
+
+    if (!emailIsValid || (!isLogin && !emailsAreEqual)) {
+      Alert.alert('Invalid input', 'Please check your entered Email.');
       setCredentialsInvalid({
-        username: !usernameIsValid,
+        email: !emailIsValid,
+        confirmEmail: !emailIsValid || !emailsAreEqual,
       });
       return;
     } else if (!passwordIsValid || (!isLogin && !passwordsAreEqual)) {
@@ -56,14 +55,8 @@ function AuthContent({isLogin, onAuthenticate}) {
         confirmPassword: !passwordIsValid || !passwordsAreEqual,
       });
       return;
-    } else if (!isLogin && !emailsAreEqual && !passwordIsValid) {
-      Alert.alert('Invalid input', 'Please check your entered Email.');
-      setCredentialsInvalid({
-        email: !emailIsValid,
-      });
-      return;
     }
-    onAuthenticate({username, email, password});
+    onAuthenticate({email, password});
   }
 
   return (
@@ -76,9 +69,12 @@ function AuthContent({isLogin, onAuthenticate}) {
             credentialsInvalid={credentialsInvalid}
           />
           <View style={styles.buttons}>
-            <FlatButton onPress={switchAuthModeHandler}>
-              {isLogin ? 'Create a new user' : 'Login'}
-            </FlatButton>
+            <Button
+              textColor="#2b5c3a"
+              style={styles.buttons}
+              onPress={switchAuthModeHandler}>
+              {isLogin ? 'Create a new user' : 'Log in instead'}
+            </Button>
           </View>
         </View>
       </ScrollView>
@@ -90,7 +86,7 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   authContent: {
-    marginHorizontal: 32,
+    marginHorizontal: 30,
     padding: 16,
     borderRadius: 8,
     backgroundColor: Colors.primary100,
@@ -101,6 +97,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   buttons: {
-    marginTop: 8,
+    borderRadius: 8,
+    marginTop: 4,
   },
 });

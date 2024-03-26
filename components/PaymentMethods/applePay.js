@@ -1,8 +1,8 @@
 import {View, StyleSheet, Text} from 'react-native';
-import Button from '../UI/Button';
 import InputText from './InputText';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function ApplePay() {
   const [appleId, setAppleId] = useState('');
@@ -55,12 +55,12 @@ function ApplePay() {
           error={errors.password}
         />
 
-        <Button
+        <ButtonComponent
           onPress={() => {
             handleappleSubmit(), validateInputs();
           }}>
-          Pay and Confirm
-        </Button>
+          {'Pay and Confirm'}
+        </ButtonComponent>
       </View>
       {appleValid && (
         <Text style={styles.text}>Please Check the apple Details</Text>

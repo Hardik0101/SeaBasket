@@ -1,8 +1,8 @@
 import {View, StyleSheet, Text} from 'react-native';
-import Button from '../UI/Button';
 import InputText from './InputText';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function MasterCard() {
   const [cardNumber, setCardNumber] = useState('');
@@ -87,12 +87,12 @@ function MasterCard() {
           value={cardHolderName}
           error={errors.cardHolderName}
         />
-        <Button
+        <ButtonComponent
           onPress={() => {
             handleCardSubmit(), validateInputs();
           }}>
-          Pay and Confirm
-        </Button>
+          {' Pay and Confirm'}
+        </ButtonComponent>
       </View>
       {cardValid && (
         <Text style={styles.text}>Please Check the Card Details</Text>

@@ -2,11 +2,16 @@ import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, BackHandler} from 'react-native';
 import {Tick} from '../assets/icons';
 import {useNavigation} from '@react-navigation/native';
-import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearState} from '../store/redux/cartSlice';
 
 function ConfirmScreen() {
   const navigation = useNavigation();
+  const cartLength = useSelector(state => state.cart.cart.length);
+  const checkoutLength = useSelector(state => state.checkout.check.length);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     function backAction() {
@@ -22,6 +27,12 @@ function ConfirmScreen() {
     return () => backHandler.remove();
   }, [navigation]);
 
+  useEffect(() => {
+    if (cartLength === checkoutLength) {
+      dispatch(clearState());
+    }
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <Tick width={100} height={100} />
@@ -30,9 +41,9 @@ function ConfirmScreen() {
         <Text style={styles.textMessage}>
           Your order has been successfully.
         </Text>
-        <Button onPress={() => navigation.navigate('Home')}>
-          Continue Shopping
-        </Button>
+        <ButtonComponent onPress={() => navigation.navigate('Home')}>
+          {'Continue Shopping'}
+        </ButtonComponent>
       </View>
     </View>
   );

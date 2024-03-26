@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
-import Button from '../UI/Button';
-import {Filter, Sort} from '../../assets/icons';
 import {
   clearState,
   fetchAllProducts,
@@ -17,18 +15,22 @@ import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';
 import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [filterTitles, setFilterTitles] = useState('');
+  const [filterTitles, setFilterTitles] = useState([]);
   const [filterData, setFilterData] = useState(false);
   const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const product = useSelector(state => state);
-
+  const menClothing = useSelector(state => state.data.menClothing);
+  const womenClothing = useSelector(state => state.data.womenclothing);
+  const electronics = useSelector(state => state.data.electronics);
+  const jewelery = useSelector(state => state.data.jewelery);
+  const allproducts = useSelector(state => state.data.allproducts);
   //Fetch The all Data from redux
   useEffect(() => {
     function fetchData() {
@@ -55,19 +57,19 @@ function FilterData({items}) {
     let productData = null;
     switch (selectedItem) {
       case "men's clothing":
-        productData = product.data.menClothing;
+        productData = menClothing;
         break;
       case "women's clothing":
-        productData = product.data.womenclothing;
+        productData = womenClothing;
         break;
       case 'jewelery':
-        productData = product.data.jewelery;
+        productData = jewelery;
         break;
       case 'electronics':
-        productData = product.data.electronics;
+        productData = electronics;
         break;
       default:
-        productData = product.data.allproducts;
+        productData = allproducts;
         break;
     }
     setItemData(productData);
@@ -77,16 +79,16 @@ function FilterData({items}) {
   function filterHandler(item) {
     let dataItems = [];
     switch (item) {
-      case 'Price Under $100':
-        dataItems = itemData.filter(data => data.price <= 100);
+      case 'Price Under ₹500':
+        dataItems = itemData.filter(data => data.price * 87.37 <= 500);
         break;
-      case 'Price:$100-$500':
+      case 'Price:₹500-₹1000':
         dataItems = itemData.filter(
-          data => data.price < 500 && data.price > 100,
+          data => data.price * 87.37 < 1000 && data.price * 87.37 > 500,
         );
         break;
-      case 'Price Over $500':
-        dataItems = itemData.filter(data => data.price >= 500);
+      case 'Price Over ₹1000':
+        dataItems = itemData.filter(data => data.price * 87.37 >= 1000);
         break;
       case 'Rating 2 & Up':
         dataItems = itemData.filter(data => data.rating.rate >= 2);
@@ -114,9 +116,15 @@ function FilterData({items}) {
         dataItems.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
-        console.log('The item is Price');
+        dataItems = itemData.filter(
+          data =>
+            data.price * 87.37 < filterTitles[1] &&
+            data.price * 87.37 > filterTitles[0],
+        );
+
         break;
     }
+
     setFilterData(true);
     setData(dataItems);
     setFilterTitles(item);
@@ -127,39 +135,40 @@ function FilterData({items}) {
     setFilterData(false);
   }
 
-  //Set items name of null is "For You"
-  if (items === null) {
-    items = 'For You';
-  }
-
   //Show Details Fnction
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
+  }
+
+  let title;
+  if (typeof filterTitles === 'string') {
+    title = filterTitles;
+  } else {
+    title = `₹${filterTitles[0]} - ₹${filterTitles[1]}`;
   }
 
   return (
     <>
       {/* Two Button Filter and Sort */}
       <View style={styles.filterContainer}>
-        <Button
+        <ButtonComponent
+          buttonColor={'#2b5c3a'}
+          color={'#FFFFFF'}
+          icon={'filter-variant'}
           onPress={() => {
             setModalVisible(true), setTypeItems('filter');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Filter width={24} height={24} />
-            <Text style={styles.buttonText}>Filter</Text>
-          </View>
-        </Button>
-        <Button
-          short
+          }}
+          children={'Filter'}
+        />
+        <ButtonComponent
+          buttonColor={'#2b5c3a'}
+          color={'#FFFFFF'}
+          icon={'sort-variant'}
           onPress={() => {
             setModalVisible(true), setTypeItems('sort');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Sort width={24} height={24} fill={Colors.bgcolor} />
-            <Text style={styles.buttonText}> Sort</Text>
-          </View>
-        </Button>
+          }}
+          children={'Sort'}
+        />
       </View>
 
       {/* Open Modal Base on typeItems Filter and Sort */}
@@ -169,6 +178,7 @@ function FilterData({items}) {
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
           typeItems={filter}
+          type={'filter'}
         />
       )}
 
@@ -178,6 +188,7 @@ function FilterData({items}) {
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
           typeItems={short}
+          type={'sort'}
         />
       )}
 
@@ -187,16 +198,20 @@ function FilterData({items}) {
           {data.length > 0 && (
             <View style={styles.filterData}>
               <View style={styles.canclebutton}>
-                <Button onPress={filterDataHandler}>Close</Button>
+                <ButtonComponent onPress={filterDataHandler}>
+                  Close
+                </ButtonComponent>
               </View>
-              <Text style={styles.filterTitle}>{filterTitles}</Text>
+              <Text style={styles.filterTitle}>{title}</Text>
               <ItemScrollCard items={data} detailsHandler={detailsHandler} />
             </View>
           )}
           {data.length === 0 && (
             <View style={styles.filterData}>
               <View style={styles.canclebutton}>
-                <Button onPress={filterDataHandler}>Close</Button>
+                <ButtonComponent onPress={filterDataHandler}>
+                  Close
+                </ButtonComponent>
               </View>
               <Text style={styles.title}>Item is not Found...</Text>
             </View>

@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import InputText from './InputText';
-import Button from '../UI/Button';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function PaypalMethod() {
   return (
@@ -12,7 +12,7 @@ function PaypalMethod() {
         secureTextEntry={true}
       />
 
-      <Button>Pay and Confirm</Button>
+      <ButtonComponent>{'Pay and Confirm'}</ButtonComponent>
     </View>
   );
 }

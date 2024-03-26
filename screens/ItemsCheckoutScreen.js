@@ -11,8 +11,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import {fetchJeweleryItems} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
-import Button from '../components/UI/Button';
-import {Minus, Plus} from '../assets/icons';
 import {
   decrementCheck,
   incrementCheck,
@@ -21,9 +19,11 @@ import {
   setTotalPay,
 } from '../store/redux/checkoutSlice';
 import {useNavigation} from '@react-navigation/native';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import IconButtonComponent from '../components/UI/IconButton';
 
 function ItemsCheckoutScreen() {
-  const data = useSelector(state => state);
+  const checkout = useSelector(state => state.checkout.check);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -37,18 +37,19 @@ function ItemsCheckoutScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    const totalPrice = data.check.check.reduce(
-      (acc, product) => product?.quantity * product?.price + acc,
+    const totalPrice = checkout.reduce(
+      (acc, product) =>
+        product?.quantity * (product.price * 87.37).toFixed(0) + acc,
       0,
     );
-    const totalQuantity = data.check.check.reduce(
+    const totalQuantity = checkout.reduce(
       (acc, product) => acc + product?.quantity,
       0,
     );
 
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
-  }, [data.check.check]);
+  }, [checkout]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -86,22 +87,22 @@ function ItemsCheckoutScreen() {
     navigation.navigate('PaymentScreen');
   }
 
-  if (data.check.check.length === 0) {
+  if (checkout.length === 0) {
     navigation.goBack();
     return null;
   }
 
-  let Discount = 15.5;
-  if (totalPrice > 300 && totalPrice < 600) {
-    Discount = 50;
-  } else if (totalPrice >= 600 && totalPrice < 1200) {
-    Discount = 70.8;
-  } else if (totalPrice >= 1200) {
-    Discount = 170.8;
+  let Discount = 70;
+  if (totalPrice > 1500 && totalPrice < 2000) {
+    Discount = 200;
+  } else if (totalPrice >= 2000 && totalPrice < 3500) {
+    Discount = 450;
+  } else if (totalPrice >= 3500) {
+    Discount = 650;
   }
 
-  let Delivery = 20;
-  if (totalPrice > 500) {
+  let Delivery = 80;
+  if (totalPrice > 5000) {
     Delivery = 'Free';
   }
 
@@ -116,7 +117,7 @@ function ItemsCheckoutScreen() {
         style={styles.conatiner}
         contentContainerStyle={styles.scrollStyle}
         showsVerticalScrollIndicator={false}>
-        {data.check.check.map((product, index) => (
+        {checkout.map((product, index) => (
           <TouchableOpacity
             key={index}
             style={styles.itemConatiner}
@@ -135,26 +136,39 @@ function ItemsCheckoutScreen() {
                   : product?.title}
               </Text>
               <Text style={styles.itemPrice}>
-                ${(product?.quantity * product?.price).toFixed(2)}
+                ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
               </Text>
               <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
-                <Button onPress={() => increaseQuantity(index)}>
-                  <Plus width={20} height={20} />
-                </Button>
-                <Button onPress={() => removeCartHandler(index)}>Remove</Button>
+                <IconButtonComponent
+                  icon={'plus'}
+                  size={20}
+                  onPress={() => increaseQuantity(index)}
+                  containerColor={'#2b5c3a'}
+                  iconColor={'#FFFFFF'}
+                />
+                <ButtonComponent
+                  buttonColor={'#2b5c3a'}
+                  color={'#FFFFFF'}
+                  onPress={() => removeCartHandler(index)}
+                  children={'Remove'}
+                />
 
                 {product.quantity > 1 && (
-                  <Button onPress={() => decreaseQuantity(index)}>
-                    <Minus width={20} height={20} />
-                  </Button>
+                  <IconButtonComponent
+                    icon={'minus'}
+                    onPress={() => decreaseQuantity(index)}
+                    size={20}
+                    containerColor={'#2b5c3a'}
+                    iconColor={'#FFFFFF'}
+                  />
                 )}
               </View>
             </View>
           </TouchableOpacity>
         ))}
         <Text style={styles.text}>
-          You get free delivery when you buy 500 or more.
+          You get free delivery when you buy 5000 or more.
         </Text>
         <View style={styles.conatiner}>
           <Text style={styles.billPrice}>Bill Details:</Text>
@@ -165,14 +179,14 @@ function ItemsCheckoutScreen() {
               <Text style={styles.itemPrice}>Delivery Fee:</Text>
             </View>
             <View>
-              <Text style={styles.itemPrice}>${totalPrice.toFixed(2)}</Text>
-              <Text style={styles.itemPrice}>-${Discount}</Text>
-              <Text style={styles.itemPrice}>${Delivery}</Text>
+              <Text style={styles.itemPrice}>₹{totalPrice.toFixed(2)}</Text>
+              <Text style={styles.itemPrice}>-₹{Discount}</Text>
+              <Text style={styles.itemPrice}>₹{Delivery}</Text>
             </View>
           </View>
           <View style={styles.billContainer}>
             <Text style={styles.itemPrice}>Total Pay</Text>
-            <Text style={styles.itemPrice}>${totalPay.toFixed(2)}</Text>
+            <Text style={styles.itemPrice}>₹{totalPay.toFixed(2)}</Text>
           </View>
         </View>
       </ScrollView>
@@ -181,13 +195,15 @@ function ItemsCheckoutScreen() {
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>
-                Total Items: {data.check.check.length}
+                Total Items: {checkout.length}
               </Text>
               <Text style={styles.totalText}>
-                Total Pay: ${totalPay.toFixed(2)}
+                Total Pay: ₹{totalPay.toFixed(2)}
               </Text>
             </View>
-            <Button onPress={paymentHandler}>Place order</Button>
+            <ButtonComponent onPress={paymentHandler}>
+              {'Place order'}
+            </ButtonComponent>
           </View>
         </View>
       </View>
@@ -209,7 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 130,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.primary300,
     borderRadius: 10,
     marginBottom: 6,
@@ -252,10 +268,10 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 2,
+    marginTop: -4,
   },
   totalConatiner: {
     justifyContent: 'center',

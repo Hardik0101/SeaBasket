@@ -19,19 +19,21 @@ import {
   fetchWomenClothing,
 } from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
-import Button from '../components/UI/Button';
-import {Minus, Plus} from '../assets/icons';
 import {
   decrementCart,
   incrementCart,
   removeCart,
 } from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import IconButtonComponent from '../components/UI/IconButton';
 
 function CartScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const carts = useSelector(state => state.cart.cart);
+  const electronics = useSelector(state => state.data.electronics);
+  const menClothing = useSelector(state => state.data.menClothing);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
 
@@ -49,17 +51,17 @@ function CartScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    const totalPrice = data.carts.cart.reduce(
-      (acc, product) => product?.quantity * product?.price + acc,
+    const totalPrice = carts.reduce(
+      (acc, product) => product?.quantity * product?.price * 87.37 + acc,
       0,
     );
-    const totalQuantity = data.carts.cart.reduce(
+    const totalQuantity = carts.reduce(
       (acc, product) => acc + product?.quantity,
       0,
     );
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
-  }, [data.carts.cart]);
+  }, [carts]);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -95,22 +97,22 @@ function CartScreen() {
 
   function checkoutItems() {
     {
-      data.carts.cart.map(items => {
+      carts.map(items => {
         dispatch(setCheck(items));
       });
     }
-    navigation.navigate('CheckoutScreen');
+    navigation.navigate('Order');
   }
 
   return (
     <>
-      {data.carts.cart.length > 0 && (
+      {carts.length > 0 && (
         <ScrollView
           style={styles.conatiner}
           contentContainerStyle={styles.scrollStyle}
           showsVerticalScrollIndicator={false}>
           <>
-            {data.carts.cart.map((product, index) => (
+            {carts.map((product, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.itemConatiner}
@@ -129,21 +131,32 @@ function CartScreen() {
                       : product?.title}
                   </Text>
                   <Text style={styles.itemPrice}>
-                    ${(product?.quantity * product?.price).toFixed(2)}
+                    ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
-                    <Button onPress={() => increaseQuantity(index)}>
-                      <Plus width={20} height={20} />
-                    </Button>
-                    <Button onPress={() => removeCartHandler(index)}>
-                      Remove
-                    </Button>
+                    <IconButtonComponent
+                      icon={'plus'}
+                      size={20}
+                      onPress={() => increaseQuantity(index)}
+                      containerColor={'#2b5c3a'}
+                      iconColor={'#FFFFFF'}
+                    />
+                    <ButtonComponent
+                      buttonColor={'#2b5c3a'}
+                      color={'#FFFFFF'}
+                      onPress={() => removeCartHandler(index)}
+                      children={'Remove'}
+                    />
 
                     {product.quantity > 1 && (
-                      <Button onPress={() => decreaseQuantity(index)}>
-                        <Minus width={20} height={20} />
-                      </Button>
+                      <IconButtonComponent
+                        icon={'minus'}
+                        onPress={() => decreaseQuantity(index)}
+                        size={20}
+                        containerColor={'#2b5c3a'}
+                        iconColor={'#FFFFFF'}
+                      />
                     )}
                   </View>
                 </View>
@@ -152,22 +165,25 @@ function CartScreen() {
           </>
         </ScrollView>
       )}
-      {data.carts.cart.length > 0 && (
+      {carts.length > 0 && (
         <View style={styles.itemSummary}>
           <View style={styles.totalConatiner}>
             <View style={styles.totalTextContainer}>
+              <Text style={styles.totalText}>Total Items: {carts.length}</Text>
               <Text style={styles.totalText}>
-                Total Items: {data.carts.cart.length}
-              </Text>
-              <Text style={styles.totalText}>
-                Total Price: ${totalPrice.toFixed(2)}
+                Total Price: ₹{totalPrice.toFixed(0)}
               </Text>
             </View>
-            <Button onPress={checkoutItems}>Buy Now</Button>
+            <ButtonComponent
+              onPress={checkoutItems}
+              buttonColor={'#2b5c3a'}
+              color={'#FFFFFF'}>
+              {'Buy Now'}
+            </ButtonComponent>
           </View>
         </View>
       )}
-      {data.carts.cart.length === 0 && (
+      {carts.length === 0 && (
         <>
           <View style={styles.conatiner}>
             <View style={styles.textConatiner}>
@@ -177,13 +193,13 @@ function CartScreen() {
             <HorizontalCard
               children="Buy New Products"
               detailsHandler={detailsHandler}
-              items={data.data.electronics}
+              items={electronics}
             />
 
             <HorizontalCard
               children="Buy New Products"
               detailsHandler={detailsHandler}
-              items={data.data.menClothing}
+              items={menClothing}
             />
           </View>
         </>
@@ -206,7 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 130,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.primary300,
     borderRadius: 10,
     marginBottom: 6,
@@ -215,6 +231,7 @@ const styles = StyleSheet.create({
   textConatiner: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: 100,
   },
   text: {
     color: Colors.primary300,
@@ -243,10 +260,10 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 2,
+    marginTop: -4,
   },
   totalConatiner: {
     justifyContent: 'center',

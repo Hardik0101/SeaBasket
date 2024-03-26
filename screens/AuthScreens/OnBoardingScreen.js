@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,16 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import Button from '../../components/UI/Button';
 import {Colors} from '../../constant/styles';
-
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import {AuthContext} from '../../store/auth-context';
+import {useNavigation} from '@react-navigation/native';
 const {width} = Dimensions.get('window');
 
-function OnboardingScreen({navigation}) {
+function OnboardingScreen() {
   const [currentPage, setCurrentPage] = useState(0);
+  const authCtx = useContext(AuthContext);
+  const navigation = useNavigation();
 
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
@@ -21,9 +24,10 @@ function OnboardingScreen({navigation}) {
     setCurrentPage(page);
   };
 
-  const handleLogin = () => {
-    navigation.navigate('New');
-  };
+  function handleLogin() {
+    const token = 'true';
+    authCtx.setGuestUserToken(token);
+  }
 
   const pages = [
     {
@@ -68,7 +72,12 @@ function OnboardingScreen({navigation}) {
         {currentPage === pages.length - 1 && (
           <>
             <View style={styles.buttons}>
-              <Button onPress={handleLogin}>Get Started</Button>
+              <ButtonComponent
+                buttonColor={'#2b5c3a'}
+                color={'#FFFFFF'}
+                children={'Get Started'}
+                onPress={handleLogin}
+              />
             </View>
           </>
         )}

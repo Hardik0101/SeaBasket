@@ -8,7 +8,6 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import Button from '../components/UI/Button';
 import {Colors} from '../constant/styles';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {clearState, fetchDetails} from '../store/redux/detailsSlice';
@@ -17,10 +16,12 @@ import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
 import Swiper from 'react-native-swiper';
 import {Star} from '../assets/icons';
+import ButtonComponent from '../components/UI/ButtonComponent';
+import {Card, Icon} from 'react-native-paper';
 
 function DetailScreen() {
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const details = useSelector(state => state.details.details);
   const route = useRoute();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -49,19 +50,18 @@ function DetailScreen() {
   }
 
   function addToCart() {
-    dispatch(addCart(data.details.details));
+    dispatch(addCart(details));
     ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
   }
 
   function checkoutItems() {
-    dispatch(setCheck(data.details.details));
-    navigation.navigate('CheckoutScreen');
+    dispatch(setCheck(details));
+    navigation.navigate('Order');
   }
 
   const description =
-    data?.details?.details &&
-    typeof data.details.details.description === 'string'
-      ? data?.details?.details?.description
+    details && typeof details.description === 'string'
+      ? details?.description
       : '';
 
   if (loading) {
@@ -84,47 +84,34 @@ function DetailScreen() {
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}>
-      {data && (
+      <>
         <View style={styles.container}>
-          <View style={styles.dataContainer}>
-            <Swiper
-              style={styles.wrapper}
-              autoplay={true}
-              autoplayTimeout={4}
-              activeDotColor="green"
-              height={300}>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-              <View style={styles.slide}>
-                <Image
-                  source={{uri: data?.details?.details?.image}}
-                  style={styles.itemImage}
-                />
-              </View>
-            </Swiper>
-            <View style={styles.itemConatiner}>
-              <Text style={styles.itemTitle}>
-                {data?.details?.details?.title}
-              </Text>
+          <Swiper
+            style={styles.wrapper}
+            autoplay={true}
+            autoplayTimeout={4}
+            activeDotColor="green"
+            height={300}>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+            <View style={styles.slide}>
+              <Image source={{uri: details?.image}} style={styles.itemImage} />
+            </View>
+          </Swiper>
+          <Card>
+            <Card.Content style={styles.itemConatiner}>
+              <Text style={styles.itemTitle}>{details?.title}</Text>
               <View style={styles.priceAndrate}>
                 <Text style={styles.itemPrice}>
-                  ${data?.details?.details?.price}
+                  ₹{(details?.price * 87.37).toFixed(0)}
                 </Text>
                 <Text style={styles.itemPrice}>
                   <Star width={14} height={14} fill={'#daa520'} />{' '}
-                  <Text style={{fontSize: 20}}>
-                    {data?.details?.details?.rating?.rate}
-                  </Text>
+                  <Text style={{fontSize: 20}}>{details?.rating?.rate}</Text>
                 </Text>
               </View>
               <Text style={styles.itemDescription}>About this Product: </Text>
@@ -140,14 +127,46 @@ function DetailScreen() {
                   </>
                 )}
               </Text>
-            </View>
-          </View>
-          <View style={styles.buttons}>
-            <Button onPress={checkoutItems}>Buy Now</Button>
-            <Button onPress={addToCart}>Add to Cart</Button>
-          </View>
+              <View style={styles.buttons}>
+                <ButtonComponent onPress={checkoutItems}>
+                  {' Buy Now'}
+                </ButtonComponent>
+                <ButtonComponent onPress={addToCart}>
+                  {' Add to Cart'}
+                </ButtonComponent>
+              </View>
+            </Card.Content>
+          </Card>
+
+          <Card style={styles.colorConatiner}>
+            <Card.Content>
+              <View style={styles.colors}>
+                <Text style={styles.itemTitle}>Colors </Text>
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#ff0000"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#008080"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#00bfff"
+                />
+                <Icon
+                  source={'checkbox-blank-circle'}
+                  size={40}
+                  color="#c71585"
+                />
+              </View>
+            </Card.Content>
+          </Card>
         </View>
-      )}
+      </>
     </ScrollView>
   );
 }
@@ -163,16 +182,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     marginTop: 10,
-  },
-  dataContainer: {
-    alignItems: 'center',
     marginBottom: 6,
     width: '100%',
   },
   itemConatiner: {
-    width: '100%',
-    marginHorizontal: 6,
-    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: 'lightgrey',
   },
   imageContainer: {
     borderBottomColor: Colors.primary,
@@ -238,5 +253,14 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     color: Colors.primary,
+  },
+  colorConatiner: {
+    backgroundColor: '#FFFFFF',
+    width: '100%',
+    marginTop: 8,
+  },
+  colors: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

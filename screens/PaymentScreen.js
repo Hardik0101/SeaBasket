@@ -11,7 +11,6 @@ import {useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 import {Address} from '../assets/icons';
 import {useState} from 'react';
-import Button from '../components/UI/Button';
 import PaymentIcons from './PaymentIcons.json';
 import VisaMethod from '../components/PaymentMethods/visa';
 import PaypalMethod from '../components/PaymentMethods/paypal';
@@ -19,13 +18,13 @@ import CashOnDeliveryMethod from '../components/PaymentMethods/cashOnDelivery';
 import GooglePay from '../components/PaymentMethods/gPay';
 import ApplePay from '../components/PaymentMethods/applePay';
 import MasterCard from '../components/PaymentMethods/masterCard';
+import ButtonComponent from '../components/UI/ButtonComponent';
 
 function PaymentScreen() {
-  const data = useSelector(state => state);
+  const data = useSelector(state => state.checkout.totalPay);
+  const userData = useSelector(state => state.userData.userData);
   const [address, setAddress] = useState(false);
-  const [input, setInput] = useState(
-    'B-405, Navratna Corporate Park, Ambli Rd, Ashok Vatika,Ahmedabad, Gujarat 380058',
-  );
+  const [input, setInput] = useState(userData.address);
 
   const [select, setSelect] = useState(false);
   const [activeItem, setActiveItem] = useState(false);
@@ -71,12 +70,12 @@ function PaymentScreen() {
   return (
     <ScrollView
       style={styles.paymentConatiner}
-      contentContainerStyle={{paddingBottom: 10}}
+      contentContainerStyle={{paddingBottom: 10, height: '100%'}}
       showsVerticalScrollIndicator={false}>
       <Text style={styles.titleText}>Order Summary</Text>
       <View style={styles.order}>
         <Text style={styles.text}>Total Pay: </Text>
-        <Text style={styles.text}>${data.check.totalPay}</Text>
+        <Text style={styles.text}>₹{data}</Text>
       </View>
       <View style={styles.addressComatiner}>
         <Text style={styles.text}>Address:</Text>
@@ -98,30 +97,33 @@ function PaymentScreen() {
             />
           )}
         </View>
-
         <View style={styles.buttons}>
-          <Button onPress={() => setAddress(true)}>Edit</Button>
+          <ButtonComponent
+            icon={'clipboard-edit-outline'}
+            onPress={() => setAddress(true)}>
+            {'Edit'}
+          </ButtonComponent>
           {!select && (
             <Text style={styles.textMessage}>Please select the address ➤</Text>
           )}
           {!address && (
-            <Button
+            <ButtonComponent
               onPress={() => {
                 setSelect(true);
               }}>
               {select ? 'Selected' : 'Select'}
-            </Button>
+            </ButtonComponent>
           )}
 
           {address && (
-            <Button
+            <ButtonComponent
               onPress={() => {
                 setAddress(false);
                 setSelect(false);
                 AddressHandler(input);
               }}>
-              Done
-            </Button>
+              {'Done'}
+            </ButtonComponent>
           )}
         </View>
       </View>
@@ -132,24 +134,21 @@ function PaymentScreen() {
             Please Select the Payment Method ➤
           </Text>
           <View style={styles.methods}>
-            {PaymentIcons.payment_icons.map((icon, index) => (
-              <>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => PaymentMethodHandler(icon.name)}
-                  key={index}
-                  style={[
-                    styles.paymentType,
-                    activeItem === icon.name && styles.paymentTypeSelect,
-                  ]}>
-                  <Image
-                    key={index}
-                    source={{uri: icon.image}}
-                    style={{width: 50, height: 30}}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </>
+            {PaymentIcons.payment_icons.map(icon => (
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => PaymentMethodHandler(icon.name)}
+                key={icon.name}
+                style={[
+                  styles.paymentType,
+                  activeItem === icon.name && styles.paymentTypeSelect,
+                ]}>
+                <Image
+                  source={{uri: icon.image}}
+                  style={{width: 50, height: 30}}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             ))}
           </View>
           {selectPayment && (
@@ -232,10 +231,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 14,
     marginHorizontal: 8,
-    gap: 20,
+    gap: 8,
   },
   payment: {
     marginTop: 10,
+    height: '100%',
   },
   paymentType: {
     borderWidth: 1,

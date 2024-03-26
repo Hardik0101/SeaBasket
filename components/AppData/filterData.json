@@ -1,8 +1,8 @@
 {
   "filter": [
-    {"name": "Price Under $100"},
-    {"name": "Price:$100-$500"},
-    {"name": "Price Over $500"},
+    {"name": "Price Under ₹500"},
+    {"name": "Price:₹500-₹1000"},
+    {"name": "Price Over ₹1000"},
     {"name": "Rating 2 & Up"},
     {"name": "Rating 3 & Up"},
     {"name": "Rating 4 & Up"}

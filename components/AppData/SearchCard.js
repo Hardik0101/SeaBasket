@@ -21,7 +21,7 @@ function SearchCard() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const allproducts = useSelector(state => state.data.allproducts);
 
   useEffect(() => {
     function fetchProducts() {
@@ -31,10 +31,10 @@ function SearchCard() {
   }, [dispatch]);
 
   useEffect(() => {
-    const result = data.data.allproducts;
+    const result = allproducts;
     setProducts(result);
     filterProducts(searchQuery, result);
-  }, [data.data.allproducts, searchQuery]);
+  }, [allproducts, searchQuery]);
 
   const filterProducts = (query, products) => {
     const filtered = products.filter(product =>
@@ -58,7 +58,7 @@ function SearchCard() {
                 ? `${item.title.substring(0, 25)}...`
                 : item.title}
             </Text>
-            <Text style={styles.price}>${item.price}</Text>
+            <Text style={styles.price}>₹{(item.price * 87.37).toFixed(0)}</Text>
           </View>
         </View>
       </TouchableOpacity>
