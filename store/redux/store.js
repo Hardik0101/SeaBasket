@@ -11,6 +11,7 @@ import userDataReducer from './userDataSlice';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['data', 'details', 'checkout'],
 };
 
 const rootReducer = combineReducers({
