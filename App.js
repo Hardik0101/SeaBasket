@@ -4,11 +4,11 @@ import React, {useContext} from 'react';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import {Provider, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {store} from './store/redux/store';
+import {persistor, store} from './store/redux/store';
 import AuthContextProvider, {AuthContext} from './store/auth-context';
 import {Account, Cart, Home, Logo, Product} from './assets/icons';
-import {Colors} from './constant/styles';
 import HomeScreen from './screens/HomeScreen';
+import {Colors} from './constant/styles';
 import CartScreen from './screens/CartScreen';
 import AccountScreen from './screens/Account';
 import ProductScreen from './screens/ProductScreen';
@@ -19,6 +19,7 @@ import DetailScreen from './screens/DetailsScreen';
 import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import ConfirmScreen from './screens/ConfirmOrderScreen';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -123,6 +124,7 @@ function AppData() {
         name="Account"
         component={AccountScreen}
         options={{
+          tabBarHideOnKeyboard: true,
           tabBarIcon: ({focused}) => (
             <Account
               width={28}
@@ -250,10 +252,12 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <AuthContextProvider>
-          <StatusBar style="light" />
-          <Navigation />
-        </AuthContextProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <AuthContextProvider>
+            <StatusBar style="light" />
+            <Navigation />
+          </AuthContextProvider>
+        </PersistGate>
       </Provider>
     </>
   );

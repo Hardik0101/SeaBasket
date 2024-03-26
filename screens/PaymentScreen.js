@@ -22,10 +22,9 @@ import ButtonComponent from '../components/UI/ButtonComponent';
 
 function PaymentScreen() {
   const data = useSelector(state => state.checkout.totalPay);
+  const userData = useSelector(state => state.userData.userData);
   const [address, setAddress] = useState(false);
-  const [input, setInput] = useState(
-    'B-405, Navratna Corporate Park, Ambli Rd, Ashok Vatika,Ahmedabad, Gujarat 380058',
-  );
+  const [input, setInput] = useState(userData.address);
 
   const [select, setSelect] = useState(false);
   const [activeItem, setActiveItem] = useState(false);
@@ -76,7 +75,7 @@ function PaymentScreen() {
       <Text style={styles.titleText}>Order Summary</Text>
       <View style={styles.order}>
         <Text style={styles.text}>Total Pay: </Text>
-        <Text style={styles.text}>${data}</Text>
+        <Text style={styles.text}>₹{data}</Text>
       </View>
       <View style={styles.addressComatiner}>
         <Text style={styles.text}>Address:</Text>

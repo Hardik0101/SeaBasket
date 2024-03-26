@@ -58,7 +58,7 @@ function SearchCard() {
                 ? `${item.title.substring(0, 25)}...`
                 : item.title}
             </Text>
-            <Text style={styles.price}>${item.price}</Text>
+            <Text style={styles.price}>₹{(item.price * 87.37).toFixed(0)}</Text>
           </View>
         </View>
       </TouchableOpacity>

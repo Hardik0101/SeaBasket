@@ -38,7 +38,8 @@ function ItemsCheckoutScreen() {
 
   useEffect(() => {
     const totalPrice = checkout.reduce(
-      (acc, product) => product?.quantity * product?.price + acc,
+      (acc, product) =>
+        product?.quantity * (product.price * 87.37).toFixed(0) + acc,
       0,
     );
     const totalQuantity = checkout.reduce(
@@ -91,17 +92,17 @@ function ItemsCheckoutScreen() {
     return null;
   }
 
-  let Discount = 15.5;
-  if (totalPrice > 300 && totalPrice < 600) {
-    Discount = 50;
-  } else if (totalPrice >= 600 && totalPrice < 1200) {
-    Discount = 70.8;
-  } else if (totalPrice >= 1200) {
-    Discount = 170.8;
+  let Discount = 70;
+  if (totalPrice > 1500 && totalPrice < 2000) {
+    Discount = 200;
+  } else if (totalPrice >= 2000 && totalPrice < 3500) {
+    Discount = 450;
+  } else if (totalPrice >= 3500) {
+    Discount = 650;
   }
 
-  let Delivery = 20;
-  if (totalPrice > 500) {
+  let Delivery = 80;
+  if (totalPrice > 5000) {
     Delivery = 'Free';
   }
 
@@ -135,7 +136,7 @@ function ItemsCheckoutScreen() {
                   : product?.title}
               </Text>
               <Text style={styles.itemPrice}>
-                ${(product?.quantity * product?.price).toFixed(2)}
+                ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
               </Text>
               <Text style={styles.itemTitle}>Qty:{product?.quantity}</Text>
               <View style={styles.buttons}>
@@ -167,7 +168,7 @@ function ItemsCheckoutScreen() {
           </TouchableOpacity>
         ))}
         <Text style={styles.text}>
-          You get free delivery when you buy 500 or more.
+          You get free delivery when you buy 5000 or more.
         </Text>
         <View style={styles.conatiner}>
           <Text style={styles.billPrice}>Bill Details:</Text>
@@ -178,14 +179,14 @@ function ItemsCheckoutScreen() {
               <Text style={styles.itemPrice}>Delivery Fee:</Text>
             </View>
             <View>
-              <Text style={styles.itemPrice}>${totalPrice.toFixed(2)}</Text>
-              <Text style={styles.itemPrice}>-${Discount}</Text>
-              <Text style={styles.itemPrice}>${Delivery}</Text>
+              <Text style={styles.itemPrice}>₹{totalPrice.toFixed(2)}</Text>
+              <Text style={styles.itemPrice}>-₹{Discount}</Text>
+              <Text style={styles.itemPrice}>₹{Delivery}</Text>
             </View>
           </View>
           <View style={styles.billContainer}>
             <Text style={styles.itemPrice}>Total Pay</Text>
-            <Text style={styles.itemPrice}>${totalPay.toFixed(2)}</Text>
+            <Text style={styles.itemPrice}>₹{totalPay.toFixed(2)}</Text>
           </View>
         </View>
       </ScrollView>
@@ -197,7 +198,7 @@ function ItemsCheckoutScreen() {
                 Total Items: {checkout.length}
               </Text>
               <Text style={styles.totalText}>
-                Total Pay: ${totalPay.toFixed(2)}
+                Total Pay: ₹{totalPay.toFixed(2)}
               </Text>
             </View>
             <ButtonComponent onPress={paymentHandler}>

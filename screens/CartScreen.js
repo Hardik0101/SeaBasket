@@ -52,7 +52,7 @@ function CartScreen() {
 
   useEffect(() => {
     const totalPrice = carts.reduce(
-      (acc, product) => product?.quantity * product?.price + acc,
+      (acc, product) => product?.quantity * product?.price * 87.37 + acc,
       0,
     );
     const totalQuantity = carts.reduce(
@@ -131,7 +131,7 @@ function CartScreen() {
                       : product?.title}
                   </Text>
                   <Text style={styles.itemPrice}>
-                    ${(product?.quantity * product?.price).toFixed(2)}
+                    ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
                   </Text>
                   <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
                   <View style={styles.buttons}>
@@ -171,7 +171,7 @@ function CartScreen() {
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>Total Items: {carts.length}</Text>
               <Text style={styles.totalText}>
-                Total Price: ${totalPrice.toFixed(2)}
+                Total Price: ₹{totalPrice.toFixed(0)}
               </Text>
             </View>
             <ButtonComponent

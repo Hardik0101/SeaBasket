@@ -106,7 +106,9 @@ function DetailScreen() {
             <Card.Content style={styles.itemConatiner}>
               <Text style={styles.itemTitle}>{details?.title}</Text>
               <View style={styles.priceAndrate}>
-                <Text style={styles.itemPrice}>${details?.price}</Text>
+                <Text style={styles.itemPrice}>
+                  ₹{(details?.price * 87.37).toFixed(0)}
+                </Text>
                 <Text style={styles.itemPrice}>
                   <Star width={14} height={14} fill={'#daa520'} />{' '}
                   <Text style={{fontSize: 20}}>{details?.rating?.rate}</Text>
