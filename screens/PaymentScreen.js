@@ -43,9 +43,6 @@ function PaymentScreen() {
       case 'visa':
         payment = <VisaMethod />;
         break;
-      case 'paypal':
-        payment = <PaypalMethod />;
-        break;
       case 'google_pay':
         payment = <GooglePay />;
         break;

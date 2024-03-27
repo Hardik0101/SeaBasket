@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Alert} from 'react-native';
 import FlatButton from '../components/UI/FlatButton';
 import {Colors} from '../constant/styles';
 import {IconButton} from 'react-native-paper';
@@ -35,8 +35,25 @@ function AccountScreen() {
     dispatch(setuserData(data));
   }
 
+  function myOrderHandler() {
+    navigation.navigate('MyOrder');
+  }
+
   const handleLogin = () => {
     navigation.navigate('Order');
+  };
+
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Logout',
+        onPress: () => authCtx.logout(),
+      },
+    ]);
   };
 
   return (
@@ -157,13 +174,11 @@ function AccountScreen() {
               outlineStyle={styles.outline}
               left={<TextInput.Icon icon="map-marker" size={20} />}
             />
-            <FlatButton>My Orders</FlatButton>
+            <FlatButton onPress={myOrderHandler}>My Orders</FlatButton>
           </View>
         )}
         {authCtx.isAuthenticated && (
-          <ButtonComponent onPress={() => authCtx.logout()}>
-            Logout
-          </ButtonComponent>
+          <ButtonComponent onPress={handleLogout}>Logout</ButtonComponent>
         )}
         {!authCtx.isAuthenticated && (
           <ButtonComponent onPress={handleLogin}>Login</ButtonComponent>

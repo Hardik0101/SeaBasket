@@ -241,6 +241,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   priceAndrate: {
     flexDirection: 'row',
     justifyContent: 'space-between',

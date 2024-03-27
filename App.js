@@ -20,6 +20,8 @@ import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import ConfirmScreen from './screens/ConfirmOrderScreen';
 import {PersistGate} from 'redux-persist/integration/react';
+import OrderDetails from './screens/OrderDetails';
+import OrderSummaryScreen from './screens/OrderSummury';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -223,7 +225,6 @@ function CombineStack() {
       screenOptions={{
         headerStyle: {backgroundColor: 'lightgreen'},
         contentStyle: {backgroundColor: Colors.bgcolor},
-        headerTitleAlign: 'center',
         headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       <Stack.Screen
@@ -235,6 +236,20 @@ function CombineStack() {
         name="Order"
         component={OrderApp}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyOrder"
+        component={OrderDetails}
+        options={{
+          title: 'Order Details',
+        }}
+      />
+      <Stack.Screen
+        name="OredrDetails"
+        component={OrderSummaryScreen}
+        options={{
+          title: 'Order summary',
+        }}
       />
     </Stack.Navigator>
   );

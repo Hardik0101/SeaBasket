@@ -7,7 +7,10 @@ const userDataSlice = createSlice({
   },
   reducers: {
     setuserData: (state, action) => {
-      state.userData = action.payload;
+      return {
+        ...state,
+        order: [...state.order, action.payload],
+      };
     },
 
     clearUserDataState: state => {
