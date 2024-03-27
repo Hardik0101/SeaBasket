@@ -1,7 +1,6 @@
 import {Alert, Image, StyleSheet, View, ScrollView} from 'react-native';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import FlatButton from '../UI/FlatButton';
 import {Colors} from '../../constant/styles';
 import AuthForm from './AuthForm';
 import {Button} from 'react-native-paper';
@@ -25,7 +24,6 @@ function AuthContent({isLogin, onAuthenticate}) {
 
   function submitHandler(credentials) {
     let {email, confirmEmail, password, confirmPassword} = credentials;
-
     email = email.trim();
     password = password.trim();
 
@@ -44,7 +42,6 @@ function AuthContent({isLogin, onAuthenticate}) {
         email: !emailIsValid,
         confirmEmail: !emailIsValid || !emailsAreEqual,
       });
-      return;
     } else if (!passwordIsValid || (!isLogin && !passwordsAreEqual)) {
       Alert.alert(
         'Invalid input',
@@ -54,8 +51,8 @@ function AuthContent({isLogin, onAuthenticate}) {
         password: !passwordIsValid,
         confirmPassword: !passwordIsValid || !passwordsAreEqual,
       });
-      return;
     }
+    // navigation.navigate('OTPScreen');
     onAuthenticate({email, password});
   }
 
@@ -73,7 +70,7 @@ function AuthContent({isLogin, onAuthenticate}) {
               textColor="#2b5c3a"
               style={styles.buttons}
               onPress={switchAuthModeHandler}>
-              {isLogin ? 'Create a new user' : 'Log in instead'}
+              {isLogin ? 'Create a new user' : 'Login'}
             </Button>
           </View>
         </View>

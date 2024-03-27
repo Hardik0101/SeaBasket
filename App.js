@@ -22,6 +22,7 @@ import ConfirmScreen from './screens/ConfirmOrderScreen';
 import {PersistGate} from 'redux-persist/integration/react';
 import OrderDetails from './screens/OrderDetails';
 import OrderSummaryScreen from './screens/OrderSummury';
+import OTPScreen from './screens/OTPSceen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -183,14 +184,21 @@ function OrderApp() {
         headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       {!authCtx.isAuthenticated && (
-        <Stack.Screen
-          name="Auth"
-          component={AuthStack}
-          options={{headerShown: false}}
-        />
+        <>
+          <Stack.Screen
+            name="Auth"
+            component={AuthStack}
+            options={{headerShown: false}}
+          />
+        </>
       )}
       {authCtx.isAuthenticated && (
         <>
+          <Stack.Screen
+            name="OTPScreen"
+            component={OTPScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="CheckoutScreen"
             component={ItemsCheckoutScreen}
