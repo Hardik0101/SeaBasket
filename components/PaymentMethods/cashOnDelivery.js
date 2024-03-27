@@ -50,6 +50,7 @@ function CashOnDeliveryMethod() {
           {otp.map((digit, index) => (
             <TextInput
               key={index}
+              secureTextEntry={true}
               style={[styles.input, error ? styles.errorInput : null]}
               placeholder="0"
               placeholderTextColor={'gray'}

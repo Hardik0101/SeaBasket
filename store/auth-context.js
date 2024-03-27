@@ -1,5 +1,7 @@
 import {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {clearUserDataState} from './redux/userDataSlice';
 
 export const AuthContext = createContext({
   token: '',
@@ -14,6 +16,7 @@ export const AuthContext = createContext({
 function AuthContextProvider({children}) {
   const [authToken, setAuthToken] = useState('');
   const [guestToken, setGuestToken] = useState('');
+  const dispatch = useDispatch();
 
   function setGuestUserToken(gtoken) {
     setGuestToken(gtoken);
@@ -31,13 +34,12 @@ function AuthContextProvider({children}) {
 
   function logout() {
     setAuthToken('');
-    setGuestToken('');
+    dispatch(clearUserDataState());
     AsyncStorage.removeItem('authToken')
       .then(() => {
         console.log('Token removed successfully');
         return AsyncStorage.removeItem('guestToken');
       })
-      .then(() => console.log('Guest token removed successfully'))
       .catch(error => console.log('Error removing tokens:', error));
   }
 

@@ -59,6 +59,8 @@ function OrderSummaryScreen() {
     );
   }
 
+  const date = new Date();
+  console.log(date);
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
@@ -71,6 +73,12 @@ function OrderSummaryScreen() {
             labels={stepLabels}
             stepCount={4}
           />
+        </View>
+        <View style={styles.stepsDate}>
+          <Text style={styles.date}>31/03/2024</Text>
+          <Text style={styles.date}>31/03/2024</Text>
+          <Text style={styles.date}>31/03/2024</Text>
+          <Text style={styles.date}>31/03/2024</Text>
         </View>
         <View style={styles.itemConatiner}>
           {order[route.params.id].check.map(product => (
@@ -131,6 +139,20 @@ const styles = StyleSheet.create({
   detailsContainer: {
     justifyContent: 'center',
     marginLeft: 10,
+  },
+  stepsDate: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    borderRadius: 8,
+    height: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 6,
+    marginBottom: 10,
+  },
+  date: {
+    color: Colors.text,
   },
 });
 

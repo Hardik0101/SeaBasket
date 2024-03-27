@@ -49,7 +49,9 @@ function SearchCard() {
 
   function renderItem({item}) {
     return (
-      <TouchableOpacity onPress={() => detailsHandler(item.id)}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => detailsHandler(item.id)}>
         <View style={styles.itemContainer}>
           <Image source={{uri: item.image}} style={styles.image} />
           <View style={styles.textContainer}>
@@ -115,8 +117,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     borderRadius: 10,
     backgroundColor: Colors.bgcolor,
-    height: 500,
+    marginTop: 4,
     overflow: 'hidden',
+    maxHeight: 610,
   },
   input: {
     fontWeight: 'bold',

@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
   },
   payment: {
     marginTop: 10,
-    height: '100%',
   },
   paymentType: {
     borderWidth: 1,
