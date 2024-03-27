@@ -36,23 +36,30 @@ function AuthContent({isLogin, onAuthenticate}) {
     const emailsAreEqual = email === confirmEmail;
     const passwordsAreEqual = password === confirmPassword;
 
-    if (!emailIsValid || (!isLogin && !emailsAreEqual)) {
+    if (!emailIsValid) {
       Alert.alert('Invalid input', 'Please check your entered Email.');
-      setCredentialsInvalid({
-        email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
-      });
-    } else if (!passwordIsValid || (!isLogin && !passwordsAreEqual)) {
+      return;
+    }
+    if (!isLogin && !emailsAreEqual) {
+      Alert.alert('Emails do not match', 'Please make sure emails match.');
+      return;
+    }
+
+    if (!passwordIsValid) {
       Alert.alert(
         'Invalid input',
         'Please enter Strong Password like aBc@#123',
       );
-      setCredentialsInvalid({
-        password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
+      return;
     }
-    // navigation.navigate('OTPScreen');
+
+    if (!isLogin && !passwordsAreEqual) {
+      Alert.alert(
+        'Passwords do not match',
+        'Please make sure passwords match.',
+      );
+      return;
+    }
     onAuthenticate({email, password});
   }
 

@@ -23,7 +23,6 @@ function LoginScreen() {
       const token = await login(email, password);
       authCtx.authenticate(token);
       setIsAuthenticating(false);
-      console.log(token);
     } catch (error) {
       Alert.alert(
         'Authentication failed!',

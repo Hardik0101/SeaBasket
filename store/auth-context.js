@@ -38,9 +38,10 @@ function AuthContextProvider({children}) {
     AsyncStorage.removeItem('authToken')
       .then(() => {
         console.log('Token removed successfully');
-        return AsyncStorage.removeItem('guestToken');
       })
-      .catch(error => console.log('Error removing tokens:', error));
+      .catch(error => {
+        console.log('Error removing authToken:', error);
+      });
   }
 
   useEffect(() => {

@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 import {useRoute} from '@react-navigation/native';
-import {clearState, fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import StepIndicator from 'react-native-step-indicator';
+
 const stepLabels = [
   'Order Confirmed',
   'Out of Delivery',
@@ -38,9 +31,6 @@ function OrderSummaryScreen() {
       }
     }
     fetchData();
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch, route.params.id]);
 
   if (loading) {
@@ -59,8 +49,12 @@ function OrderSummaryScreen() {
     );
   }
 
-  const date = new Date();
-  console.log(date);
+  const currentDate = new Date();
+  const nextThreeDays = new Date(currentDate);
+  nextThreeDays.setDate(currentDate.getDate() + 3);
+  const nextFiveDays = new Date(currentDate);
+  nextFiveDays.setDate(currentDate.getDate() + 5);
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
@@ -75,14 +69,14 @@ function OrderSummaryScreen() {
           />
         </View>
         <View style={styles.stepsDate}>
-          <Text style={styles.date}>31/03/2024</Text>
-          <Text style={styles.date}>31/03/2024</Text>
-          <Text style={styles.date}>31/03/2024</Text>
-          <Text style={styles.date}>31/03/2024</Text>
+          <Text style={styles.date}>{currentDate.toLocaleDateString()}</Text>
+          <Text style={styles.date}>{nextThreeDays.toLocaleDateString()}</Text>
+          <Text style={styles.date}>{nextFiveDays.toLocaleDateString()}</Text>
+          <Text style={styles.date}>{nextFiveDays.toLocaleDateString()}</Text>
         </View>
-        <View style={styles.itemConatiner}>
+        <View style={styles.itemContainer}>
           {order[route.params.id].check.map(product => (
-            <View key={product.id} style={styles.dataConatiner}>
+            <View key={product.id} style={styles.dataContainer}>
               <Image source={{uri: product.image}} style={styles.image} />
               <View style={styles.detailsContainer}>
                 <Text style={styles.itemTitle}>{product.title}</Text>
@@ -116,7 +110,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AnekDevanagari',
     width: 200,
   },
-  dataConatiner: {
+  dataContainer: {
     padding: 4,
     flexDirection: 'row',
   },
@@ -125,7 +119,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
-  itemConatiner: {
+  itemContainer: {
     borderWidth: 1,
     borderColor: Colors.primary300,
     borderRadius: 10,
