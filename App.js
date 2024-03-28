@@ -36,14 +36,14 @@ function AuthStack() {
         headerShown: false,
       }}>
       <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{title: 'Login', headerShown: true}}
-      />
-      <Stack.Screen
         name="Signup"
         component={SignupScreen}
         options={{title: 'SignUp', headerShown: true}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{title: 'Login', headerShown: true}}
       />
     </Stack.Navigator>
   );

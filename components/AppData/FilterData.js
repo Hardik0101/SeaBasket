@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
 import {
-  clearState,
   fetchAllProducts,
   fetchCategory,
   fetchElectronics,
@@ -16,6 +15,7 @@ import {filter, short} from './filterData.json';
 import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
 import ButtonComponent from '../UI/ButtonComponent';
+import SortModalComponent from './SortModalComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,10 +42,7 @@ function FilterData({items}) {
       dispatch(fetchWomenClothing());
     }
     fetchData();
-    return () => {
-      dispatch(clearState());
-    };
-  }, []);
+  }, [dispatch]);
 
   //Set Items base on Active Items
   useEffect(() => {
@@ -75,30 +72,25 @@ function FilterData({items}) {
     setItemData(productData);
   }
 
+  function priceAndRateFilter(item) {
+    const max = Math.max(...item);
+    const min = Math.min(...item);
+    let dataItems = [];
+    dataItems = itemData.filter(
+      data =>
+        data.rating.rate < max + 1 &&
+        data.rating.rate > min &&
+        data.price * 87.37 < filterTitles[1] &&
+        data.price * 87.37 > filterTitles[0],
+    );
+    setFilterData(true);
+    setData(dataItems);
+  }
+
   // Apply Filter Data by Filter type
   function filterHandler(item) {
     let dataItems = [];
     switch (item) {
-      case 'Price Under ₹500':
-        dataItems = itemData.filter(data => data.price * 87.37 <= 500);
-        break;
-      case 'Price:₹500-₹1000':
-        dataItems = itemData.filter(
-          data => data.price * 87.37 < 1000 && data.price * 87.37 > 500,
-        );
-        break;
-      case 'Price Over ₹1000':
-        dataItems = itemData.filter(data => data.price * 87.37 >= 1000);
-        break;
-      case 'Rating 2 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 2);
-        break;
-      case 'Rating 3 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 3);
-        break;
-      case 'Rating 4 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 4);
-        break;
       case 'Price:Low to High':
         dataItems = itemData.filter(data => data.price);
         dataItems.sort((a, b) => a.price - b.price);
@@ -116,23 +108,12 @@ function FilterData({items}) {
         dataItems.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
-        dataItems = itemData.filter(
-          data =>
-            data.price * 87.37 < filterTitles[1] &&
-            data.price * 87.37 > filterTitles[0],
-        );
-
+        dataItems = [];
         break;
     }
-
     setFilterData(true);
     setData(dataItems);
     setFilterTitles(item);
-  }
-
-  //Filtered data show in this function
-  function filterDataHandler() {
-    setFilterData(false);
   }
 
   //Show Details Fnction
@@ -177,18 +158,18 @@ function FilterData({items}) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
+          priceAndRateFilter={priceAndRateFilter}
           typeItems={filter}
           type={'filter'}
         />
       )}
 
       {typeItems === 'sort' && (
-        <FilterModalComponent
+        <SortModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
           typeItems={short}
-          type={'sort'}
         />
       )}
 
@@ -196,27 +177,18 @@ function FilterData({items}) {
       {filterData && (
         <>
           {data.length > 0 && (
-            <View style={styles.filterData}>
-              <View style={styles.canclebutton}>
-                <ButtonComponent onPress={filterDataHandler}>
-                  Close
-                </ButtonComponent>
-              </View>
-              <Text style={styles.filterTitle}>{title}</Text>
-              <ItemScrollCard items={data} detailsHandler={detailsHandler} />
-            </View>
+            <ItemScrollCard items={data} detailsHandler={detailsHandler} />
           )}
           {data.length === 0 && (
             <View style={styles.filterData}>
-              <View style={styles.canclebutton}>
-                <ButtonComponent onPress={filterDataHandler}>
-                  Close
-                </ButtonComponent>
-              </View>
               <Text style={styles.title}>Item is not Found...</Text>
             </View>
           )}
         </>
+      )}
+
+      {!filterData && (
+        <ItemScrollCard items={itemData} detailsHandler={detailsHandler} />
       )}
     </>
   );
@@ -253,16 +225,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 4,
     fontFamily: 'AnekDevanagari',
-  },
-  filterData: {
-    backgroundColor: Colors.bgcolor,
-    position: 'absolute',
-    zIndex: 1000,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflow: 'hidden',
   },
   canclebutton: {
     padding: 4,

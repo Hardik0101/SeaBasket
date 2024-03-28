@@ -88,61 +88,58 @@ function ProductScreen() {
   }
 
   return (
-    <View style={styles.mainView}>
-      {/* ******************* Catagory selction ******************* */}
-      <ScrollView
-        horizontal={true}
-        style={styles.container}
-        contentContainerStyle={styles.contentContainerHorizontal}>
-        <Chip
-          key={'ForYou'}
-          onPress={() => getProductData()}
-          style={[
-            styles.titleContainer,
-            activeItem === null && styles.activeTitleContainer,
-          ]}
-          textStyle={[styles.title, activeItem === null && styles.activeTitle]}>
-          For You
-        </Chip>
-        {category.map((item, index) => (
+    <>
+      <View style={styles.mainView}>
+        {/* ******************* Catagory selction ******************* */}
+        <ScrollView
+          horizontal={true}
+          style={styles.container}
+          contentContainerStyle={styles.contentContainerHorizontal}>
           <Chip
-            key={index.toString()}
-            onPress={() => getProductData(item)}
+            key={'ForYou'}
+            onPress={() => getProductData()}
             style={[
               styles.titleContainer,
-              activeItem === item && styles.activeTitleContainer,
+              activeItem === null && styles.activeTitleContainer,
             ]}
             textStyle={[
               styles.title,
-              activeItem === item && styles.activeTitle,
+              activeItem === null && styles.activeTitle,
             ]}>
-            {item}
+            For You
           </Chip>
-        ))}
-      </ScrollView>
+          {category.map((item, index) => (
+            <Chip
+              key={index.toString()}
+              onPress={() => getProductData(item)}
+              style={[
+                styles.titleContainer,
+                activeItem === item && styles.activeTitleContainer,
+              ]}
+              textStyle={[
+                styles.title,
+                activeItem === item && styles.activeTitle,
+              ]}>
+              {item}
+            </Chip>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* ******************* Filter Section *******************/}
       <FilterData items={activeItem} />
-      {/* ******************* Item Section *******************/}
-
-      {items && (
-        <ItemScrollCard items={pressed} detailsHandler={detailsHandler} />
-      )}
-      {!items && (
-        <ItemScrollCard items={allproducts} detailsHandler={detailsHandler} />
-      )}
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   mainView: {
-    height: '100%',
+    // height: '100%',
   },
   container: {
     padding: 6,
     flexDirection: 'row',
-    height: 58,
+    // height: 58,
     borderBottomWidth: 1,
     borderColor: Colors.primary300,
   },
