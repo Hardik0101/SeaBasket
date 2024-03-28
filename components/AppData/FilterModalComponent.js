@@ -9,12 +9,13 @@ import ButtonComponent from '../UI/ButtonComponent';
 function FilterModalComponent({
   modalVisible,
   setModalVisible,
-  filterHandler,
+  filterRange,
   typeItems,
   priceAndRateFilter,
+  clearFilter,
   type,
 }) {
-  const [sliderValues, setSliderValues] = useState([600, 8000]);
+  const [sliderValues, setSliderValues] = useState([500, 10000]);
   const [filter, setFilter] = useState([]);
   const [checkValue, setCheckValue] = useState([0]);
   const [checkedItems, setCheckedItems] = useState({});
@@ -56,7 +57,7 @@ function FilterModalComponent({
         </View>
         {filter === 'filter' && (
           <>
-            <View style={{width: '90%'}}>
+            <View style={{width: '90%', marginBottom: 10}}>
               <Slider
                 min={500}
                 max={10000}
@@ -93,10 +94,19 @@ function FilterModalComponent({
           <ButtonComponent
             onPress={() => {
               setModalVisible(!modalVisible);
-              filterHandler(sliderValues);
+              filterRange(sliderValues);
               priceAndRateFilter(checkValue);
             }}>
             Apply Filter
+          </ButtonComponent>
+          <ButtonComponent
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              clearFilter();
+              setCheckValue([0]);
+              setCheckedItems({});
+            }}>
+            Clear Filter
           </ButtonComponent>
         </View>
       </Modal>
@@ -140,5 +150,9 @@ const styles = StyleSheet.create({
   },
   buttonContainre: {
     marginVertical: 10,
+    gap: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

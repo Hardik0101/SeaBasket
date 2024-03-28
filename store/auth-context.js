@@ -2,6 +2,8 @@ import {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {clearUserDataState} from './redux/userDataSlice';
+import {clearState} from './redux/cartSlice';
+import {setClearOrder} from './redux/myOrderSlice';
 
 export const AuthContext = createContext({
   token: '',
@@ -45,6 +47,8 @@ function AuthContextProvider({children}) {
   function logout() {
     setAuthToken('');
     setOtp('');
+    dispatch(clearState());
+    dispatch(setClearOrder());
     dispatch(clearUserDataState());
     AsyncStorage.removeItem('authToken')
       .then(() => {
@@ -91,15 +95,15 @@ function AuthContextProvider({children}) {
 
   const value = {
     token: authToken,
-    isAuthenticated: !!authToken,
-    authenticate: authenticate,
-    logout: logout,
-    setGuestUserToken: setGuestUserToken,
-    isGuest: !!guestToken,
     gtoken: guestToken,
-    isOtp: !!otp,
     otp: otp,
+    authenticate: authenticate,
+    setGuestUserToken: setGuestUserToken,
     getOtp: getOtp,
+    isAuthenticated: !!authToken,
+    isGuest: !!guestToken,
+    isOtp: !!otp,
+    logout: logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

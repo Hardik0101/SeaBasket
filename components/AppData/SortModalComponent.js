@@ -3,12 +3,14 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Modal, Portal, RadioButton} from 'react-native-paper';
 import {Colors} from '../../constant/styles';
 import IconButtonComponent from '../UI/IconButton';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function SortModalComponent({
   modalVisible,
   setModalVisible,
   filterHandler,
   typeItems,
+  clearFilter,
 }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -58,6 +60,16 @@ function SortModalComponent({
             </View>
           </TouchableOpacity>
         ))}
+        <View style={styles.buttonContainer}>
+          <ButtonComponent
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              clearFilter();
+              setSelectedItem(null);
+            }}>
+            Clear Sort
+          </ButtonComponent>
+        </View>
       </Modal>
     </Portal>
   );
@@ -95,5 +107,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    marginVertical: 10,
   },
 });

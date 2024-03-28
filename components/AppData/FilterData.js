@@ -16,6 +16,7 @@ import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
 import ButtonComponent from '../UI/ButtonComponent';
 import SortModalComponent from './SortModalComponent';
+import {Icon} from 'react-native-paper';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,6 +24,8 @@ function FilterData({items}) {
   const [filterData, setFilterData] = useState(false);
   const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);
+  const [isFilter, setIsFilter] = useState(false);
+  const [isSort, setIsSort] = useState(false);
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -72,6 +75,10 @@ function FilterData({items}) {
     setItemData(productData);
   }
 
+  function filterRange(item) {
+    setFilterTitles(item);
+  }
+
   function priceAndRateFilter(item) {
     const max = Math.max(...item);
     const min = Math.min(...item);
@@ -85,6 +92,7 @@ function FilterData({items}) {
     );
     setFilterData(true);
     setData(dataItems);
+    setIsFilter(true);
   }
 
   // Apply Filter Data by Filter type
@@ -112,8 +120,14 @@ function FilterData({items}) {
         break;
     }
     setFilterData(true);
+    setIsSort(true);
     setData(dataItems);
-    setFilterTitles(item);
+  }
+
+  function clearFilter() {
+    setIsFilter(false);
+    setIsSort(false);
+    setFilterData(false);
   }
 
   //Show Details Fnction
@@ -131,6 +145,8 @@ function FilterData({items}) {
   return (
     <>
       {/* Two Button Filter and Sort */}
+      {isFilter && <View style={styles.filterDot}></View>}
+      {isSort && <View style={styles.sortDot}></View>}
       <View style={styles.filterContainer}>
         <ButtonComponent
           buttonColor={'#2b5c3a'}
@@ -157,8 +173,9 @@ function FilterData({items}) {
         <FilterModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          filterHandler={filterHandler}
+          filterRange={filterRange}
           priceAndRateFilter={priceAndRateFilter}
+          clearFilter={clearFilter}
           typeItems={filter}
           type={'filter'}
         />
@@ -169,6 +186,7 @@ function FilterData({items}) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
+          clearFilter={clearFilter}
           typeItems={short}
         />
       )}
@@ -180,9 +198,7 @@ function FilterData({items}) {
             <ItemScrollCard items={data} detailsHandler={detailsHandler} />
           )}
           {data.length === 0 && (
-            <View style={styles.filterData}>
-              <Text style={styles.title}>Item is not Found...</Text>
-            </View>
+            <Text style={styles.title}>Item is not Found...</Text>
           )}
         </>
       )}
@@ -228,5 +244,29 @@ const styles = StyleSheet.create({
   },
   canclebutton: {
     padding: 4,
+  },
+  sortDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ff0000',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    position: 'absolute',
+    top: 44,
+    right: 150,
+    zIndex: 20,
+  },
+  filterDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ff0000',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    position: 'absolute',
+    top: 44,
+    left: 70,
+    zIndex: 20,
   },
 });
