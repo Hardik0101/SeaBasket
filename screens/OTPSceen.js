@@ -1,9 +1,10 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import {View, StyleSheet, Text, ToastAndroid} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../constant/styles';
 import ButtonComponent from '../components/UI/ButtonComponent';
+import {AuthContext} from '../store/auth-context';
 
 const OTPScreen = () => {
   const defaultValue = '4321';
@@ -11,6 +12,7 @@ const OTPScreen = () => {
   const [error, setError] = useState('');
   const navigation = useNavigation();
   const refs = useRef([]);
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     refs.current = refs.current.slice(0, otp.length);
@@ -34,6 +36,7 @@ const OTPScreen = () => {
   function handleSubmit() {
     const enteredOTP = otp.join('');
     if (enteredOTP === '1234') {
+      authCtx.getOtp('1234');
       navigation.navigate('Account');
       showToast('Login successful');
     } else {

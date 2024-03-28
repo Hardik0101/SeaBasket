@@ -6,16 +6,20 @@ import {clearUserDataState} from './redux/userDataSlice';
 export const AuthContext = createContext({
   token: '',
   gtoken: '',
+  otp: '',
   isAuthenticated: false,
   isGuest: false,
+  isOtp: false,
   authenticate: function (token) {},
   logout: function () {},
+  getOtp: function (otp) {},
   setGuestUserToken: function (gtoken) {},
 });
 
 function AuthContextProvider({children}) {
   const [authToken, setAuthToken] = useState('');
   const [guestToken, setGuestToken] = useState('');
+  const [otp, setOtp] = useState('');
   const dispatch = useDispatch();
 
   function setGuestUserToken(gtoken) {
@@ -31,9 +35,16 @@ function AuthContextProvider({children}) {
       .then(() => console.log('Token stored successfully'))
       .catch(error => console.log('Error storing token:', error));
   }
+  function getOtp(otp) {
+    setOtp(otp);
+    AsyncStorage.setItem('otp', otp)
+      .then(() => console.log('OTP stored successfully'))
+      .catch(error => console.log('Error storing otp:', error));
+  }
 
   function logout() {
     setAuthToken('');
+    setOtp('');
     dispatch(clearUserDataState());
     AsyncStorage.removeItem('authToken')
       .then(() => {
@@ -41,6 +52,14 @@ function AuthContextProvider({children}) {
       })
       .catch(error => {
         console.log('Error removing authToken:', error);
+      });
+
+    AsyncStorage.removeItem('otp')
+      .then(() => {
+        console.log('OTP removed successfully');
+      })
+      .catch(error => {
+        console.log('Error removing otp:', error);
       });
   }
 
@@ -60,6 +79,14 @@ function AuthContextProvider({children}) {
         }
       })
       .catch(error => console.log('Error retrieving guest token:', error));
+
+    AsyncStorage.getItem('otp')
+      .then(otp => {
+        if (otp) {
+          setOtp(otp);
+        }
+      })
+      .catch(error => console.log('Error retrieving otp:', error));
   }, []);
 
   const value = {
@@ -70,6 +97,9 @@ function AuthContextProvider({children}) {
     setGuestUserToken: setGuestUserToken,
     isGuest: !!guestToken,
     gtoken: guestToken,
+    isOtp: !!otp,
+    otp: otp,
+    getOtp: getOtp,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

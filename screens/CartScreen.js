@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -27,6 +27,7 @@ import {
 import {setCheck} from '../store/redux/checkoutSlice';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import IconButtonComponent from '../components/UI/IconButton';
+import {AuthContext} from '../store/auth-context';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -36,6 +37,7 @@ function CartScreen() {
   const menClothing = useSelector(state => state.data.menClothing);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     function loadData() {
@@ -101,7 +103,20 @@ function CartScreen() {
         dispatch(setCheck(items));
       });
     }
-    navigation.navigate('Order');
+    if (!authCtx.isAuthenticated) {
+      Alert.alert('Login', 'Are you sure you want to login?', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Login',
+          onPress: () => navigation.navigate('Order'),
+        },
+      ]);
+    } else {
+      navigation.navigate('Order');
+    }
   }
 
   return (

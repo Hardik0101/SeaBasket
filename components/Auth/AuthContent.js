@@ -1,4 +1,4 @@
-import {Alert, Image, StyleSheet, View, ScrollView} from 'react-native';
+import {Alert, StyleSheet, View, ScrollView} from 'react-native';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../../constant/styles';

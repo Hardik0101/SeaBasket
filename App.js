@@ -174,7 +174,7 @@ function MainApp() {
   );
 }
 
-function OrderApp() {
+function ConfrimAuthentication() {
   const authCtx = useContext(AuthContext);
   return (
     <Stack.Navigator
@@ -184,21 +184,43 @@ function OrderApp() {
         headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       {!authCtx.isAuthenticated && (
-        <>
-          <Stack.Screen
-            name="Auth"
-            component={AuthStack}
-            options={{headerShown: false}}
-          />
-        </>
+        <Stack.Screen
+          name="Auth"
+          component={AuthStack}
+          options={{headerShown: false}}
+        />
       )}
       {authCtx.isAuthenticated && (
+        <Stack.Screen
+          name="OTPScreen"
+          component={OTPScreen}
+          options={{headerShown: false}}
+        />
+      )}
+    </Stack.Navigator>
+  );
+}
+
+function OrderApp() {
+  const authCtx = useContext(AuthContext);
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleStyle: {fontFamily: 'AnekDevanagari'},
+      }}>
+      {!authCtx.isOtp && (
+        <Stack.Screen
+          name="ConfrimAuth"
+          component={ConfrimAuthentication}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )}
+      {authCtx.isOtp && (
         <>
-          <Stack.Screen
-            name="OTPScreen"
-            component={OTPScreen}
-            options={{headerShown: false}}
-          />
           <Stack.Screen
             name="CheckoutScreen"
             component={ItemsCheckoutScreen}
