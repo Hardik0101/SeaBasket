@@ -18,10 +18,10 @@ function AccountScreen() {
   const [edit, setEdit] = useState(false);
   const authCtx = useContext(AuthContext);
   const [userData, setUserData] = useState({
-    userName: user.userName,
-    email: user.email,
-    mobile: user.mobile,
-    address: user.address,
+    userName: user.userName || '',
+    email: user.email || ' ',
+    mobile: user.mobile || ' ',
+    address: user.address || ' ',
   });
 
   const userDataHandler = (key, value) => {
@@ -92,7 +92,7 @@ function AccountScreen() {
                 label="Email"
                 mode="outlined"
                 style={styles.input}
-                value={userData.email}
+                value={user.email}
                 onChangeText={text => userDataHandler('email', text)}
                 textColor="#000000"
                 outlineStyle={styles.outline}
@@ -103,7 +103,7 @@ function AccountScreen() {
                 label="Mobile Number"
                 mode="outlined"
                 style={styles.input}
-                value={userData.mobile}
+                value={user.mobile}
                 onChangeText={text => userDataHandler('mobile', text)}
                 textColor="#000000"
                 maxLength={10}
@@ -115,7 +115,7 @@ function AccountScreen() {
                 label="Address"
                 mode="outlined"
                 style={styles.input}
-                value={userData.address}
+                value={user.address}
                 onChangeText={text => userDataHandler('address', text)}
                 textColor="#000000"
                 outlineStyle={styles.outline}

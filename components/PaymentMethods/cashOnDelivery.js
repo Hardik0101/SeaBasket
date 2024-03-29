@@ -74,6 +74,11 @@ export default CashOnDeliveryMethod;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+    height: 200,
   },
   modalView: {
     backgroundColor: Colors.primary100,

@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
@@ -13,7 +14,6 @@ import {Address} from '../assets/icons';
 import {useState} from 'react';
 import PaymentIcons from './PaymentIcons.json';
 import VisaMethod from '../components/PaymentMethods/visa';
-import PaypalMethod from '../components/PaymentMethods/paypal';
 import CashOnDeliveryMethod from '../components/PaymentMethods/cashOnDelivery';
 import GooglePay from '../components/PaymentMethods/gPay';
 import ApplePay from '../components/PaymentMethods/applePay';
@@ -35,6 +35,18 @@ function PaymentScreen() {
 
   function AddressHandler(text) {
     setInput(text);
+  }
+
+  if (input === ' ') {
+    Alert.alert('Address Undefined', 'Please enter Address', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'ok',
+      },
+    ]);
   }
 
   function PaymentMethodHandler(item) {
@@ -65,95 +77,121 @@ function PaymentScreen() {
   }
 
   return (
-    <ScrollView
-      style={styles.paymentConatiner}
-      contentContainerStyle={{paddingBottom: 10, height: '100%'}}
-      showsVerticalScrollIndicator={false}>
-      <Text style={styles.titleText}>Order Summary</Text>
+    <>
+      <ScrollView
+        style={styles.paymentConatiner}
+        contentContainerStyle={{paddingBottom: 10}}
+        showsVerticalScrollIndicator={false}>
+        <Text style={styles.titleText}>Confirm Your Order</Text>
+        <View style={styles.addressComatiner}>
+          <Text style={styles.text}>Address:</Text>
+          <View style={styles.inputTextContainer}>
+            <Address width={28} height={28} />
+            {!address && (
+              <TextInput
+                label="Address"
+                value={input}
+                editable={false}
+                placeholder="Enter address"
+                placeholderTextColor={'#FF0000'}
+                style={styles.inputText}
+              />
+            )}
+            {address && (
+              <TextInput
+                style={styles.inputText}
+                placeholder="Enter your New Address"
+                placeholderTextColor={Colors.primary300}
+                value={input}
+                onChangeText={setInput}
+              />
+            )}
+          </View>
+          <View style={styles.buttons}>
+            <ButtonComponent
+              icon={'clipboard-edit-outline'}
+              onPress={() => setAddress(true)}>
+              {'Edit'}
+            </ButtonComponent>
+            {!select && (input === ' ' || input.length === 0) && (
+              <Text style={styles.textMessage}>
+                {' '}
+                ◀ Please Enter the address
+              </Text>
+            )}
+
+            {!select && input.length > 1 && (
+              <Text style={styles.textMessage}>
+                Please select the address ▶
+              </Text>
+            )}
+            {!address && (input === ' ' || input.length === 0) && (
+              <ButtonComponent
+                disabled={true}
+                onPress={() => {
+                  setSelect(true);
+                }}>
+                {select ? 'Selected' : 'Select'}
+              </ButtonComponent>
+            )}
+
+            {!address && input.length > 1 && (
+              <ButtonComponent
+                onPress={() => {
+                  setSelect(true);
+                }}>
+                {select ? 'Selected' : 'Select'}
+              </ButtonComponent>
+            )}
+            {address && (
+              <ButtonComponent
+                onPress={() => {
+                  setAddress(false);
+                  setSelect(false);
+                  AddressHandler(input);
+                }}>
+                {'Done'}
+              </ButtonComponent>
+            )}
+          </View>
+        </View>
+        <View style={styles.paymentOptions}>
+          {select && (
+            <View style={styles.payment}>
+              <Text style={styles.text}>Payment:</Text>
+              <Text style={styles.textMessage}>
+                Please Select the Payment Method ▶
+              </Text>
+              <View style={styles.methods}>
+                {PaymentIcons.payment_icons.map(icon => (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => PaymentMethodHandler(icon.name)}
+                    key={icon.name}
+                    style={[
+                      styles.paymentType,
+                      activeItem === icon.name && styles.paymentTypeSelect,
+                    ]}>
+                    <Image
+                      source={{uri: icon.image}}
+                      style={{width: 50, height: 30}}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+              {selectPayment && (
+                <View style={styles.paymentMethod}>{paymentMethod}</View>
+              )}
+            </View>
+          )}
+        </View>
+      </ScrollView>
       <View style={styles.order}>
         <Text style={styles.text}>Total Pay: </Text>
         <Text style={styles.text}>₹{data}</Text>
       </View>
-      <View style={styles.addressComatiner}>
-        <Text style={styles.text}>Address:</Text>
-        <View style={styles.inputTextContainer}>
-          <Address width={28} height={28} />
-          {!address && (
-            <Text
-              style={[styles.addressText, select && styles.selectableAddress]}>
-              {input}
-            </Text>
-          )}
-          {address && (
-            <TextInput
-              style={styles.inputText}
-              placeholder="Enter your New Address"
-              placeholderTextColor={Colors.primary300}
-              value={input}
-              onChangeText={setInput}
-            />
-          )}
-        </View>
-        <View style={styles.buttons}>
-          <ButtonComponent
-            icon={'clipboard-edit-outline'}
-            onPress={() => setAddress(true)}>
-            {'Edit'}
-          </ButtonComponent>
-          {!select && (
-            <Text style={styles.textMessage}>Please select the address ➤</Text>
-          )}
-          {!address && (
-            <ButtonComponent
-              onPress={() => {
-                setSelect(true);
-              }}>
-              {select ? 'Selected' : 'Select'}
-            </ButtonComponent>
-          )}
-
-          {address && (
-            <ButtonComponent
-              onPress={() => {
-                setAddress(false);
-                setSelect(false);
-                AddressHandler(input);
-              }}>
-              {'Done'}
-            </ButtonComponent>
-          )}
-        </View>
-      </View>
-      {select && (
-        <View style={styles.payment}>
-          <Text style={styles.text}>Payment:</Text>
-          <Text style={styles.textMessage}>
-            Please Select the Payment Method ➤
-          </Text>
-          <View style={styles.methods}>
-            {PaymentIcons.payment_icons.map(icon => (
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => PaymentMethodHandler(icon.name)}
-                key={icon.name}
-                style={[
-                  styles.paymentType,
-                  activeItem === icon.name && styles.paymentTypeSelect,
-                ]}>
-                <Image
-                  source={{uri: icon.image}}
-                  style={{width: 50, height: 30}}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            ))}
-          </View>
-          {selectPayment && (
-            <View style={styles.paymentMethod}>{paymentMethod}</View>
-          )}
-        </View>
-      )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -179,9 +217,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomColor: Colors.primary,
-    borderBottomWidth: 2,
-    marginBottom: 4,
+    borderTopColor: Colors.primary,
+    borderTopWidth: 2,
+    position: 'absolute',
+    bottom: 20,
+    paddingHorizontal: 6,
+    width: '100%',
   },
   titleText: {
     fontSize: 28,
@@ -260,5 +301,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     padding: 8,
     marginTop: 10,
+  },
+  paymentOptions: {
+    height: '100%',
   },
 });
