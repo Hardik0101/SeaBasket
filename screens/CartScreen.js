@@ -11,13 +11,7 @@ import {
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  clearState,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../store/redux/dataSlice';
+import {fetchElectronics, fetchMenClothing} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import {
   decrementCart,
@@ -40,17 +34,9 @@ function CartScreen() {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
-    function loadData() {
-      dispatch(fetchElectronics());
-      dispatch(fetchJeweleryItems());
-      dispatch(fetchMenClothing());
-      dispatch(fetchWomenClothing());
-    }
-    loadData();
-    return () => {
-      dispatch(clearState());
-    };
-  }, [dispatch]);
+    dispatch(fetchElectronics());
+    dispatch(fetchMenClothing());
+  }, [dispatch, electronics, menClothing]);
 
   useEffect(() => {
     const totalPrice = carts.reduce(
@@ -206,12 +192,14 @@ function CartScreen() {
             </View>
 
             <HorizontalCard
+              key="electronics"
               children="Buy New Products"
               detailsHandler={detailsHandler}
               items={electronics}
             />
 
             <HorizontalCard
+              key="menClothing"
               children="Buy New Products"
               detailsHandler={detailsHandler}
               items={menClothing}

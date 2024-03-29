@@ -19,9 +19,9 @@ function AccountScreen() {
   const authCtx = useContext(AuthContext);
   const [userData, setUserData] = useState({
     userName: user.userName || '',
-    email: user.email || ' ',
-    mobile: user.mobile || ' ',
-    address: user.address || ' ',
+    email: user.email || '',
+    mobile: user.mobile || '',
+    address: user.address || '',
   });
 
   const userDataHandler = (key, value) => {

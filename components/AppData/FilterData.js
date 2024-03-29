@@ -80,8 +80,9 @@ function FilterData({items}) {
   }
 
   function priceAndRateFilter(item) {
-    const max = Math.max(...item);
-    const min = Math.min(...item);
+    let max = Math.max(...item);
+    let min = Math.min(...item);
+    // max = Math.max(...item);
     let dataItems = [];
     dataItems = itemData.filter(
       data =>
@@ -133,13 +134,6 @@ function FilterData({items}) {
   //Show Details Fnction
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
-  }
-
-  let title;
-  if (typeof filterTitles === 'string') {
-    title = filterTitles;
-  } else {
-    title = `₹${filterTitles[0]} - ₹${filterTitles[1]}`;
   }
 
   return (

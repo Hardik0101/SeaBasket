@@ -24,7 +24,7 @@ function PaymentScreen() {
   const data = useSelector(state => state.checkout.totalPay);
   const userData = useSelector(state => state.userData.userData);
   const [address, setAddress] = useState(false);
-  const [input, setInput] = useState(userData.address);
+  const [input, setInput] = useState(userData.address || '');
 
   const [select, setSelect] = useState(false);
   const [activeItem, setActiveItem] = useState(false);
@@ -37,7 +37,7 @@ function PaymentScreen() {
     setInput(text);
   }
 
-  if (input === ' ') {
+  if (input === '') {
     Alert.alert('Address Undefined', 'Please enter Address', [
       {
         text: 'Cancel',
@@ -113,19 +113,19 @@ function PaymentScreen() {
               onPress={() => setAddress(true)}>
               {'Edit'}
             </ButtonComponent>
-            {!select && (input === ' ' || input.length === 0) && (
+            {!select && input === '' && (
               <Text style={styles.textMessage}>
                 {' '}
                 ◀ Please Enter the address
               </Text>
             )}
 
-            {!select && input.length > 1 && (
+            {!select && input && (
               <Text style={styles.textMessage}>
                 Please select the address ▶
               </Text>
             )}
-            {!address && (input === ' ' || input.length === 0) && (
+            {!address && input === '' && (
               <ButtonComponent
                 disabled={true}
                 onPress={() => {
@@ -135,7 +135,7 @@ function PaymentScreen() {
               </ButtonComponent>
             )}
 
-            {!address && input.length > 1 && (
+            {!address && input !== '' && (
               <ButtonComponent
                 onPress={() => {
                   setSelect(true);
