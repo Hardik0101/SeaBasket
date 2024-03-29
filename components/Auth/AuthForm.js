@@ -1,18 +1,21 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import ButtonComponent from '../UI/ButtonComponent';
 import Input from './Input';
+import {useDispatch} from 'react-redux';
+import {setuserData} from '../../store/redux/userDataSlice';
+
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
   const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
-  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
+  const [enteredMobileNumber, setEnteredMobileNumber] = useState('');
+  const [enteredUsername, setEnteredUsername] = useState('');
+  const dispatch = useDispatch();
 
   const {
     email: emailIsInvalid,
-    confirmEmail: emailsDontMatch,
     password: passwordIsInvalid,
-    confirmPassword: passwordsDontMatch,
+    username: usernameIsvalid,
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
@@ -20,14 +23,16 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
       case 'email':
         setEnteredEmail(enteredValue);
         break;
-      case 'confirmEmail':
-        setEnteredConfirmEmail(enteredValue);
-        break;
       case 'password':
         setEnteredPassword(enteredValue);
         break;
-      case 'confirmPassword':
-        setEnteredConfirmPassword(enteredValue);
+      case 'mobileNumber':
+        setEnteredMobileNumber(enteredValue);
+        break;
+      case 'username':
+        setEnteredUsername(enteredValue);
+        break;
+      default:
         break;
     }
   }
@@ -35,10 +40,18 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
   function submitHandler() {
     onSubmit({
       email: enteredEmail,
-      confirmEmail: enteredConfirmEmail,
       password: enteredPassword,
-      confirmPassword: enteredConfirmPassword,
+      mobileNumber: enteredMobileNumber,
+      username: enteredUsername,
     });
+
+    dispatch(
+      setuserData({
+        userName: enteredUsername,
+        mobile: enteredMobileNumber,
+        email: enteredEmail,
+      }),
+    );
   }
 
   return (
@@ -52,13 +65,20 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
           isInvalid={emailIsInvalid}
         />
         {!isLogin && (
-          <Input
-            placeholder="Confirm Email Address"
-            onUpdateValue={updateInputValueHandler.bind(this, 'confirmEmail')}
-            value={enteredConfirmEmail}
-            keyboardType="email-address"
-            isInvalid={emailsDontMatch}
-          />
+          <>
+            <Input
+              placeholder="Mobile Number"
+              onUpdateValue={updateInputValueHandler.bind(this, 'mobileNumber')}
+              keyboardType="phone-pad"
+              value={enteredMobileNumber}
+            />
+            <Input
+              placeholder="Username"
+              onUpdateValue={updateInputValueHandler.bind(this, 'username')}
+              isInvalid={usernameIsvalid}
+              value={enteredUsername}
+            />
+          </>
         )}
         <Input
           placeholder="Password"
@@ -67,32 +87,12 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
           value={enteredPassword}
           isInvalid={passwordIsInvalid}
         />
-        {!isLogin && (
-          <Input
-            placeholder="Confirm Password"
-            onUpdateValue={updateInputValueHandler.bind(
-              this,
-              'confirmPassword',
-            )}
-            secure
-            value={enteredConfirmPassword}
-            isInvalid={passwordsDontMatch}
-          />
-        )}
         <View style={styles.buttons}>
-          {isLogin ? (
-            <ButtonComponent
-              icon={'login'}
-              children={'Login'}
-              onPress={submitHandler}
-            />
-          ) : (
-            <ButtonComponent
-              icon={'account-box-multiple'}
-              children={'SignUp'}
-              onPress={submitHandler}
-            />
-          )}
+          <ButtonComponent
+            icon={isLogin ? 'login' : 'account-box-multiple'}
+            children={isLogin ? 'Login' : 'SignUp'}
+            onPress={submitHandler}
+          />
         </View>
       </View>
     </View>

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, Image, Alert} from 'react-native';
+import {StyleSheet, View, Image, Alert, ToastAndroid} from 'react-native';
 import FlatButton from '../components/UI/FlatButton';
 import {Colors} from '../constant/styles';
 import {IconButton} from 'react-native-paper';
@@ -33,6 +33,7 @@ function AccountScreen() {
 
   function userDataSliceHandler(data) {
     dispatch(setuserData(data));
+    ToastAndroid.show('Details Saved', ToastAndroid.SHORT);
   }
 
   function myOrderHandler() {

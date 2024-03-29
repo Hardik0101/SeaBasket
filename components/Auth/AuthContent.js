@@ -10,8 +10,8 @@ function AuthContent({isLogin, onAuthenticate}) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
-    confirmEmail: false,
-    confirmPassword: false,
+    mobile: false,
+    username: false,
   });
 
   function switchAuthModeHandler() {
@@ -23,25 +23,19 @@ function AuthContent({isLogin, onAuthenticate}) {
   }
 
   function submitHandler(credentials) {
-    let {email, confirmEmail, password, confirmPassword} = credentials;
+    let {email, password, username, mobile} = credentials;
     email = email.trim();
     password = password.trim();
+    username = username;
+    mobile = mobile;
 
     const emailIsValid = email.includes('@');
     const passwordIsValid =
       /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
         password,
       );
-
-    const emailsAreEqual = email === confirmEmail;
-    const passwordsAreEqual = password === confirmPassword;
-
     if (!emailIsValid) {
       Alert.alert('Invalid input', 'Please check your entered Email.');
-      return;
-    }
-    if (!isLogin && !emailsAreEqual) {
-      Alert.alert('Emails do not match', 'Please make sure emails match.');
       return;
     }
 
@@ -53,13 +47,7 @@ function AuthContent({isLogin, onAuthenticate}) {
       return;
     }
 
-    if (!isLogin && !passwordsAreEqual) {
-      Alert.alert(
-        'Passwords do not match',
-        'Please make sure passwords match.',
-      );
-      return;
-    }
+    console.log('this is mobile', mobile);
     onAuthenticate({email, password});
   }
 
@@ -73,10 +61,7 @@ function AuthContent({isLogin, onAuthenticate}) {
             credentialsInvalid={credentialsInvalid}
           />
           <View style={styles.buttons}>
-            <Button
-              textColor="#2b5c3a"
-              style={styles.buttons}
-              onPress={switchAuthModeHandler}>
+            <Button textColor="#2b5c3a" onPress={switchAuthModeHandler}>
               {isLogin ? 'Create a new user' : 'Login'}
             </Button>
           </View>
@@ -102,6 +87,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     borderRadius: 8,
-    marginTop: 4,
+    marginTop: 16,
   },
 });

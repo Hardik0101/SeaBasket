@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import {clearUserDataState} from './redux/userDataSlice';
 import {clearState} from './redux/cartSlice';
 import {setClearOrder} from './redux/myOrderSlice';
+import {ToastAndroid} from 'react-native';
 
 export const AuthContext = createContext({
   token: '',
@@ -52,7 +53,8 @@ function AuthContextProvider({children}) {
     dispatch(clearUserDataState());
     AsyncStorage.removeItem('authToken')
       .then(() => {
-        console.log('Token removed successfully');
+        ToastAndroid.show('Logout successful', ToastAndroid.SHORT),
+          console.log('Token removed successfully');
       })
       .catch(error => {
         console.log('Error removing authToken:', error);
