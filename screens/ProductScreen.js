@@ -75,10 +75,6 @@ function ProductScreen() {
     setItems(true);
   }
 
-  function detailsHandler(id) {
-    navigation.navigate('Details', {id});
-  }
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>

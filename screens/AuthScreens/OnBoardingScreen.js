@@ -16,8 +16,6 @@ const {width} = Dimensions.get('window');
 function OnboardingScreen() {
   const [currentPage, setCurrentPage] = useState(0);
   const authCtx = useContext(AuthContext);
-  const navigation = useNavigation();
-
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
     const page = Math.round(contentOffset.x / width);
@@ -25,8 +23,8 @@ function OnboardingScreen() {
   };
 
   function handleLogin() {
-    const token = 'true';
-    authCtx.setGuestUserToken(token);
+    const gtoken = 'true';
+    authCtx.setGuestUserToken(gtoken);
   }
 
   const pages = [

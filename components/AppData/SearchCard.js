@@ -28,11 +28,11 @@ function SearchCard() {
     fetchProducts();
   }, [dispatch]);
 
-  useEffect(() => {
-    const result = allproducts;
-    setProducts(result);
-    filterProducts(searchQuery, result);
-  }, [allproducts, searchQuery]);
+  // useEffect(() => {
+  //   const result = allproducts;
+  //   setProducts(result);
+  //   filterProducts(searchQuery, result);
+  // }, [allproducts, searchQuery]);
 
   const filterProducts = (query, products) => {
     const filtered = products.filter(product =>
@@ -40,6 +40,8 @@ function SearchCard() {
     );
     setFilteredProducts(filtered);
   };
+  // new line
+  filterProducts(searchQuery, allproducts);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});

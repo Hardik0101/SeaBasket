@@ -36,7 +36,7 @@ function CartScreen() {
   useEffect(() => {
     dispatch(fetchElectronics());
     dispatch(fetchMenClothing());
-  }, [dispatch, electronics, menClothing]);
+  }, [dispatch]);
 
   useEffect(() => {
     const totalPrice = carts.reduce(
