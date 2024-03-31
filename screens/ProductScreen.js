@@ -3,7 +3,6 @@ import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  clearState,
   fetchAllProducts,
   fetchCategory,
   fetchElectronics,
@@ -14,7 +13,6 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
-import ItemScrollCard from '../components/AppData/itemScrollCard';
 import {Chip} from 'react-native-paper';
 
 function ProductScreen() {
@@ -29,24 +27,24 @@ function ProductScreen() {
   const [activeItem, setActiveItem] = useState(null);
   const [items, setItems] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
-
+  const [error, setError] = useState(null);
   useEffect(() => {
-    async function fetchData() {
-      dispatch(fetchCategory()),
-        dispatch(fetchAllProducts()),
-        dispatch(fetchElectronics()),
-        dispatch(fetchJeweleryItems()),
-        dispatch(fetchMenClothing()),
-        dispatch(fetchWomenClothing()),
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+    function fetchData() {
+      try {
+        dispatch(fetchCategory());
+        dispatch(fetchAllProducts());
+        dispatch(fetchElectronics());
+        dispatch(fetchJeweleryItems());
+        dispatch(fetchMenClothing());
+        dispatch(fetchWomenClothing());
+        setLoading(false);
+      } catch (error) {
+        setError('Error fetching data. Please try again.');
+        setLoading(false);
+      }
     }
+
     fetchData();
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch]);
 
   function getProductData(item) {
@@ -79,6 +77,14 @@ function ProductScreen() {
     return (
       <View style={styles.loadingContainer}>
         <LoadingOverlay children="Loading..." />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.errorMessage}>{error}</Text>
       </View>
     );
   }
@@ -166,6 +172,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorMessage: {
+    fontSize: 24,
+    color: 'red',
+    textAlign: 'center',
   },
 });
 

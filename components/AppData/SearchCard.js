@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,33 +15,13 @@ import {Searchbar} from 'react-native-paper';
 
 function SearchCard() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const allproducts = useSelector(state => state.data.allproducts);
 
   useEffect(() => {
-    function fetchProducts() {
-      dispatch(fetchAllProducts());
-    }
-    fetchProducts();
+    dispatch(fetchAllProducts());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   const result = allproducts;
-  //   setProducts(result);
-  //   filterProducts(searchQuery, result);
-  // }, [allproducts, searchQuery]);
-
-  const filterProducts = (query, products) => {
-    const filtered = products.filter(product =>
-      product.title.toLowerCase().includes(query.toLowerCase()),
-    );
-    setFilteredProducts(filtered);
-  };
-  // new line
-  filterProducts(searchQuery, allproducts);
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -66,6 +46,10 @@ function SearchCard() {
       </TouchableOpacity>
     );
   }
+
+  const filteredProducts = allproducts.filter(product =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   return (
     <>

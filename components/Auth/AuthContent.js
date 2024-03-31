@@ -46,8 +46,6 @@ function AuthContent({isLogin, onAuthenticate}) {
       );
       return;
     }
-
-    console.log('this is mobile', mobile);
     onAuthenticate({email, password});
   }
 

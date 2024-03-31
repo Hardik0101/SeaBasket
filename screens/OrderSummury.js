@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import StepIndicator from 'react-native-step-indicator';
 
@@ -15,6 +22,7 @@ const stepLabels = [
 
 function OrderSummaryScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const order = useSelector(states => states.myOrder.order);
   const route = useRoute();
   const [loading, setLoading] = useState(true);
@@ -32,6 +40,10 @@ function OrderSummaryScreen() {
     }
     fetchData();
   }, [dispatch, route.params.id]);
+
+  function detailsHandler(id) {
+    navigation.navigate('Details', {id});
+  }
 
   if (loading) {
     return (
@@ -76,7 +88,10 @@ function OrderSummaryScreen() {
         </View>
         <View style={styles.itemContainer}>
           {order[route.params.id].check.map(product => (
-            <View key={product.id} style={styles.dataContainer}>
+            <TouchableOpacity
+              onPress={() => detailsHandler(product.id)}
+              key={product.id}
+              style={styles.dataContainer}>
               <Image source={{uri: product.image}} style={styles.image} />
               <View style={styles.detailsContainer}>
                 <Text style={styles.itemTitle}>{product.title}</Text>
@@ -84,7 +99,7 @@ function OrderSummaryScreen() {
                   ₹{(product.price * 87.37).toFixed(0)}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </>
@@ -147,6 +162,11 @@ const styles = StyleSheet.create({
   },
   date: {
     color: Colors.text,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

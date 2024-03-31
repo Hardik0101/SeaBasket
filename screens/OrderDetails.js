@@ -30,9 +30,6 @@ function OrderDetails() {
       dispatch(fetchMenClothing());
     }
     loadData();
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch]);
 
   function orderDetailsHandler(id) {

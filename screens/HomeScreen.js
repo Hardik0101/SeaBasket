@@ -34,10 +34,6 @@ function HomeScreen() {
       }, 3000);
     }
     loadData();
-
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch]);
 
   function detailsHandler(id) {
@@ -63,21 +59,18 @@ function HomeScreen() {
           </View>
           <View style={styles.dataContainer}>
             <HorizontalCard
-              key="menClothing"
               children="New For Men"
               detailsHandler={detailsHandler}
               items={menClothing}
             />
 
-            <HorizontalCard
-              key="electronics"
+            {/* <HorizontalCard
               children="New Electronic"
               detailsHandler={detailsHandler}
               items={electronics}
-            />
+            /> */}
 
             <HorizontalCard
-              key="jewelery"
               children="New Jewelery"
               detailsHandler={detailsHandler}
               items={jewelery}

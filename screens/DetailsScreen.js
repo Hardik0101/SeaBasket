@@ -11,7 +11,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {clearState, fetchDetails} from '../store/redux/detailsSlice';
+import {clearDetailsState, fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
@@ -44,7 +44,7 @@ function DetailScreen() {
     }
     fetchData();
     return () => {
-      dispatch(clearState());
+      dispatch(clearDetailsState());
     };
   }, [dispatch, route.params.id]);
 

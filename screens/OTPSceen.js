@@ -16,7 +16,7 @@ const OTPScreen = () => {
 
   useEffect(() => {
     refs.current = refs.current.slice(0, otp.length);
-  }, [otp.length]);
+  }, [otp]);
 
   const handleOTPChange = (index, value) => {
     const updatedOTP = [...otp];

@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../constant/styles';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import {useDispatch, useSelector} from 'react-redux';
-import {clearState} from '../store/redux/cartSlice';
+import {clearCartState} from '../store/redux/cartSlice';
 import {setOrder} from '../store/redux/myOrderSlice';
 
 function ConfirmScreen() {
@@ -31,7 +31,7 @@ function ConfirmScreen() {
 
   useEffect(() => {
     if (cartLength === checkoutLength) {
-      dispatch(clearState());
+      dispatch(clearCartState());
     }
   }, [dispatch]);
 

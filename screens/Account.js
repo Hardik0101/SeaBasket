@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, View, Image, Alert, ToastAndroid} from 'react-native';
 import FlatButton from '../components/UI/FlatButton';
 import {Colors} from '../constant/styles';
@@ -7,7 +7,7 @@ import {TextInput} from 'react-native-paper';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import {AuthContext} from '../store/auth-context';
 import {useNavigation} from '@react-navigation/native';
-import {setuserData} from '../store/redux/userDataSlice';
+import {clearUserDataState, setuserData} from '../store/redux/userDataSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 function AccountScreen() {
@@ -52,7 +52,10 @@ function AccountScreen() {
       },
       {
         text: 'Logout',
-        onPress: () => authCtx.logout(),
+        onPress: () => {
+          authCtx.logout();
+          dispatch(clearUserDataState());
+        },
       },
     ]);
   };
@@ -75,7 +78,7 @@ function AccountScreen() {
       </View>
       {authCtx.isAuthenticated && (
         <View style={styles.dataContainer}>
-          {edit && (
+          {edit ? (
             <View style={styles.dataEdit}>
               <TextInput
                 label="User Name"
@@ -92,7 +95,7 @@ function AccountScreen() {
                 label="Email"
                 mode="outlined"
                 style={styles.input}
-                value={user.email}
+                value={userData.email || ''}
                 onChangeText={text => userDataHandler('email', text)}
                 textColor="#000000"
                 outlineStyle={styles.outline}
@@ -133,8 +136,7 @@ function AccountScreen() {
                 Save Details
               </ButtonComponent>
             </View>
-          )}
-          {!edit && (
+          ) : (
             <View style={styles.dataEdit}>
               <TextInput
                 label="User Name"
@@ -183,10 +185,9 @@ function AccountScreen() {
           )}
         </View>
       )}
-      {authCtx.isAuthenticated && (
+      {authCtx.isAuthenticated ? (
         <ButtonComponent onPress={handleLogout}>Logout</ButtonComponent>
-      )}
-      {!authCtx.isAuthenticated && (
+      ) : (
         <ButtonComponent onPress={handleLogin}>Login</ButtonComponent>
       )}
     </View>

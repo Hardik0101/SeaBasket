@@ -2,7 +2,7 @@ import {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {clearUserDataState} from './redux/userDataSlice';
-import {clearState} from './redux/cartSlice';
+import {clearCartState} from './redux/cartSlice';
 import {setClearOrder} from './redux/myOrderSlice';
 import {ToastAndroid} from 'react-native';
 
@@ -48,7 +48,7 @@ function AuthContextProvider({children}) {
   function logout() {
     setAuthToken('');
     setOtp('');
-    dispatch(clearState());
+    dispatch(clearCartState());
     dispatch(setClearOrder());
     dispatch(clearUserDataState());
     AsyncStorage.removeItem('authToken')
