@@ -12,7 +12,6 @@ import {useDispatch, useSelector} from 'react-redux';
 
 function AccountScreen() {
   const navigation = useNavigation();
-
   const dispatch = useDispatch();
   const user = useSelector(state => state.userData.userData);
   const [edit, setEdit] = useState(false);
@@ -106,7 +105,7 @@ function AccountScreen() {
                 label="Mobile Number"
                 mode="outlined"
                 style={styles.input}
-                value={user.mobile}
+                value={userData.mobile}
                 onChangeText={text => userDataHandler('mobile', text)}
                 textColor="#000000"
                 maxLength={10}
@@ -118,7 +117,7 @@ function AccountScreen() {
                 label="Address"
                 mode="outlined"
                 style={styles.input}
-                value={user.address}
+                value={userData.address}
                 onChangeText={text => userDataHandler('address', text)}
                 textColor="#000000"
                 outlineStyle={styles.outline}

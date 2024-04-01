@@ -2,15 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchAllProducts,
-  fetchCategory,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../store/redux/dataSlice';
-import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
 import {Chip} from 'react-native-paper';
@@ -31,12 +22,6 @@ function ProductScreen() {
   useEffect(() => {
     function fetchData() {
       try {
-        dispatch(fetchCategory());
-        dispatch(fetchAllProducts());
-        dispatch(fetchElectronics());
-        dispatch(fetchJeweleryItems());
-        dispatch(fetchMenClothing());
-        dispatch(fetchWomenClothing());
         setLoading(false);
       } catch (error) {
         setError('Error fetching data. Please try again.');

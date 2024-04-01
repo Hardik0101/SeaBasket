@@ -5,7 +5,8 @@ import AddCard from '../components/AppData/addCard';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  clearState,
+  fetchAllProducts,
+  fetchCategory,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
@@ -29,10 +30,13 @@ function HomeScreen() {
       dispatch(fetchJeweleryItems());
       dispatch(fetchMenClothing());
       dispatch(fetchWomenClothing());
+      dispatch(fetchCategory());
+      dispatch(fetchAllProducts());
       setTimeout(() => {
         setIsLoading(false);
       }, 3000);
     }
+
     loadData();
   }, [dispatch]);
 
@@ -64,11 +68,11 @@ function HomeScreen() {
               items={menClothing}
             />
 
-            {/* <HorizontalCard
+            <HorizontalCard
               children="New Electronic"
               detailsHandler={detailsHandler}
               items={electronics}
-            /> */}
+            />
 
             <HorizontalCard
               children="New Jewelery"

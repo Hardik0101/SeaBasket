@@ -23,6 +23,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import OrderDetails from './screens/OrderDetails';
 import OrderSummaryScreen from './screens/OrderSummury';
 import OTPScreen from './screens/OTPSceen';
+import 'react-native-devsettings';
+import 'react-native-devsettings/withAsyncStorage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

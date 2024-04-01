@@ -11,12 +11,6 @@ import {
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import {
   decrementCart,
@@ -40,16 +34,7 @@ function CartScreen() {
   const authCtx = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = () => {
-    dispatch(fetchElectronics());
-    dispatch(fetchJeweleryItems());
-    dispatch(fetchMenClothing());
-    dispatch(fetchWomenClothing());
-  };
-
   useEffect(() => {
-    fetchData();
-
     const timeoutId = setTimeout(() => {
       setLoading(false);
     }, 2000);

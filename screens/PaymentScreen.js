@@ -185,12 +185,12 @@ function PaymentScreen() {
               )}
             </View>
           )}
+          <View style={styles.order}>
+            <Text style={styles.text}>Total Pay: </Text>
+            <Text style={styles.text}>₹{data}</Text>
+          </View>
         </View>
       </ScrollView>
-      <View style={styles.order}>
-        <Text style={styles.text}>Total Pay: </Text>
-        <Text style={styles.text}>₹{data}</Text>
-      </View>
     </>
   );
 }
@@ -219,8 +219,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: Colors.primary,
     borderTopWidth: 2,
-    position: 'absolute',
-    bottom: 20,
+    marginTop: 10,
     paddingHorizontal: 6,
     width: '100%',
   },

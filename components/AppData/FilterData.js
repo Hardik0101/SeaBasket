@@ -1,14 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
-import {
-  fetchAllProducts,
-  fetchCategory,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../../store/redux/dataSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';
@@ -16,7 +8,6 @@ import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
 import ButtonComponent from '../UI/ButtonComponent';
 import SortModalComponent from './SortModalComponent';
-import {Icon} from 'react-native-paper';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,18 +25,6 @@ function FilterData({items}) {
   const electronics = useSelector(state => state.data.electronics);
   const jewelery = useSelector(state => state.data.jewelery);
   const allproducts = useSelector(state => state.data.allproducts);
-  //Fetch The all Data from redux
-  useEffect(() => {
-    function fetchData() {
-      dispatch(fetchCategory());
-      dispatch(fetchAllProducts());
-      dispatch(fetchElectronics());
-      dispatch(fetchJeweleryItems());
-      dispatch(fetchMenClothing());
-      dispatch(fetchWomenClothing());
-    }
-    fetchData();
-  }, [dispatch]);
 
   //Set Items base on Active Items
   useEffect(() => {
@@ -80,9 +59,12 @@ function FilterData({items}) {
   }
 
   function priceAndRateFilter(item) {
-    let max = Math.max(...item);
+    let max = 4;
     let min = Math.min(...item);
-    // max = Math.max(...item);
+    if (item.length > 1) {
+      max = Math.max(...item);
+    }
+
     let dataItems = [];
     dataItems = itemData.filter(
       data =>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Checkbox, Icon, Modal, Portal} from 'react-native-paper';
+import {Checkbox, Modal, Portal} from 'react-native-paper';
 import {Colors} from '../../constant/styles';
 import IconButtonComponent from '../UI/IconButton';
 import Slider from 'react-native-a11y-slider';
@@ -24,6 +24,10 @@ function FilterModalComponent({
     setFilter(type);
   }, []);
 
+  useEffect(() => {
+    filterRange(sliderValues);
+  }, [sliderValues, filterRange]);
+
   function handleSliderChange(values) {
     setSliderValues(values);
   }
@@ -37,6 +41,20 @@ function FilterModalComponent({
       ...prevState,
       [itemName]: !prevState[itemName],
     }));
+
+    setCheckValue(prevCheckValue => {
+      if (!checkedItems[itemName]) {
+        return [
+          ...prevCheckValue,
+          typeItems.find(item => item.name === itemName).value,
+        ];
+      } else {
+        return prevCheckValue.filter(
+          value =>
+            value !== typeItems.find(item => item.name === itemName).value,
+        );
+      }
+    });
   };
 
   return (
@@ -90,11 +108,10 @@ function FilterModalComponent({
             </View>
           </TouchableOpacity>
         ))}
-        <View style={styles.buttonContainre}>
+        <View style={styles.buttonContainer}>
           <ButtonComponent
             onPress={() => {
               setModalVisible(!modalVisible);
-              filterRange(sliderValues);
               priceAndRateFilter(checkValue);
             }}>
             Apply Filter
@@ -148,11 +165,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonContainre: {
+  buttonContainer: {
     marginVertical: 10,
-    gap: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 10,
   },
 });

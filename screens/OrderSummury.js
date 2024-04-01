@@ -96,7 +96,7 @@ function OrderSummaryScreen() {
               <View style={styles.detailsContainer}>
                 <Text style={styles.itemTitle}>{product.title}</Text>
                 <Text style={styles.itemPrice}>
-                  ₹{(product.price * 87.37).toFixed(0)}
+                  ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
                 </Text>
               </View>
             </TouchableOpacity>

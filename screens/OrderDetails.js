@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,28 +9,14 @@ import {
 } from 'react-native';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  clearState,
-  fetchElectronics,
-  fetchMenClothing,
-} from '../store/redux/dataSlice';
+import {useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 
 function OrderDetails() {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const myOrder = useSelector(state => state.myOrder);
   const electronics = useSelector(state => state.data.electronics);
   const menClothing = useSelector(state => state.data.menClothing);
-
-  useEffect(() => {
-    function loadData() {
-      dispatch(fetchElectronics());
-      dispatch(fetchMenClothing());
-    }
-    loadData();
-  }, [dispatch]);
 
   function orderDetailsHandler(id) {
     navigation.navigate('OredrDetails', {id});
@@ -59,7 +45,7 @@ function OrderDetails() {
                   <View style={styles.dataContainer}>
                     <Text style={styles.itemTitle}>{product.title}</Text>
                     <Text style={styles.itemPrice}>
-                      ₹{(product.price * 87.37).toFixed(0)}
+                      ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
                     </Text>
                   </View>
                 </View>

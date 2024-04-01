@@ -11,7 +11,7 @@ const API_DETAILS = `https://fakestoreapi.com/products/:id`;
 
 export async function getAllProducts() {
   try {
-    const response = await axios.get(`${BASE_URL}category/women's clothing`);
+    const response = await axios.get('https://fakestoreapi.com/products');
     return response.data;
   } catch (error) {
     console.log(error);
@@ -72,7 +72,7 @@ export async function getWomenClothing() {
 export async function getElectronics() {
   try {
     const response = await axios.get(
-      'https://fakestoreapi.com/products/category/jewelery',
+      'https://fakestoreapi.com/products/category/electronics',
     );
 
     // console.log('The elec api', response.data);
