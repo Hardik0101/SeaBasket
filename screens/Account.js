@@ -7,7 +7,7 @@ import {TextInput} from 'react-native-paper';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import {AuthContext} from '../store/auth-context';
 import {useNavigation} from '@react-navigation/native';
-import {clearUserDataState, setuserData} from '../store/redux/userDataSlice';
+import {setuserData} from '../store/redux/userDataSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 function AccountScreen() {
@@ -29,6 +29,17 @@ function AccountScreen() {
       [key]: value,
     }));
   };
+
+  console.log(userData);
+
+  function clearUserState() {
+    setUserData({
+      userName: '',
+      email: '',
+      mobile: '',
+      address: '',
+    });
+  }
 
   function userDataSliceHandler(data) {
     dispatch(setuserData(data));
@@ -53,7 +64,7 @@ function AccountScreen() {
         text: 'Logout',
         onPress: () => {
           authCtx.logout();
-          dispatch(clearUserDataState());
+          clearUserState();
         },
       },
     ]);
@@ -94,7 +105,7 @@ function AccountScreen() {
                 label="Email"
                 mode="outlined"
                 style={styles.input}
-                value={userData.email || ''}
+                value={userData.email}
                 onChangeText={text => userDataHandler('email', text)}
                 textColor="#000000"
                 outlineStyle={styles.outline}
