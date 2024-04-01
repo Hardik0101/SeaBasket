@@ -20,6 +20,11 @@ import ItemsCheckoutScreen from './screens/ItemsCheckoutScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import ConfirmScreen from './screens/ConfirmOrderScreen';
 import {PersistGate} from 'redux-persist/integration/react';
+import OrderDetails from './screens/OrderDetails';
+import OrderSummaryScreen from './screens/OrderSummury';
+import OTPScreen from './screens/OTPSceen';
+import 'react-native-devsettings';
+import 'react-native-devsettings/withAsyncStorage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,14 +38,14 @@ function AuthStack() {
         headerShown: false,
       }}>
       <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{title: 'Login', headerShown: true}}
-      />
-      <Stack.Screen
         name="Signup"
         component={SignupScreen}
         options={{title: 'SignUp', headerShown: true}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{title: 'Login', headerShown: true}}
       />
     </Stack.Navigator>
   );
@@ -171,7 +176,7 @@ function MainApp() {
   );
 }
 
-function OrderApp() {
+function ConfrimAuthentication() {
   const authCtx = useContext(AuthContext);
   return (
     <Stack.Navigator
@@ -188,6 +193,35 @@ function OrderApp() {
         />
       )}
       {authCtx.isAuthenticated && (
+        <Stack.Screen
+          name="OTPScreen"
+          component={OTPScreen}
+          options={{headerShown: false}}
+        />
+      )}
+    </Stack.Navigator>
+  );
+}
+
+function OrderApp() {
+  const authCtx = useContext(AuthContext);
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: 'lightgreen'},
+        contentStyle: {backgroundColor: Colors.bgcolor},
+        headerTitleStyle: {fontFamily: 'AnekDevanagari'},
+      }}>
+      {!authCtx.isOtp && (
+        <Stack.Screen
+          name="ConfrimAuth"
+          component={ConfrimAuthentication}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )}
+      {authCtx.isOtp && (
         <>
           <Stack.Screen
             name="CheckoutScreen"
@@ -223,7 +257,6 @@ function CombineStack() {
       screenOptions={{
         headerStyle: {backgroundColor: 'lightgreen'},
         contentStyle: {backgroundColor: Colors.bgcolor},
-        headerTitleAlign: 'center',
         headerTitleStyle: {fontFamily: 'AnekDevanagari'},
       }}>
       <Stack.Screen
@@ -235,6 +268,20 @@ function CombineStack() {
         name="Order"
         component={OrderApp}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyOrder"
+        component={OrderDetails}
+        options={{
+          title: 'Order Details',
+        }}
+      />
+      <Stack.Screen
+        name="OredrDetails"
+        component={OrderSummaryScreen}
+        options={{
+          title: 'Order summary',
+        }}
       />
     </Stack.Navigator>
   );

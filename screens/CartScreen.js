@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -11,13 +11,6 @@ import {
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  clearState,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import {
   decrementCart,
@@ -27,6 +20,8 @@ import {
 import {setCheck} from '../store/redux/checkoutSlice';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import IconButtonComponent from '../components/UI/IconButton';
+import {AuthContext} from '../store/auth-context';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 function CartScreen() {
   const navigation = useNavigation();
@@ -36,18 +31,15 @@ function CartScreen() {
   const menClothing = useSelector(state => state.data.menClothing);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const authCtx = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    function loadData() {
-      dispatch(fetchElectronics());
-      dispatch(fetchJeweleryItems());
-      dispatch(fetchMenClothing());
-      dispatch(fetchWomenClothing());
-    }
-    loadData();
-    return () => {
-      dispatch(clearState());
-    };
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
   }, [dispatch]);
 
   useEffect(() => {
@@ -96,78 +88,94 @@ function CartScreen() {
   }
 
   function checkoutItems() {
-    {
-      carts.map(items => {
-        dispatch(setCheck(items));
-      });
+    carts.forEach(items => {
+      dispatch(setCheck(items));
+    });
+    if (!authCtx.isAuthenticated) {
+      Alert.alert('Login', 'Are you sure you want to login?', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Login',
+          onPress: () => navigation.navigate('Order'),
+        },
+      ]);
+    } else {
+      navigation.navigate('Order');
     }
-    navigation.navigate('Order');
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <LoadingOverlay children="Loading..." />
+      </View>
+    );
   }
 
   return (
     <>
       {carts.length > 0 && (
         <ScrollView
-          style={styles.conatiner}
+          style={styles.container}
           contentContainerStyle={styles.scrollStyle}
           showsVerticalScrollIndicator={false}>
-          <>
-            {carts.map((product, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.itemConatiner}
-                onPress={() => detailsHandler(product.id)}>
-                <Image
-                  source={{uri: product?.image}}
-                  style={styles.image}
-                  resizeMode="contain"
-                />
+          {carts.map((product, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.itemContainer}
+              onPress={() => detailsHandler(product.id)}>
+              <Image
+                source={{uri: product?.image}}
+                style={styles.image}
+                resizeMode="contain"
+              />
 
-                <View style={styles.dataConatiner}>
-                  <Text style={styles.itemTitle}>
-                    {' '}
-                    {product?.title?.length > 10
-                      ? `${product?.title.substring(0, 25)}...`
-                      : product?.title}
-                  </Text>
-                  <Text style={styles.itemPrice}>
-                    ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
-                  </Text>
-                  <Text style={styles.itemTitle}>Qty:{product.quantity}</Text>
-                  <View style={styles.buttons}>
+              <View style={styles.dataContainer}>
+                <Text style={styles.itemTitle}>
+                  {product?.title?.length > 10
+                    ? `${product?.title.substring(0, 25)}...`
+                    : product?.title}
+                </Text>
+                <Text style={styles.itemPrice}>
+                  ₹{(product?.quantity * product?.price * 87.37).toFixed(0)}
+                </Text>
+                <Text style={styles.itemTitle}>Qty: {product.quantity}</Text>
+                <View style={styles.buttons}>
+                  <IconButtonComponent
+                    icon={'plus'}
+                    size={20}
+                    onPress={() => increaseQuantity(index)}
+                    containerColor={'#2b5c3a'}
+                    iconColor={'#FFFFFF'}
+                  />
+                  <ButtonComponent
+                    buttonColor={'#2b5c3a'}
+                    color={'#FFFFFF'}
+                    onPress={() => removeCartHandler(index)}
+                    children={'Remove'}
+                  />
+
+                  {product.quantity > 1 && (
                     <IconButtonComponent
-                      icon={'plus'}
+                      icon={'minus'}
+                      onPress={() => decreaseQuantity(index)}
                       size={20}
-                      onPress={() => increaseQuantity(index)}
                       containerColor={'#2b5c3a'}
                       iconColor={'#FFFFFF'}
                     />
-                    <ButtonComponent
-                      buttonColor={'#2b5c3a'}
-                      color={'#FFFFFF'}
-                      onPress={() => removeCartHandler(index)}
-                      children={'Remove'}
-                    />
-
-                    {product.quantity > 1 && (
-                      <IconButtonComponent
-                        icon={'minus'}
-                        onPress={() => decreaseQuantity(index)}
-                        size={20}
-                        containerColor={'#2b5c3a'}
-                        iconColor={'#FFFFFF'}
-                      />
-                    )}
-                  </View>
+                  )}
                 </View>
-              </TouchableOpacity>
-            ))}
-          </>
+              </View>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
       )}
       {carts.length > 0 && (
         <View style={styles.itemSummary}>
-          <View style={styles.totalConatiner}>
+          <View style={styles.totalContainer}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>Total Items: {carts.length}</Text>
               <Text style={styles.totalText}>
@@ -184,25 +192,25 @@ function CartScreen() {
         </View>
       )}
       {carts.length === 0 && (
-        <>
-          <View style={styles.conatiner}>
-            <View style={styles.textConatiner}>
-              <Text style={styles.text}> Your Cart is Empty :) </Text>
-            </View>
-
-            <HorizontalCard
-              children="Buy New Products"
-              detailsHandler={detailsHandler}
-              items={electronics}
-            />
-
-            <HorizontalCard
-              children="Buy New Products"
-              detailsHandler={detailsHandler}
-              items={menClothing}
-            />
+        <View style={styles.container}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>Your Cart is Empty :)</Text>
           </View>
-        </>
+
+          <HorizontalCard
+            key="electronics"
+            children="Buy New Products"
+            detailsHandler={detailsHandler}
+            items={electronics}
+          />
+
+          <HorizontalCard
+            key="menClothing"
+            children="Buy New Products"
+            detailsHandler={detailsHandler}
+            items={menClothing}
+          />
+        </View>
       )}
     </>
   );
@@ -211,14 +219,14 @@ function CartScreen() {
 export default CartScreen;
 
 const styles = StyleSheet.create({
-  scrollStyle: {
-    paddingBottom: 90,
-  },
-  conatiner: {
+  container: {
     marginHorizontal: 6,
     marginTop: 10,
   },
-  itemConatiner: {
+  scrollStyle: {
+    paddingBottom: 90,
+  },
+  itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 130,
@@ -228,7 +236,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     padding: 6,
   },
-  textConatiner: {
+  textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: 100,
@@ -249,7 +257,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
-  dataConatiner: {
+  dataContainer: {
     width: '70%',
     padding: 4,
   },
@@ -265,7 +273,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: -4,
   },
-  totalConatiner: {
+  itemSummary: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    padding: 6,
+    backgroundColor: Colors.bgcolor,
+  },
+  totalContainer: {
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
@@ -281,13 +298,9 @@ const styles = StyleSheet.create({
     fontFamily: 'AnekDevanagari',
     fontSize: 22,
   },
-  itemSummary: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    padding: 6,
-    backgroundColor: Colors.bgcolor,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

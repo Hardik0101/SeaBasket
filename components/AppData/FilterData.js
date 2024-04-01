@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Colors} from '../../constant/styles';
-import {
-  clearState,
-  fetchAllProducts,
-  fetchCategory,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../../store/redux/dataSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {filter, short} from './filterData.json';
 import ItemScrollCard from './itemScrollCard';
 import FilterModalComponent from './FilterModalComponent';
 import ButtonComponent from '../UI/ButtonComponent';
+import SortModalComponent from './SortModalComponent';
 
 function FilterData({items}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,6 +15,8 @@ function FilterData({items}) {
   const [filterData, setFilterData] = useState(false);
   const [typeItems, setTypeItems] = useState('');
   const [itemData, setItemData] = useState([]);
+  const [isFilter, setIsFilter] = useState(false);
+  const [isSort, setIsSort] = useState(false);
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -31,21 +25,6 @@ function FilterData({items}) {
   const electronics = useSelector(state => state.data.electronics);
   const jewelery = useSelector(state => state.data.jewelery);
   const allproducts = useSelector(state => state.data.allproducts);
-  //Fetch The all Data from redux
-  useEffect(() => {
-    function fetchData() {
-      dispatch(fetchCategory());
-      dispatch(fetchAllProducts());
-      dispatch(fetchElectronics());
-      dispatch(fetchJeweleryItems());
-      dispatch(fetchMenClothing());
-      dispatch(fetchWomenClothing());
-    }
-    fetchData();
-    return () => {
-      dispatch(clearState());
-    };
-  }, []);
 
   //Set Items base on Active Items
   useEffect(() => {
@@ -75,30 +54,34 @@ function FilterData({items}) {
     setItemData(productData);
   }
 
+  function filterRange(item) {
+    setFilterTitles(item);
+  }
+
+  function priceAndRateFilter(item) {
+    let max = 4;
+    let min = Math.min(...item);
+    if (item.length > 1) {
+      max = Math.max(...item);
+    }
+
+    let dataItems = [];
+    dataItems = itemData.filter(
+      data =>
+        data.rating.rate < max + 1 &&
+        data.rating.rate > min &&
+        data.price * 87.37 < filterTitles[1] &&
+        data.price * 87.37 > filterTitles[0],
+    );
+    setFilterData(true);
+    setData(dataItems);
+    setIsFilter(true);
+  }
+
   // Apply Filter Data by Filter type
   function filterHandler(item) {
     let dataItems = [];
     switch (item) {
-      case 'Price Under ₹500':
-        dataItems = itemData.filter(data => data.price * 87.37 <= 500);
-        break;
-      case 'Price:₹500-₹1000':
-        dataItems = itemData.filter(
-          data => data.price * 87.37 < 1000 && data.price * 87.37 > 500,
-        );
-        break;
-      case 'Price Over ₹1000':
-        dataItems = itemData.filter(data => data.price * 87.37 >= 1000);
-        break;
-      case 'Rating 2 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 2);
-        break;
-      case 'Rating 3 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 3);
-        break;
-      case 'Rating 4 & Up':
-        dataItems = itemData.filter(data => data.rating.rate >= 4);
-        break;
       case 'Price:Low to High':
         dataItems = itemData.filter(data => data.price);
         dataItems.sort((a, b) => a.price - b.price);
@@ -116,22 +99,17 @@ function FilterData({items}) {
         dataItems.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
-        dataItems = itemData.filter(
-          data =>
-            data.price * 87.37 < filterTitles[1] &&
-            data.price * 87.37 > filterTitles[0],
-        );
-
+        dataItems = [];
         break;
     }
-
     setFilterData(true);
+    setIsSort(true);
     setData(dataItems);
-    setFilterTitles(item);
   }
 
-  //Filtered data show in this function
-  function filterDataHandler() {
+  function clearFilter() {
+    setIsFilter(false);
+    setIsSort(false);
     setFilterData(false);
   }
 
@@ -140,16 +118,11 @@ function FilterData({items}) {
     navigation.navigate('Details', {id});
   }
 
-  let title;
-  if (typeof filterTitles === 'string') {
-    title = filterTitles;
-  } else {
-    title = `₹${filterTitles[0]} - ₹${filterTitles[1]}`;
-  }
-
   return (
     <>
       {/* Two Button Filter and Sort */}
+      {isFilter && <View style={styles.filterDot}></View>}
+      {isSort && <View style={styles.sortDot}></View>}
       <View style={styles.filterContainer}>
         <ButtonComponent
           buttonColor={'#2b5c3a'}
@@ -176,19 +149,21 @@ function FilterData({items}) {
         <FilterModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          filterHandler={filterHandler}
+          filterRange={filterRange}
+          priceAndRateFilter={priceAndRateFilter}
+          clearFilter={clearFilter}
           typeItems={filter}
           type={'filter'}
         />
       )}
 
       {typeItems === 'sort' && (
-        <FilterModalComponent
+        <SortModalComponent
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           filterHandler={filterHandler}
+          clearFilter={clearFilter}
           typeItems={short}
-          type={'sort'}
         />
       )}
 
@@ -196,27 +171,16 @@ function FilterData({items}) {
       {filterData && (
         <>
           {data.length > 0 && (
-            <View style={styles.filterData}>
-              <View style={styles.canclebutton}>
-                <ButtonComponent onPress={filterDataHandler}>
-                  Close
-                </ButtonComponent>
-              </View>
-              <Text style={styles.filterTitle}>{title}</Text>
-              <ItemScrollCard items={data} detailsHandler={detailsHandler} />
-            </View>
+            <ItemScrollCard items={data} detailsHandler={detailsHandler} />
           )}
           {data.length === 0 && (
-            <View style={styles.filterData}>
-              <View style={styles.canclebutton}>
-                <ButtonComponent onPress={filterDataHandler}>
-                  Close
-                </ButtonComponent>
-              </View>
-              <Text style={styles.title}>Item is not Found...</Text>
-            </View>
+            <Text style={styles.title}>Item is not Found...</Text>
           )}
         </>
+      )}
+
+      {!filterData && (
+        <ItemScrollCard items={itemData} detailsHandler={detailsHandler} />
       )}
     </>
   );
@@ -254,17 +218,31 @@ const styles = StyleSheet.create({
     margin: 4,
     fontFamily: 'AnekDevanagari',
   },
-  filterData: {
-    backgroundColor: Colors.bgcolor,
-    position: 'absolute',
-    zIndex: 1000,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflow: 'hidden',
-  },
   canclebutton: {
     padding: 4,
+  },
+  sortDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ff0000',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    position: 'absolute',
+    top: 44,
+    right: 150,
+    zIndex: 20,
+  },
+  filterDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ff0000',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    position: 'absolute',
+    top: 44,
+    left: 70,
+    zIndex: 20,
   },
 });

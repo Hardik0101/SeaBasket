@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, Image, StyleSheet, Dimensions} from 'react-native';
 
-const {width, height} = Dimensions.get('screen');
+const {width} = Dimensions.get('screen');
 
 const images = [
   require('../../assets/images/add1.jpg'),

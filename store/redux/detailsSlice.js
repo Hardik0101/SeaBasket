@@ -11,7 +11,7 @@ const detailsSlice = createSlice({
     setDetails: (state, action) => {
       state.details = action.payload;
     },
-    clearState: state => {
+    clearDetailsState: state => {
       state.details = [];
     },
   },
@@ -29,5 +29,5 @@ export const fetchDetails = createAsyncThunk(
   },
 );
 
-export const {setDetails, clearState} = detailsSlice.actions;
+export const {setDetails, clearDetailsState} = detailsSlice.actions;
 export default detailsSlice.reducer;

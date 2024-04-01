@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
-import {fetchJeweleryItems} from '../store/redux/dataSlice';
 import {Colors} from '../constant/styles';
 import {
   decrementCheck,
@@ -30,7 +29,6 @@ function ItemsCheckoutScreen() {
   const [totalQuantity, setTotalQuantity] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchJeweleryItems());
     return () => {
       dispatch(setClearCheck());
     };

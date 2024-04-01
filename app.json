@@ -1,4 +1,10 @@
 {
   "name": "SeaBasket",
-  "displayName": "SeaBasket"
+  "displayName": "SeaBasket",
+  "expo": {
+    "slug": "SeaBasket",
+    "name": "SeaBasket",
+    "sdkVersion": "50.0.0",
+    "entryPoint": ".vscode/exponentIndex.js"
+  }
 }

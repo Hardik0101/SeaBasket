@@ -1,12 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Text,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from 'react';
+import {ScrollView, Text, StyleSheet, View} from 'react-native';
 import {Colors} from '../../constant/styles';
 import {Card, Icon} from 'react-native-paper';
 

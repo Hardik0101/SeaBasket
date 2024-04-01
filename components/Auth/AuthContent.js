@@ -1,7 +1,6 @@
-import {Alert, Image, StyleSheet, View, ScrollView} from 'react-native';
+import {Alert, StyleSheet, View, ScrollView} from 'react-native';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import FlatButton from '../UI/FlatButton';
 import {Colors} from '../../constant/styles';
 import AuthForm from './AuthForm';
 import {Button} from 'react-native-paper';
@@ -11,8 +10,8 @@ function AuthContent({isLogin, onAuthenticate}) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
-    confirmEmail: false,
-    confirmPassword: false,
+    mobile: false,
+    username: false,
   });
 
   function switchAuthModeHandler() {
@@ -24,36 +23,27 @@ function AuthContent({isLogin, onAuthenticate}) {
   }
 
   function submitHandler(credentials) {
-    let {email, confirmEmail, password, confirmPassword} = credentials;
-
+    let {email, password, username, mobile} = credentials;
     email = email.trim();
     password = password.trim();
+    username = username;
+    mobile = mobile;
 
     const emailIsValid = email.includes('@');
     const passwordIsValid =
       /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(
         password,
       );
-
-    const emailsAreEqual = email === confirmEmail;
-    const passwordsAreEqual = password === confirmPassword;
-
-    if (!emailIsValid || (!isLogin && !emailsAreEqual)) {
+    if (!emailIsValid) {
       Alert.alert('Invalid input', 'Please check your entered Email.');
-      setCredentialsInvalid({
-        email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
-      });
       return;
-    } else if (!passwordIsValid || (!isLogin && !passwordsAreEqual)) {
+    }
+
+    if (!passwordIsValid) {
       Alert.alert(
         'Invalid input',
         'Please enter Strong Password like aBc@#123',
       );
-      setCredentialsInvalid({
-        password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
       return;
     }
     onAuthenticate({email, password});
@@ -69,11 +59,8 @@ function AuthContent({isLogin, onAuthenticate}) {
             credentialsInvalid={credentialsInvalid}
           />
           <View style={styles.buttons}>
-            <Button
-              textColor="#2b5c3a"
-              style={styles.buttons}
-              onPress={switchAuthModeHandler}>
-              {isLogin ? 'Create a new user' : 'Log in instead'}
+            <Button textColor="#2b5c3a" onPress={switchAuthModeHandler}>
+              {isLogin ? 'Create a new user' : 'Login'}
             </Button>
           </View>
         </View>
@@ -98,6 +85,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     borderRadius: 8,
-    marginTop: 4,
+    marginTop: 16,
   },
 });

@@ -52,6 +52,7 @@ function ApplePay() {
           placeholder={'Enter password'}
           updatedValue={setPassword}
           value={password}
+          secureTextEntry={true}
           error={errors.password}
         />
 
