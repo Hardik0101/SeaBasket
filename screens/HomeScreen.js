@@ -5,7 +5,8 @@ import AddCard from '../components/AppData/addCard';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  clearState,
+  fetchAllProducts,
+  fetchCategory,
   fetchElectronics,
   fetchJeweleryItems,
   fetchMenClothing,
@@ -29,15 +30,14 @@ function HomeScreen() {
       dispatch(fetchJeweleryItems());
       dispatch(fetchMenClothing());
       dispatch(fetchWomenClothing());
+      dispatch(fetchCategory());
+      dispatch(fetchAllProducts());
       setTimeout(() => {
         setIsLoading(false);
       }, 3000);
     }
-    loadData();
 
-    return () => {
-      dispatch(clearState());
-    };
+    loadData();
   }, [dispatch]);
 
   function detailsHandler(id) {
@@ -63,21 +63,18 @@ function HomeScreen() {
           </View>
           <View style={styles.dataContainer}>
             <HorizontalCard
-              key="menClothing"
               children="New For Men"
               detailsHandler={detailsHandler}
               items={menClothing}
             />
 
             <HorizontalCard
-              key="electronics"
               children="New Electronic"
               detailsHandler={detailsHandler}
               items={electronics}
             />
 
             <HorizontalCard
-              key="jewelery"
               children="New Jewelery"
               detailsHandler={detailsHandler}
               items={jewelery}

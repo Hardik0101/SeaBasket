@@ -12,7 +12,7 @@ function HorizontalCard({items, detailsHandler, children}) {
       <ScrollView
         horizontal={true}
         contentContainerStyle={styles.contentContainer}>
-        {items.map(product => (
+        {items?.map(product => (
           <Card
             key={product.id}
             onPress={() => detailsHandler(product.id)}

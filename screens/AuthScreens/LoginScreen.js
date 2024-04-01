@@ -11,9 +11,12 @@ import AuthContent from '../../components/Auth/AuthContent';
 import {AuthContext} from '../../store/auth-context';
 import LoadingOverlay from '../../components/UI/LoadingOverlay';
 import {login} from '../../util/auth';
+import {useDispatch} from 'react-redux';
+import {setuserData} from '../../store/redux/userDataSlice';
 
 function LoginScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const dispatch = useDispatch();
 
   const authCtx = useContext(AuthContext);
 
@@ -21,9 +24,10 @@ function LoginScreen() {
     setIsAuthenticating(true);
     try {
       const token = await login(email, password);
+      dispatch(setuserData({email: token}));
       authCtx.authenticate(token);
+      authCtx.getOtp(token);
       setIsAuthenticating(false);
-      console.log(token);
     } catch (error) {
       Alert.alert(
         'Authentication failed!',

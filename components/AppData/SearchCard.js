@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
-  TextInput,
   View,
   FlatList,
   Image,
@@ -9,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Colors} from '../../constant/styles';
-import {Search} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAllProducts} from '../../store/redux/dataSlice';
@@ -17,31 +15,13 @@ import {Searchbar} from 'react-native-paper';
 
 function SearchCard() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const allproducts = useSelector(state => state.data.allproducts);
 
   useEffect(() => {
-    function fetchProducts() {
-      dispatch(fetchAllProducts());
-    }
-    fetchProducts();
+    dispatch(fetchAllProducts());
   }, [dispatch]);
-
-  useEffect(() => {
-    const result = allproducts;
-    setProducts(result);
-    filterProducts(searchQuery, result);
-  }, [allproducts, searchQuery]);
-
-  const filterProducts = (query, products) => {
-    const filtered = products.filter(product =>
-      product.title.toLowerCase().includes(query.toLowerCase()),
-    );
-    setFilteredProducts(filtered);
-  };
 
   function detailsHandler(id) {
     navigation.navigate('Details', {id});
@@ -49,7 +29,9 @@ function SearchCard() {
 
   function renderItem({item}) {
     return (
-      <TouchableOpacity onPress={() => detailsHandler(item.id)}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => detailsHandler(item.id)}>
         <View style={styles.itemContainer}>
           <Image source={{uri: item.image}} style={styles.image} />
           <View style={styles.textContainer}>
@@ -64,6 +46,10 @@ function SearchCard() {
       </TouchableOpacity>
     );
   }
+
+  const filteredProducts = allproducts.filter(product =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   return (
     <>
@@ -115,8 +101,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     borderRadius: 10,
     backgroundColor: Colors.bgcolor,
-    height: 500,
+    marginTop: 4,
     overflow: 'hidden',
+    maxHeight: 610,
   },
   input: {
     fontWeight: 'bold',

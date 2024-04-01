@@ -1,27 +1,61 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon, Modal, Portal} from 'react-native-paper';
+import {Checkbox, Modal, Portal} from 'react-native-paper';
 import {Colors} from '../../constant/styles';
 import IconButtonComponent from '../UI/IconButton';
 import Slider from 'react-native-a11y-slider';
+import ButtonComponent from '../UI/ButtonComponent';
 
 function FilterModalComponent({
   modalVisible,
   setModalVisible,
-  filterHandler,
+  filterRange,
   typeItems,
+  priceAndRateFilter,
+  clearFilter,
   type,
 }) {
-  const [sliderValues, setSliderValues] = useState([600, 8000]);
+  const [sliderValues, setSliderValues] = useState([500, 10000]);
   const [filter, setFilter] = useState([]);
+  const [checkValue, setCheckValue] = useState([0]);
+  const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
     setFilter(type);
-  }, [type]);
+  }, []);
+
+  useEffect(() => {
+    filterRange(sliderValues);
+  }, [sliderValues, filterRange]);
 
   function handleSliderChange(values) {
     setSliderValues(values);
   }
+
+  function handleValue(value) {
+    setCheckValue(prevState => [...prevState, value]);
+  }
+
+  const handleToggleCheckbox = itemName => {
+    setCheckedItems(prevState => ({
+      ...prevState,
+      [itemName]: !prevState[itemName],
+    }));
+
+    setCheckValue(prevCheckValue => {
+      if (!checkedItems[itemName]) {
+        return [
+          ...prevCheckValue,
+          typeItems.find(item => item.name === itemName).value,
+        ];
+      } else {
+        return prevCheckValue.filter(
+          value =>
+            value !== typeItems.find(item => item.name === itemName).value,
+        );
+      }
+    });
+  };
 
   return (
     <Portal>
@@ -41,7 +75,7 @@ function FilterModalComponent({
         </View>
         {filter === 'filter' && (
           <>
-            <View style={{width: '90%'}}>
+            <View style={{width: '90%', marginBottom: 10}}>
               <Slider
                 min={500}
                 max={10000}
@@ -55,28 +89,43 @@ function FilterModalComponent({
                 onChange={handleSliderChange}
               />
             </View>
-            <TouchableOpacity
-              style={styles.filterOption}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                filterHandler(sliderValues);
-              }}>
-              <Text style={styles.textStyle}>Apply Filter</Text>
-            </TouchableOpacity>
           </>
         )}
-
         {typeItems.map(filterItem => (
           <TouchableOpacity
             key={filterItem.name}
+            activeOpacity={1}
             style={styles.filterOption}
             onPress={() => {
-              setModalVisible(!modalVisible);
-              filterHandler(filterItem.name);
+              handleValue(filterItem.value);
+              handleToggleCheckbox(filterItem.name);
             }}>
-            <Text style={styles.textStyle}>{filterItem.name}</Text>
+            <View style={styles.filterType}>
+              <Checkbox
+                status={checkedItems[filterItem.name] ? 'checked' : 'unchecked'}
+              />
+              <Text style={styles.textStyle}>{filterItem.name}</Text>
+            </View>
           </TouchableOpacity>
         ))}
+        <View style={styles.buttonContainer}>
+          <ButtonComponent
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              priceAndRateFilter(checkValue);
+            }}>
+            Apply Filter
+          </ButtonComponent>
+          <ButtonComponent
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              clearFilter();
+              setCheckValue([0]);
+              setCheckedItems({});
+            }}>
+            Clear Filter
+          </ButtonComponent>
+        </View>
       </Modal>
     </Portal>
   );
@@ -109,5 +158,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -40,
     right: -2,
+  },
+  filterType: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
   },
 });

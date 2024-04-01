@@ -2,19 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Colors} from '../constant/styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  clearState,
-  fetchAllProducts,
-  fetchCategory,
-  fetchElectronics,
-  fetchJeweleryItems,
-  fetchMenClothing,
-  fetchWomenClothing,
-} from '../store/redux/dataSlice';
-import {useNavigation} from '@react-navigation/native';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import FilterData from '../components/AppData/FilterData';
-import ItemScrollCard from '../components/AppData/itemScrollCard';
 import {Chip} from 'react-native-paper';
 
 function ProductScreen() {
@@ -29,24 +18,18 @@ function ProductScreen() {
   const [activeItem, setActiveItem] = useState(null);
   const [items, setItems] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
-
+  const [error, setError] = useState(null);
   useEffect(() => {
-    async function fetchData() {
-      dispatch(fetchCategory()),
-        dispatch(fetchAllProducts()),
-        dispatch(fetchElectronics()),
-        dispatch(fetchJeweleryItems()),
-        dispatch(fetchMenClothing()),
-        dispatch(fetchWomenClothing()),
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+    function fetchData() {
+      try {
+        setLoading(false);
+      } catch (error) {
+        setError('Error fetching data. Please try again.');
+        setLoading(false);
+      }
     }
+
     fetchData();
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch]);
 
   function getProductData(item) {
@@ -75,10 +58,6 @@ function ProductScreen() {
     setItems(true);
   }
 
-  function detailsHandler(id) {
-    navigation.navigate('Details', {id});
-  }
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -87,62 +66,67 @@ function ProductScreen() {
     );
   }
 
+  if (error) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.errorMessage}>{error}</Text>
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.mainView}>
-      {/* ******************* Catagory selction ******************* */}
-      <ScrollView
-        horizontal={true}
-        style={styles.container}
-        contentContainerStyle={styles.contentContainerHorizontal}>
-        <Chip
-          key={'ForYou'}
-          onPress={() => getProductData()}
-          style={[
-            styles.titleContainer,
-            activeItem === null && styles.activeTitleContainer,
-          ]}
-          textStyle={[styles.title, activeItem === null && styles.activeTitle]}>
-          For You
-        </Chip>
-        {category.map((item, index) => (
+    <>
+      <View style={styles.mainView}>
+        {/* ******************* Catagory selction ******************* */}
+        <ScrollView
+          horizontal={true}
+          style={styles.container}
+          contentContainerStyle={styles.contentContainerHorizontal}>
           <Chip
-            key={index.toString()}
-            onPress={() => getProductData(item)}
+            key={'ForYou'}
+            onPress={() => getProductData()}
             style={[
               styles.titleContainer,
-              activeItem === item && styles.activeTitleContainer,
+              activeItem === null && styles.activeTitleContainer,
             ]}
             textStyle={[
               styles.title,
-              activeItem === item && styles.activeTitle,
+              activeItem === null && styles.activeTitle,
             ]}>
-            {item}
+            For You
           </Chip>
-        ))}
-      </ScrollView>
+          {category.map((item, index) => (
+            <Chip
+              key={index.toString()}
+              onPress={() => getProductData(item)}
+              style={[
+                styles.titleContainer,
+                activeItem === item && styles.activeTitleContainer,
+              ]}
+              textStyle={[
+                styles.title,
+                activeItem === item && styles.activeTitle,
+              ]}>
+              {item}
+            </Chip>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* ******************* Filter Section *******************/}
       <FilterData items={activeItem} />
-      {/* ******************* Item Section *******************/}
-
-      {items && (
-        <ItemScrollCard items={pressed} detailsHandler={detailsHandler} />
-      )}
-      {!items && (
-        <ItemScrollCard items={allproducts} detailsHandler={detailsHandler} />
-      )}
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   mainView: {
-    height: '100%',
+    // height: '100%',
   },
   container: {
     padding: 6,
     flexDirection: 'row',
-    height: 58,
+    // height: 58,
     borderBottomWidth: 1,
     borderColor: Colors.primary300,
   },
@@ -173,6 +157,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorMessage: {
+    fontSize: 24,
+    color: 'red',
+    textAlign: 'center',
   },
 });
 

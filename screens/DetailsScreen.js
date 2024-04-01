@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -6,11 +6,12 @@ import {
   Text,
   View,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {clearState, fetchDetails} from '../store/redux/detailsSlice';
+import {clearDetailsState, fetchDetails} from '../store/redux/detailsSlice';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
@@ -18,6 +19,7 @@ import Swiper from 'react-native-swiper';
 import {Star} from '../assets/icons';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import {Card, Icon} from 'react-native-paper';
+import {AuthContext} from '../store/auth-context';
 
 function DetailScreen() {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ function DetailScreen() {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   useEffect(() => {
     function fetchData() {
@@ -41,7 +44,7 @@ function DetailScreen() {
     }
     fetchData();
     return () => {
-      dispatch(clearState());
+      dispatch(clearDetailsState());
     };
   }, [dispatch, route.params.id]);
 
@@ -56,7 +59,21 @@ function DetailScreen() {
 
   function checkoutItems() {
     dispatch(setCheck(details));
-    navigation.navigate('Order');
+
+    if (!authCtx.isAuthenticated) {
+      Alert.alert('Login', 'Are you sure you want to login?', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Login',
+          onPress: () => navigation.navigate('Order'),
+        },
+      ]);
+    } else {
+      navigation.navigate('Order');
+    }
   }
 
   const description =
@@ -237,6 +254,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
