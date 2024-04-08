@@ -14,7 +14,6 @@ export async function getAllProducts() {
     const response = await axios.get('https://fakestoreapi.com/products');
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -24,7 +23,6 @@ export async function getProduct() {
     const response = await axios.get(API_ALL_PRODUCTS);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -34,7 +32,6 @@ export async function getCategory() {
     const response = await axios.get(API_CATEGORY);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -44,7 +41,6 @@ export async function getJeweleryItems() {
     const response = await axios.get(API_JEWELERY);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -54,7 +50,6 @@ export async function getMenCloths() {
     const response = await axios.get(API_MENCLOTHS);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -64,7 +59,6 @@ export async function getWomenClothing() {
     const response = await axios.get(API_WOMENCLOTHING);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -74,11 +68,8 @@ export async function getElectronics() {
     const response = await axios.get(
       'https://fakestoreapi.com/products/category/electronics',
     );
-
-    // console.log('The elec api', response.data);
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -88,7 +79,6 @@ export async function getProductsDetails(id) {
     const response = await axios.get(API_DETAILS.replace(':id', id));
     return response.data;
   } catch (error) {
-    console.error('Error fetching product details:', error);
     throw error;
   }
 }

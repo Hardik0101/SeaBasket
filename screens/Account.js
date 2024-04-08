@@ -30,8 +30,6 @@ function AccountScreen() {
     }));
   };
 
-  console.log(userData);
-
   function clearUserState() {
     setUserData({
       userName: '',
