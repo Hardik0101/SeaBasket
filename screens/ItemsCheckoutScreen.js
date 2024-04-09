@@ -145,11 +145,12 @@ function ItemsCheckoutScreen() {
                   containerColor={'#2b5c3a'}
                   iconColor={'#FFFFFF'}
                 />
-                <ButtonComponent
-                  buttonColor={'#2b5c3a'}
-                  color={'#FFFFFF'}
+                <IconButtonComponent
+                  icon={'trash-can-outline'}
                   onPress={() => removeCartHandler(index)}
-                  children={'Remove'}
+                  size={20}
+                  containerColor={'#2b5c3a'}
+                  iconColor={'#FFFFFF'}
                 />
 
                 {product.quantity > 1 && (
@@ -266,7 +267,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: -4,

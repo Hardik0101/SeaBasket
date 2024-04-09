@@ -188,15 +188,25 @@ function AccountScreen() {
                 outlineStyle={styles.outline}
                 left={<TextInput.Icon icon="map-marker" size={20} />}
               />
-              <FlatButton onPress={myOrderHandler}>My Orders</FlatButton>
+              <FlatButton
+                onPress={myOrderHandler}
+                mode={'outlined'}
+                textColor={'#2b5c3a'}
+                icon={'order-bool-ascending-variant'}>
+                My Orders
+              </FlatButton>
             </View>
           )}
         </View>
       )}
       {authCtx.isAuthenticated ? (
-        <ButtonComponent onPress={handleLogout}>Logout</ButtonComponent>
+        <ButtonComponent icon={'logout'} onPress={handleLogout}>
+          Logout
+        </ButtonComponent>
       ) : (
-        <ButtonComponent onPress={handleLogin}>Login</ButtonComponent>
+        <ButtonComponent icon={'login'} onPress={handleLogin}>
+          Login
+        </ButtonComponent>
       )}
     </View>
   );
@@ -227,11 +237,6 @@ const styles = StyleSheet.create({
     color: Colors.primary300,
     fontSize: 22,
     fontFamily: 'AnekDevanagari',
-  },
-  button: {
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   input: {
     backgroundColor: Colors.bgcolor,

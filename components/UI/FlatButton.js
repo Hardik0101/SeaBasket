@@ -9,7 +9,8 @@ function FlatButton({icon, mode, children, textColor, onPress}) {
       mode={mode}
       onPress={onPress}
       textColor={textColor}
-      style={styles.button}>
+      style={styles.button}
+      labelStyle={styles.buttonText}>
       {children}
     </Button>
   );
@@ -20,8 +21,12 @@ export default FlatButton;
 const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 36,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    letterSpacing: 1,
+    lineHeight: 16,
   },
 });
