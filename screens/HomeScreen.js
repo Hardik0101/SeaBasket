@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View, ActivityIndicator} from 'react-native';
-import {Colors} from '../constant/styles';
 import AddCard from '../components/AppData/addCard';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,7 +13,7 @@ import {
 } from '../store/redux/dataSlice';
 import {useNavigation} from '@react-navigation/native';
 import SearchCard from '../components/AppData/SearchCard';
-import LoadingOverlay from '../components/UI/LoadingOverlay';
+import HomeShimmer from '../components/ShimmerScreen/HomeShimmer';
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -46,41 +45,41 @@ function HomeScreen() {
 
   return (
     <>
-      <View style={styles.searchBar}>
-        <SearchCard />
-      </View>
       {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <LoadingOverlay children="Loading..." />
-        </View>
+        <HomeShimmer />
       ) : (
-        <ScrollView
-          style={styles.container}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainer}>
-          <View style={styles.addContainer}>
-            <AddCard />
+        <>
+          <View style={styles.searchBar}>
+            <SearchCard />
           </View>
-          <View style={styles.dataContainer}>
-            <HorizontalCard
-              children="New For Men"
-              detailsHandler={detailsHandler}
-              items={menClothing}
-            />
+          <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.contentContainer}>
+            <View style={styles.addContainer}>
+              <AddCard />
+            </View>
+            <View style={styles.dataContainer}>
+              <HorizontalCard
+                children="New For Men"
+                detailsHandler={detailsHandler}
+                items={menClothing}
+              />
 
-            <HorizontalCard
-              children="New Electronic"
-              detailsHandler={detailsHandler}
-              items={electronics}
-            />
+              <HorizontalCard
+                children="New Electronic"
+                detailsHandler={detailsHandler}
+                items={electronics}
+              />
 
-            <HorizontalCard
-              children="New Jewelery"
-              detailsHandler={detailsHandler}
-              items={jewelery}
-            />
-          </View>
-        </ScrollView>
+              <HorizontalCard
+                children="New Jewelery"
+                detailsHandler={detailsHandler}
+                items={jewelery}
+              />
+            </View>
+          </ScrollView>
+        </>
       )}
     </>
   );
