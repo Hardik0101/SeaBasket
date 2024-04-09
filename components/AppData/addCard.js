@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   image: {
     width: width,
     resizeMode: 'stretch',
-
     height: 180,
   },
 });

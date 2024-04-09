@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useContext} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {Provider, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {persistor, store} from './store/redux/store';
@@ -25,6 +25,7 @@ import OrderSummaryScreen from './screens/OrderSummury';
 import OTPScreen from './screens/OTPSceen';
 import 'react-native-devsettings';
 import 'react-native-devsettings/withAsyncStorage';
+import SplashScreen from 'react-native-splash-screen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -296,6 +297,11 @@ function Navigation() {
 }
 
 function App() {
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
+  }, []);
   return (
     <>
       <Provider store={store}>
