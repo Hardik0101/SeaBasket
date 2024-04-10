@@ -18,14 +18,14 @@ const dataSlice = createSlice({
     productData: [],
     jewelery: [],
     menClothing: [],
-    womenclothing: [],
+    womenClothing: [],
     electronics: [],
   },
   reducers: {
     clearState: state => {
       (state.jewelery = []),
         (state.menClothing = []),
-        (state.womenclothing = []),
+        (state.womenClothing = []),
         (state.electronics = []),
         (state.details = []);
     },
@@ -48,7 +48,7 @@ const dataSlice = createSlice({
       state.menClothing = action.payload;
     });
     builder.addCase(fetchWomenClothing.fulfilled, (state, action) => {
-      state.womenclothing = action.payload;
+      state.womenClothing = action.payload;
     });
     builder.addCase(fetchElectronics.fulfilled, (state, action) => {
       state.electronics = action.payload;
