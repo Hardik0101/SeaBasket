@@ -1,12 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrollView, StyleSheet, RefreshControl} from 'react-native';
 import {Colors} from '../constant/styles';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import FilterData from '../components/AppData/FilterData';
 import {Chip} from 'react-native-paper';
 import ProductScreenShimmer from '../components/ShimmerScreen/ProductScreenShimmer';
+import {
+  fetchAllProducts,
+  fetchCategory,
+  fetchElectronics,
+  fetchJeweleryItems,
+  fetchMenClothing,
+  fetchWomenClothing,
+} from '../store/redux/dataSlice';
 
 function ProductScreen() {
+  const dispatch = useDispatch();
   const category = useSelector(state => state.data.category);
   const menClothing = useSelector(state => state.data.menClothing);
   const womenClothing = useSelector(state => state.data.womenclothing);
@@ -17,6 +26,25 @@ function ProductScreen() {
   const [activeItem, setActiveItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setLoading(true);
+
+    dispatch(fetchElectronics());
+    dispatch(fetchJeweleryItems());
+    dispatch(fetchMenClothing());
+    dispatch(fetchWomenClothing());
+    dispatch(fetchCategory());
+    dispatch(fetchAllProducts());
+
+    setTimeout(() => {
+      setRefreshing(false);
+      setLoading(false);
+    }, 2000);
+  }, [dispatch]);
+
   useEffect(() => {
     function fetchData() {
       try {
@@ -73,7 +101,10 @@ function ProductScreen() {
             <ScrollView
               horizontal={true}
               style={styles.container}
-              contentContainerStyle={styles.contentContainerHorizontal}>
+              contentContainerStyle={styles.contentContainerHorizontal}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
               <Chip
                 key={'ForYou'}
                 onPress={() => getProductData()}

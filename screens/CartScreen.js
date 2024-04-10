@@ -6,8 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
+import {Dialog, Portal, Button} from 'react-native-paper';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -33,6 +33,8 @@ function CartScreen() {
   const [totalQuantity, setTotalQuantity] = useState(0);
   const authCtx = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -60,23 +62,8 @@ function CartScreen() {
   }
 
   function removeCartHandler(index) {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this item?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Remove',
-          onPress: () => {
-            dispatch(removeCart(index));
-          },
-        },
-      ],
-      {cancelable: false},
-    );
+    setSelectedIndex(index);
+    setVisible(true);
   }
 
   function increaseQuantity(index) {
@@ -92,20 +79,18 @@ function CartScreen() {
       dispatch(setCheck(items));
     });
     if (!authCtx.isAuthenticated) {
-      Alert.alert('Login', 'Are you sure you want to login?', [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Login',
-          onPress: () => navigation.navigate('Order'),
-        },
-      ]);
+      setVisible(true);
     } else {
       navigation.navigate('Order');
     }
   }
+
+  const hideDialog = () => setVisible(false);
+
+  const removeItem = () => {
+    dispatch(removeCart(selectedIndex));
+    hideDialog();
+  };
 
   if (loading) {
     return (
@@ -117,6 +102,25 @@ function CartScreen() {
 
   return (
     <>
+      <Portal>
+        <Dialog style={styles.dialog} visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title style={styles.dialogText}>Confirm</Dialog.Title>
+          <Dialog.Content>
+            <Text style={styles.dialogMessage}>
+              Are you sure you want to remove this item?
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button labelStyle={styles.dialogButton} onPress={hideDialog}>
+              Cancel
+            </Button>
+            <Button labelStyle={styles.dialogButton} onPress={removeItem}>
+              Remove
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       {carts.length > 0 && (
         <ScrollView
           style={styles.container}
@@ -151,11 +155,12 @@ function CartScreen() {
                     containerColor={'#2b5c3a'}
                     iconColor={'#FFFFFF'}
                   />
-                  <ButtonComponent
-                    buttonColor={'#2b5c3a'}
-                    color={'#FFFFFF'}
+                  <IconButtonComponent
+                    icon={'trash-can-outline'}
                     onPress={() => removeCartHandler(index)}
-                    children={'Remove'}
+                    size={20}
+                    containerColor={'#2b5c3a'}
+                    iconColor={'#FFFFFF'}
                   />
 
                   {product.quantity > 1 && (
@@ -268,7 +273,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    gap: 6,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: -4,
@@ -302,5 +306,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dialog: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    height: 170,
+  },
+  dialogText: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: Colors.primary300,
+  },
+  dialogMessage: {
+    letterSpacing: 1,
+    fontSize: 14,
+    color: Colors.primary200,
+  },
+  dialogButton: {
+    letterSpacing: 1,
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.primary300,
   },
 });

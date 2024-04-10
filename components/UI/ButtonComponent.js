@@ -22,7 +22,7 @@ export default ButtonComponent;
 const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
-    height: 35,
+    height: 36,
   },
   buttonText: {
     textAlign: 'center',
