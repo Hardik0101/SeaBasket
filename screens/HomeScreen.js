@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, View, RefreshControl} from 'react-native';
 import AddCard from '../components/AppData/addCard';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,6 +22,24 @@ function HomeScreen() {
   const menClothing = useSelector(state => state.data.menClothing);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setIsLoading(true);
+
+    dispatch(fetchElectronics());
+    dispatch(fetchJeweleryItems());
+    dispatch(fetchMenClothing());
+    dispatch(fetchWomenClothing());
+    dispatch(fetchCategory());
+    dispatch(fetchAllProducts());
+
+    setTimeout(() => {
+      setRefreshing(false);
+      setIsLoading(false);
+    }, 2000);
+  }, [dispatch]);
 
   useEffect(() => {
     function loadData() {
@@ -55,7 +73,10 @@ function HomeScreen() {
           <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.contentContainer}>
+            contentContainerStyle={styles.contentContainer}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={styles.addContainer}>
               <AddCard />
             </View>

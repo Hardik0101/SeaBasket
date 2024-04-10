@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {IconButton} from 'react-native-paper';
 
 function IconButtonComponent({
   icon,
-  onPress,
   size,
   mode,
+  onPress,
   iconColor,
   containerColor,
 }) {

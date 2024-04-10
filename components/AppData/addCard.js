@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ScrollView, Image, StyleSheet, Dimensions} from 'react-native';
+import Swiper from 'react-native-swiper';
 
 const {width} = Dimensions.get('screen');
 
@@ -13,18 +14,18 @@ const images = [
 const AddCard = () => {
   return (
     <View style={styles.container}>
-      <ScrollView
-        horizontal={true}
-        style={styles.scroll}
-        snapToAlignment="center"
-        snapToInterval={width}
-        decelerationRate={'fast'}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
+      <Swiper
+        dotStyle={styles.dotStyle}
+        style={styles.wrapper}
+        activeDotStyle={styles.dotStyle}
+        autoplay={true}
+        autoplayTimeout={4}
+        activeDotColor="green"
+        dotColor="white">
         {images.map((image, index) => (
           <Image key={index} source={image} style={styles.image} />
         ))}
-      </ScrollView>
+      </Swiper>
     </View>
   );
 };
@@ -40,6 +41,9 @@ const styles = StyleSheet.create({
     width: width,
     resizeMode: 'stretch',
     height: 180,
+  },
+  dotStyle: {
+    marginBottom: -30,
   },
 });
 

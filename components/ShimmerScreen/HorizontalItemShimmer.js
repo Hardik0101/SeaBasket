@@ -11,6 +11,7 @@ function HorizontalItemSimmer() {
             height: 24,
             borderRadius: 8,
             marginTop: 10,
+            marginBottom: 4,
           }}
         />
         <View style={{flexDirection: 'row', gap: 8}}>
