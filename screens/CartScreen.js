@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {Dialog, Portal, Button} from 'react-native-paper'; // Import Dialog and Portal
+import {Dialog, Portal, Button} from 'react-native-paper';
 import HorizontalCard from '../components/AppData/HorizontalCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
