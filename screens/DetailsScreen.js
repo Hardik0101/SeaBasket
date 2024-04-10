@@ -7,6 +7,7 @@ import {
   View,
   ToastAndroid,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constant/styles';
@@ -16,7 +17,7 @@ import LoadingOverlay from '../components/UI/LoadingOverlay';
 import {addCart} from '../store/redux/cartSlice';
 import {setCheck} from '../store/redux/checkoutSlice';
 import Swiper from 'react-native-swiper';
-import {Star} from '../assets/icons';
+import {HalfStar, OutlineStar, Star} from '../assets/icons';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import {Card, Icon} from 'react-native-paper';
 import {AuthContext} from '../store/auth-context';
@@ -31,6 +32,8 @@ function DetailScreen() {
   const [error, setError] = useState(false);
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
+  const [active, setActive] = useState([]);
+
   useEffect(() => {
     function fetchData() {
       try {
@@ -98,6 +101,12 @@ function DetailScreen() {
     );
   }
 
+  const size = ['S', 'M', 'L', 'XL', 'XXL'];
+
+  function sizeHandler(index) {
+    setActive(index);
+  }
+
   return (
     <>
       <ScrollView
@@ -137,6 +146,7 @@ function DetailScreen() {
                   <Text style={styles.itemPrice}>
                     ₹{(details?.price * 87.37).toFixed(0)}
                   </Text>
+
                   <Text style={styles.itemPrice}>
                     <Star width={14} height={14} fill={'#daa520'} />{' '}
                     <Text style={{fontSize: 20}}>{details?.rating?.rate}</Text>
@@ -177,7 +187,6 @@ function DetailScreen() {
                           icon={'checkbox-blank-circle'}
                           iconColor={'#00bfff'}
                           mode={'outlined'}
-                          onPress={() => {}}
                         />
 
                         <IconButtonComponent
@@ -189,28 +198,21 @@ function DetailScreen() {
                     </View>
                     <View>
                       <Text style={styles.itemTitle}>Size:</Text>
-                      <View style={styles.sizeContainer}>
-                        <IconButtonComponent
-                          onPress={() => {}}
-                          icon={'alpha-s'}
-                          iconColor={'#000000'}
-                          mode={'outlined'}
-                        />
-                        <IconButtonComponent
-                          icon={'alpha-m'}
-                          iconColor={'#000000'}
-                          mode={'outlined'}
-                        />
-                        <IconButtonComponent
-                          icon={'alpha-l'}
-                          iconColor={'#000000'}
-                          mode={'outlined'}
-                        />
-                        <IconButtonComponent
-                          icon={'alpha-x'}
-                          iconColor={'#000000'}
-                          mode={'outlined'}
-                        />
+                      <View style={styles.sizeBox}>
+                        {size.map((size, index) => (
+                          <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => sizeHandler(index)}
+                            key={index}
+                            style={[
+                              styles.sizeContainer,
+                              active === index
+                                ? styles.selectedSizeContainer
+                                : null,
+                            ]}>
+                            <Text style={styles.sizeText}>{size}</Text>
+                          </TouchableOpacity>
+                        ))}
                       </View>
                     </View>
                   </>
@@ -334,12 +336,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sizeBox: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
+    flexDirection: 'row',
+    gap: 10,
   },
   sizeContainer: {
-    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: 'black',
+    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 8,
+    width: 38,
+    height: 38,
+  },
+
+  selectedSizeContainer: {
+    backgroundColor: 'lightgreen',
+  },
+  sizeText: {
+    fontSize: 20,
+    color: 'black',
+    padding: 2,
+    fontWeight: 'bold',
   },
 });
