@@ -15,7 +15,9 @@ import Plus from './plus.svg';
 import Minus from './minus.svg';
 import Address from './address.svg';
 import Tick from './tick.svg';
+import HalfStar from './star-half.svg';
 export {
+  HalfStar,
   Tick,
   Address,
   Cart,

@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -5,10 +6,9 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {Colors} from '../constant/styles';
 import {
   decrementCheck,
@@ -20,6 +20,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import IconButtonComponent from '../components/UI/IconButton';
+import {Dialog, Portal, Button} from 'react-native-paper';
 
 function ItemsCheckoutScreen() {
   const checkout = useSelector(state => state.checkout.check);
@@ -27,6 +28,8 @@ function ItemsCheckoutScreen() {
   const navigation = useNavigation();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [removeIndex, setRemoveIndex] = useState(null);
 
   useEffect(() => {
     return () => {
@@ -53,25 +56,18 @@ function ItemsCheckoutScreen() {
     navigation.navigate('Details', {id});
   }
 
-  function removeCartHandler(index) {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this item?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Remove',
-          onPress: () => {
-            dispatch(removeCheck(index));
-          },
-        },
-      ],
-      {cancelable: false},
-    );
+  function showRemoveDialog(index) {
+    setRemoveIndex(index);
+    setDialogVisible(true);
   }
+
+  function removeCartHandler() {
+    if (removeIndex !== null) {
+      dispatch(removeCheck(removeIndex));
+      setDialogVisible(false);
+    }
+  }
+
   function increaseQuantity(index) {
     dispatch(incrementCheck(index));
   }
@@ -111,14 +107,39 @@ function ItemsCheckoutScreen() {
 
   return (
     <>
+      <Portal>
+        <Dialog
+          style={styles.dialog}
+          visible={dialogVisible}
+          onDismiss={() => setDialogVisible(false)}>
+          <Dialog.Title style={styles.dialogText}>Confirm</Dialog.Title>
+          <Dialog.Content>
+            <Text style={styles.dialogMessage}>
+              Are you sure you want to remove this item?
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              labelStyle={styles.dialogButton}
+              onPress={() => setDialogVisible(false)}>
+              Cancel
+            </Button>
+            <Button
+              labelStyle={styles.dialogButton}
+              onPress={removeCartHandler}>
+              Remove
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
       <ScrollView
-        style={styles.conatiner}
+        style={styles.container}
         contentContainerStyle={styles.scrollStyle}
         showsVerticalScrollIndicator={false}>
         {checkout.map((product, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.itemConatiner}
+            style={styles.itemContainer}
             onPress={() => detailsHandler(product.id)}>
             <Image
               source={{uri: product?.image}}
@@ -126,7 +147,7 @@ function ItemsCheckoutScreen() {
               resizeMode="contain"
             />
 
-            <View style={styles.dataConatiner}>
+            <View style={styles.dataContainer}>
               <Text style={styles.itemTitle}>
                 {' '}
                 {product?.title?.length > 10
@@ -147,7 +168,7 @@ function ItemsCheckoutScreen() {
                 />
                 <IconButtonComponent
                   icon={'trash-can-outline'}
-                  onPress={() => removeCartHandler(index)}
+                  onPress={() => showRemoveDialog(index)}
                   size={20}
                   containerColor={'#2b5c3a'}
                   iconColor={'#FFFFFF'}
@@ -169,7 +190,7 @@ function ItemsCheckoutScreen() {
         <Text style={styles.text}>
           You get free delivery when you buy 5000 or more.
         </Text>
-        <View style={styles.conatiner}>
+        <View style={styles.container}>
           <Text style={styles.billPrice}>Bill Details:</Text>
           <View style={styles.billContainer}>
             <View style={styles.priceContainer}>
@@ -191,7 +212,7 @@ function ItemsCheckoutScreen() {
       </ScrollView>
       <View style={styles.itemSummaryContainer}>
         <View style={styles.itemSummary}>
-          <View style={styles.totalConatiner}>
+          <View style={styles.totalContainer}>
             <View style={styles.totalTextContainer}>
               <Text style={styles.totalText}>
                 Total Items: {checkout.length}
@@ -216,11 +237,11 @@ const styles = StyleSheet.create({
   scrollStyle: {
     paddingBottom: 96,
   },
-  conatiner: {
+  container: {
     marginHorizontal: 6,
     marginTop: 6,
   },
-  itemConatiner: {
+  itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 130,
@@ -229,15 +250,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 6,
     padding: 6,
-  },
-  textConatiner: {
-    padding: 6,
-    height: 100,
-    borderWidth: 2,
-    borderColor: Colors.primary300,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: Colors.primary300,
@@ -256,7 +268,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontFamily: 'AnekDevanagari',
   },
-  dataConatiner: {
+  dataContainer: {
     width: '70%',
     padding: 4,
   },
@@ -271,7 +283,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: -4,
   },
-  totalConatiner: {
+  totalContainer: {
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
@@ -315,5 +327,26 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 6,
     paddingVertical: 10,
+  },
+  dialog: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    height: 170,
+  },
+  dialogText: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: Colors.primary300,
+  },
+  dialogMessage: {
+    letterSpacing: 1,
+    fontSize: 14,
+    color: Colors.primary200,
+  },
+  dialogButton: {
+    letterSpacing: 1,
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.primary300,
   },
 });

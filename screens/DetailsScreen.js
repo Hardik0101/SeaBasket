@@ -33,6 +33,7 @@ function DetailScreen() {
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   const [active, setActive] = useState([]);
+  const star = [];
 
   useEffect(() => {
     function fetchData() {
@@ -107,6 +108,10 @@ function DetailScreen() {
     setActive(index);
   }
 
+  for (let i = 1; i <= details?.rating?.rate; i++) {
+    star.push(i);
+  }
+
   return (
     <>
       <ScrollView
@@ -148,7 +153,14 @@ function DetailScreen() {
                   </Text>
 
                   <Text style={styles.itemPrice}>
-                    <Star width={14} height={14} fill={'#daa520'} />{' '}
+                    {star.map(index => (
+                      <View key={index}>
+                        <Star width={14} height={14} fill={'#daa520'} />
+                      </View>
+                    ))}
+                    {details?.rating?.rate % 1 !== 0 && (
+                      <HalfStar width={14} height={14} fill={'#daa520'} />
+                    )}{' '}
                     <Text style={{fontSize: 20}}>{details?.rating?.rate}</Text>
                   </Text>
                 </View>
