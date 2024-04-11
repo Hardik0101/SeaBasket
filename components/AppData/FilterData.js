@@ -21,7 +21,7 @@ function FilterData({items}) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const menClothing = useSelector(state => state.data.menClothing);
-  const womenClothing = useSelector(state => state.data.womenclothing);
+  const womenClothing = useSelector(state => state.data.womenClothing);
   const electronics = useSelector(state => state.data.electronics);
   const jewelery = useSelector(state => state.data.jewelery);
   const allproducts = useSelector(state => state.data.allproducts);
