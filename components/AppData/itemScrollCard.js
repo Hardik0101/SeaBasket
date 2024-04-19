@@ -20,7 +20,7 @@ function ItemScrollCard({items, detailsHandler}) {
                 style={styles.image}
                 resizeMode="contain"
               />
-              <Card.Content style={styles.itemTitleView}>
+              <View style={styles.itemTitleView}>
                 <Text variant="titleLarge" style={styles.itemTitle}>
                   {product.title.length > 10
                     ? `${product.title.substring(0, 13)}...`
@@ -47,7 +47,7 @@ function ItemScrollCard({items, detailsHandler}) {
                     </Text>
                   </View>
                 </View>
-              </Card.Content>
+              </View>
             </Card>
           ))}
         </View>
@@ -69,14 +69,15 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   card: {
-    width: 170,
+    width: "49%",
     paddingTop: 6,
     backgroundColor: 'white',
     overflow: 'hidden',
-    alignItems: 'center',
+    alignItems: 'stretch',
     borderColor: 'lightgray',
     borderWidth: 1,
     marginBottom: 4,
+    height:220
   },
   image: {
     height: 150,
@@ -90,16 +91,14 @@ const styles = StyleSheet.create({
   },
   itemTitleView: {
     backgroundColor: Colors.primary200,
-    borderTopRightRadius: 12,
-    borderTopLeftRadius: 12,
     marginTop: 4,
-    height: 56,
+    paddingHorizontal:8,
+   
   },
   itemTitle: {
     fontSize: 18,
     fontFamily: 'AnekDevanagari',
     color: Colors.text,
-    width: 136,
   },
   itemPrice: {
     marginBottom: 2,

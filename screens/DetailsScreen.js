@@ -357,8 +357,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    width: 38,
-    height: 38,
+    width: 46,
+    height: 46,
   },
 
   selectedSizeContainer: {

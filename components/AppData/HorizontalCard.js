@@ -11,6 +11,7 @@ function HorizontalCard({items, detailsHandler, children}) {
       </View>
       <ScrollView
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}>
         {items?.map(product => (
           <Card
@@ -66,10 +67,11 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     backgroundColor: 'white',
     overflow: 'hidden',
-    alignItems: 'center',
+    alignItems: 'stretch',
     marginRight: 6,
     borderColor: 'lightgray',
     borderWidth: 1,
+    height:220
   },
   image: {
     height: 150,
@@ -86,7 +88,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
     marginTop: 4,
-    height: 56,
   },
   itemTitle: {
     fontSize: 18,
